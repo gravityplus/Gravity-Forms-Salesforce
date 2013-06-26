@@ -1,7 +1,7 @@
 === Gravity Forms Salesforce Add-on ===
 Tags: gravity forms, forms, gravity, form, crm, gravity form, salesforce, salesforce plugin, form, forms, gravity, gravity form, gravity forms, secure form, simplemodal contact form, wp contact form, widget, sales force, customer, contact, contacts, address, addresses, address book
 Requires at least: 2.8
-Tested up to: 3.5.1
+Tested up to: 3.6
 Stable tag: trunk
 Contributors: katzwebdesign,katzwebservices
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Gravity%20Forms%20Salesforce%20Addon&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
@@ -111,8 +111,11 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
-= 2.2.4.4 =
-* Fixed Web To Lead issue causing "Salesforce.com is temporarily unavailable. Please try again in a few minutes." message. <a href="http://wordpress.org/support/topic/response-code-bug">Thanks, @atimmer</a>.
+= 2.2.6 =
+* Updated Web to Lead to work with Gravity Forms 1.7+ form settings screens
+
+= 2.2.5 =
+* Fixed Web to Lead picklist functionality. Thanks, <a href="http://d3vit.com/how-to-fix-gravity-forms-salesforce-plugin-picklist-multi-select/">Ryan Allen</a>!
 
 = 2.2.4.3 =
 * Fixed issue that should never have happened, but did: the "Gravity Forms Not Installed" message showed up for an user on the front-end of their site and prevented them from logging in.
@@ -192,8 +195,11 @@ This plugin is released under a GPL license.
 
 == Upgrade Notice ==
 
-= 2.2.4.4 =
-* Fixed Web To Lead issue causing "Salesforce.com is temporarily unavailable. Please try again in a few minutes." message. <a href="http://wordpress.org/support/topic/response-code-bug">Thanks, @atimmer</a>.
+= 2.2.6 =
+* Updated Web to Lead to work with Gravity Forms 1.7+ form settings screens
+
+= 2.2.5 =
+* Fixed Web to Lead picklist functionality. Thanks, <a href="http://d3vit.com/how-to-fix-gravity-forms-salesforce-plugin-picklist-multi-select/">Ryan Allen</a>!
 
 = 2.2.4.3 =
 * Fixed issue that should never have happened, but did: the "Gravity Forms Not Installed" message showed up for an user on the front-end of their site and prevented them from logging in.

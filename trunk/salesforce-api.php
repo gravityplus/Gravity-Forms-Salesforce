@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms Salesforce API Add-On
 Plugin URI: http://www.seodenver.com/salesforce/
 Description: Integrates <a href="http://formplugin.com?r=salesforce">Gravity Forms</a> with Salesforce allowing form submissions to be automatically sent to your Salesforce account
-Version: 2.2.5
+Version: 2.2.6
 Author: Katz Web Services, Inc.
 Author URI: http://www.katzwebservices.com
 
@@ -126,7 +126,7 @@ class GFSalesforce {
         add_action('gform_entry_info', array('GFSalesforce', 'entry_info_link_to_salesforce'), 10, 2);
     }
 
-    private function refresh_transients($force = false)
+    static private function refresh_transients($force = false)
     {
         global $wpdb;
 
@@ -624,7 +624,7 @@ EOD;
         <?php
     }
 
-    private function api_is_valid($api) {
+    static private function api_is_valid($api) {
         #self::r($api);
 
         if($api === false || is_string($api) || !empty($api->lastError)) {
@@ -1658,12 +1658,12 @@ jQuery(document).ready(function() {
     }
 
     //Returns the url of the plugin's root folder
-    public function get_base_url(){
+    static public function get_base_url(){
         return plugins_url(null, __FILE__);
     }
 
     //Returns the physical path of the plugin's root folder
-    protected function get_base_path(){
+    static protected function get_base_path(){
         $folder = basename(dirname(__FILE__));
         return WP_PLUGIN_DIR . "/" . $folder;
     }
