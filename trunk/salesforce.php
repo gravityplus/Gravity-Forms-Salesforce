@@ -2,12 +2,12 @@
 /*
 Plugin Name: Gravity Forms Salesforce Web to Lead Add-On
 Description: Integrate <a href="http://formplugin.com?r=salesforce">Gravity Forms</a> with Salesforce - form submissions are automatically sent to your Salesforce account!
-Version: 2.2.6
+Version: 2.2.8
 Author: Katz Web Services, Inc.
 Author URI: http://www.katzwebservices.com
 
 ------------------------------------------------------------------------
-Copyright 2012 Katz Web Services, Inc.
+Copyright 2013 Katz Web Services, Inc.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ class GFSalesforceWebToLead {
     private static $path = "gravity-forms-salesforce/salesforce.php";
     private static $url = "http://www.gravityforms.com";
     private static $slug = "gravity-forms-salesforce";
-    private static $version = "2.2.5";
+    private static $version = "2.2.8";
     private static $min_gravityforms_version = "1.3.9";
 
     //Plugin starting point. Will load appropriate files
@@ -245,18 +245,30 @@ EOD;
 
         }).trigger('ready');
 
-        $('.tooltip_form_salesforce').qtip({
-             content: $('.tooltip_form_salesforce').attr('tooltip'), // Use the tooltip attribute of the element for the content
-             show: { delay: 200, solo: true },
-             hide: { when: 'mouseout', fixed: true, delay: 200, effect: 'fade' },
-             style: 'gformsstyle', // custom tooltip style
-             position: {
-                corner: {
-                    target: 'topRight'
-                    ,tooltip: 'bottomLeft'
+        if($.qtip || $.fn.qtip) {
+            $('.tooltip_form_salesforce').qtip({
+                 content: $('.tooltip_form_salesforce').attr('tooltip'), // Use the tooltip attribute of the element for the content
+                 show: { delay: 200, solo: true },
+                 hide: { when: 'mouseout', fixed: true, delay: 200, effect: 'fade' },
+                 style: 'gformsstyle', // custom tooltip style
+                 position: {
+                    corner: {
+                        target: 'topRight'
+                        ,tooltip: 'bottomLeft'
+                    }
+                 }
+            });
+        } else {
+            // This is necessary because we're dynamically adding the tooltip via JS
+            jQuery( ".tooltip_form_salesforce" ).tooltip({
+                show: 500,
+                hide: 1000,
+                content: function () {
+                    return jQuery(this).prop('title');
                 }
-             }
-        });
+            });
+        }
+
     });
 </script><?php
     }
@@ -512,7 +524,7 @@ For more information on custom fields, %sread this Salesforce.com Help Article%s
                 continue;
             }
 
-            if( is_array($field["inputs"]) || is_array($field["choices"]) ){
+            if( is_array(@$field["inputs"]) || is_array(@$field["choices"]) || $field['type'] === 'list'){
                 $valuearray = array();
                 $fieldtemp = array();
                 $multi_input = true;
@@ -523,24 +535,24 @@ For more information on custom fields, %sread this Salesforce.com Help Article%s
 
                 }
                 else {
-                    $fieldtemp = $_POST["input_" . $field["id"]];
+                    $fieldtemp = @$_POST["input_" . $field["id"]];
                     $multi_input = false;
                     $label = self::getLabel($field["label"], $field);
                 }
 
                //handling multi-input fields such as name and address or choices
 
-               foreach($fieldtemp as $inputKey => $input){
+               foreach((array)$fieldtemp as $inputKey => $input){
                    //set the value and label
                    if ($multi_input == true) {
                        // inputs is an array
                        $value = trim(rtrim(stripslashes(@$_POST["input_" . str_replace('.', '_', $input["id"])])));
                        $label = self::getLabel($input["label"], $field, $input);
-                   }
-                   else {
+                   } else {
                        // choices is an array
                        $value = $input;
                    }
+
                    if(!$label) { $label = self::getLabel($field['label'], $field, $input); }
                    if ($label == 'BothNames' && !empty($value)) {
                         $names = explode(" ", $value);
@@ -561,20 +573,22 @@ For more information on custom fields, %sread this Salesforce.com Help Article%s
                         $salesforce = $value;
                    } else {
                         if(!empty($field['inputName']) && (apply_filters('gf_salesforce_use_inputname', true) === true)) {
-                            $valuearray["{$field['inputName']}"][] = $input;
+                            $valuearray["{$field['inputName']}"][] = (is_array($input) && isset($input["label"])) ? $input["label"] : $input;
                         } elseif(!empty($field['adminLabel']) && (apply_filters('gf_salesforce_use_adminlabel', true) === true)) {
                             $valuearray["{$field['adminLabel']}"][] = $value;
                         } elseif((!empty($data["{$label}"]) && !empty($value) && $value !== '0') || empty($data["{$label}"]) && array_key_exists("{$label}", $defaults)) {
-                            $data[$label] = $value ;
+                            $data[$label] = $value;
                         }
                    }
                }
 
                // after looping through multi-input fields set the value
                if(isset($valuearray["{$field['adminLabel']}"])) {
-                    $data[$label] = implode(apply_filters('gf_salesforce_implode_glue', ';'), $valuearray["{$field['adminLabel']}"]);
+                    $data[$label] = implode(apply_filters('gf_salesforce_implode_glue', ';', $field), $valuearray["{$field['adminLabel']}"]);
+                    $data[$label] = preg_replace('/;+/', ';', $data[$label]); // Get rid of empty values
                } elseif(isset($valuearray["{$field['inputName']}"])) {
-                    $data[$label] = implode(apply_filters('gf_salesforce_implode_glue', ', '), $valuearray["{$field['inputName']}"]);
+                    $data[$label] = implode(apply_filters('gf_salesforce_implode_glue', ', ', $field), $valuearray["{$field['inputName']}"]);
+                    $data[$label] = str_replace(', ,', ',', $data[$label]); // Get rid of empty values
                }
 
            } else {
@@ -622,7 +636,6 @@ For more information on custom fields, %sread this Salesforce.com Help Article%s
         $lead_source = isset($form_meta['title']) ? $form_meta['title'] : 'Gravity Forms Form';
         $data['lead_source'] = apply_filters('gf_salesforce_lead_source', $lead_source, $form_meta, $data);
         $data['debug']          = 0;
-
         $result = self::send_request($data);
 
         if($result && !empty($result)) {

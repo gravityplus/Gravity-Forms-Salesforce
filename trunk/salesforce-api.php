@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms Salesforce API Add-On
 Plugin URI: http://www.seodenver.com/salesforce/
 Description: Integrates <a href="http://formplugin.com?r=salesforce">Gravity Forms</a> with Salesforce allowing form submissions to be automatically sent to your Salesforce account
-Version: 2.2.6
+Version: 2.3
 Author: Katz Web Services, Inc.
 Author URI: http://www.katzwebservices.com
 
@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 add_action('init',  array('GFSalesforce', 'init'));
 register_activation_hook( __FILE__, array("GFSalesforce", "add_permissions"));
+register_activation_hook( __FILE__, array("GFSalesforce", "force_refresh_transients"));
+register_deactivation_hook( __FILE__, array("GFSalesforce", "force_refresh_transients"));
 
 class GFSalesforce {
 
@@ -35,7 +37,7 @@ class GFSalesforce {
     private static $path = "gravity-forms-salesforce/salesforce-api.php";
     private static $url = "http://formplugin.com";
     private static $slug = "gravity-forms-salesforce";
-    private static $version = "2.2.4.4";
+    private static $version = "2.3";
     private static $min_gravityforms_version = "1.3.9";
     private static $is_debug = NULL;
     private static $cache_time = 86400; // 24 hours
@@ -126,12 +128,17 @@ class GFSalesforce {
         add_action('gform_entry_info', array('GFSalesforce', 'entry_info_link_to_salesforce'), 10, 2);
     }
 
+    static function force_refresh_transients() {
+        global $wpdb;
+        self::refresh_transients(true);
+    }
+
     static private function refresh_transients($force = false)
     {
         global $wpdb;
 
         if($force || (isset($_GET['refresh']) && current_user_can('administrator') && $_GET['refresh'] === 'transients')) {
-            $wpdb->query("DELETE FROM {$wpdb->options} WHERE `option_name` LIKE ('%_transient_sfgf_%')");
+            $wpdb->query("DELETE FROM {$wpdb->options} WHERE `option_name` LIKE '%_transient_sfgf_%' OR`option_name` LIKE '%_transient_timeout_sfgf_%'");
         }
     }
 
@@ -391,11 +398,11 @@ EOD;
                             <option value="3600" <?php selected($settings["cache_time"] == '3600', true); ?>><?php _e('One Hour', 'gravity-forms-salesforce'); ?></option>
                             <option value="21600" <?php selected($settings["cache_time"] == '21600', true); ?>><?php _e('Six Hours', 'gravity-forms-salesforce'); ?></option>
                             <option value="43200" <?php selected($settings["cache_time"] == '43200', true); ?>><?php _e('12 Hours', 'gravity-forms-salesforce'); ?></option>
-                            <option value="86400" <?php selected(empty($settings["cache_time"]) || $settings["cache_time"] == '86400', true); ?>><?php _e('1 Day', 'gravity-forms-salesforce'); ?></option>
+                            <option value="86400" <?php selected($settings["cache_time"] == '86400', true); ?>><?php _e('1 Day', 'gravity-forms-salesforce'); ?></option>
                             <option value="172800" <?php selected($settings["cache_time"] == '172800', true); ?>><?php _e('2 Days', 'gravity-forms-salesforce'); ?></option>
                             <option value="259200" <?php selected($settings["cache_time"] == '259200', true); ?>><?php _e('3 Days', 'gravity-forms-salesforce'); ?></option>
                             <option value="432000" <?php selected($settings["cache_time"] == '432000', true); ?>><?php _e('5 Days', 'gravity-forms-salesforce'); ?></option>
-                            <option value="604800" <?php selected($settings["cache_time"] == '604800', true); ?>><?php _e('1 Week', 'gravity-forms-salesforce'); ?></option>
+                            <option value="604800" <?php selected(empty($settings["cache_time"]) || $settings["cache_time"] == '604800', true); ?>><?php _e('1 Week', 'gravity-forms-salesforce'); ?></option>
                         </select>
                         <span class="howto"><?php _e('How long should form and field data be stored? This affects how often remote picklists will be checked for the Live Remote Field Mapping feature.', 'gravity-forms-salesforce'); ?></span>
                         <span class="howto"><?php _e(sprintf("%sRefresh now%s.", '<a href="'.add_query_arg('refresh', 'transients').'">','</a>'), "gravity-forms-salesforce"); ?></span>
@@ -695,7 +702,7 @@ EOD;
     }
 
     public function getFields($objectType = 'account', $type = null) {
-                // One of two options: fields or objects
+        // One of two options: fields or objects
         $listtype = ($listtype !== 'objects') ? 'fields' : 'objects';
 
         $lists = maybe_unserialize(get_site_transient('sfgf_lists_fields_'.$objectType));
@@ -770,15 +777,14 @@ EOD;
 
         if(!self::api_is_valid($api)) { return false; }
 
-        $accountdescribe = $api->describeSObject("account");
+        $objects = $api->describeGlobal();
 
-        if(!is_object($accountdescribe) || !isset($accountdescribe->childRelationships)) { return false; }
+        if(empty($objects) || !is_object($objects) || !isset($objects->sobjects)) { return false; }
 
         $lists = array();
-        foreach($accountdescribe->childRelationships as $Relationship) {
-            if(!in_array($Relationship->childSObject, $lists)) {
-                $lists[] = $Relationship->childSObject;
-            }
+        foreach ($objects->sobjects as $object) {
+            if(!is_object($object) || empty($object->createable)) { continue; }
+            $lists[$object->name] = esc_html( $object->label );
         }
 
         asort($lists);
@@ -909,9 +915,9 @@ EOD;
                     <select id="gf_salesforce_list" name="gf_salesforce_list" onchange="SelectList(jQuery(this).val()); SelectForm(jQuery(this).val(), jQuery('#gf_salesforce_form').val());">
                         <option value=""><?php _e("Select a Salesforce Object", "gravity-forms-madmimi"); ?></option>
                     <?php
-                    foreach ($lists as $list){
+                    foreach ($lists as $name => $label){
                         ?>
-                        <option value="<?php echo esc_html($list) ?>" <?php selected(($list === $config["meta"]["contact_object_name"])); ?>><?php echo esc_html($list) ?></option>
+                        <option value="<?php echo esc_html($name) ?>" <?php selected(($name === $config["meta"]["contact_object_name"])); ?>><?php echo esc_html($label) ?></option>
                         <?php
                     }
                     ?>
@@ -1256,7 +1262,12 @@ jQuery(document).ready(function() {
         $setting_id =  0;
 
         //getting list of all Salesforce merge variables for the selected contact list
-        $merge_vars = self::getFields($_POST['objectType']);;
+        $merge_vars = @self::getFields($_POST['objectType']);;
+
+        if(empty($merge_vars)) {
+            echo sprintf("alert('There was an error retrieving fields for the %s Object');", esc_js($_POST['objectType']));
+            die(" EndSelectForm();");
+        }
 
         //getting configuration
         $config = GFSalesforceData::get_feed($setting_id);
@@ -1266,7 +1277,6 @@ jQuery(document).ready(function() {
 
         //fields meta
         $form = RGFormsModel::get_form_meta($form_id);
-        //$fields = $form["fields"];
 
         die("EndSelectForm('" .str_replace("'", "\'", $str). "', " . GFCommon::json_encode($form) . ");");
     }
