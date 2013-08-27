@@ -3,12 +3,12 @@
 Plugin Name: Gravity Forms Salesforce API Add-On
 Plugin URI: http://www.seodenver.com/salesforce/
 Description: Integrates <a href="http://formplugin.com?r=salesforce">Gravity Forms</a> with Salesforce allowing form submissions to be automatically sent to your Salesforce account
-Version: 2.3
+Version: 2.3.2
 Author: Katz Web Services, Inc.
 Author URI: http://www.katzwebservices.com
 
 ------------------------------------------------------------------------
-Copyright 2012 Katz Web Services, Inc.
+Copyright 2013 Katz Web Services, Inc.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ class GFSalesforce {
     private static $path = "gravity-forms-salesforce/salesforce-api.php";
     private static $url = "http://formplugin.com";
     private static $slug = "gravity-forms-salesforce";
-    private static $version = "2.3";
+    private static $version = "2.3.2";
     private static $min_gravityforms_version = "1.3.9";
     private static $is_debug = NULL;
     private static $cache_time = 86400; // 24 hours
@@ -632,8 +632,6 @@ EOD;
     }
 
     static private function api_is_valid($api) {
-        #self::r($api);
-
         if($api === false || is_string($api) || !empty($api->lastError)) {
             return false;
         }
@@ -669,7 +667,7 @@ EOD;
             $conn = new SforcePartnerClient();
             $conn->createconnection(plugin_dir_path(__FILE__).'developerforce/include/partner.wsdl.xml');
             $mylogin = $conn->login($username,$password.$securitytoken);
-            self::$api = $conn;
+            self::$api = apply_filters('gf_salesforce_connection', $conn);
             return $conn;
         } catch(Exception $e) {
             return isset($e->faultstring) ? $e->faultstring : false;
@@ -702,9 +700,6 @@ EOD;
     }
 
     public function getFields($objectType = 'account', $type = null) {
-        // One of two options: fields or objects
-        $listtype = ($listtype !== 'objects') ? 'fields' : 'objects';
-
         $lists = maybe_unserialize(get_site_transient('sfgf_lists_fields_'.$objectType));
         if($lists && !empty($lists) && is_array($lists) && (!isset($_REQUEST['refresh']) || (isset($_REQUEST['refresh']) && $_REQUEST['refresh'] !== 'lists'))) {
             foreach($lists as $key => $list) {
@@ -777,21 +772,26 @@ EOD;
 
         if(!self::api_is_valid($api)) { return false; }
 
-        $objects = $api->describeGlobal();
+        try {
+            $objects = $api->describeGlobal();
 
-        if(empty($objects) || !is_object($objects) || !isset($objects->sobjects)) { return false; }
+            if(empty($objects) || !is_object($objects) || !isset($objects->sobjects)) { return false; }
 
-        $lists = array();
-        foreach ($objects->sobjects as $object) {
-            if(!is_object($object) || empty($object->createable)) { continue; }
-            $lists[$object->name] = esc_html( $object->label );
+            $lists = array();
+            foreach ($objects->sobjects as $object) {
+                if(!is_object($object) || empty($object->createable)) { continue; }
+                $lists[$object->name] = esc_html( $object->label );
+            }
+
+            asort($lists);
+
+            set_site_transient('sfgf_objects', $lists, self::$settings['cache_time']);
+
+            return $lists;
+
+        } catch (Exception $e) {
+            return false;
         }
-
-        asort($lists);
-
-        set_site_transient('sfgf_objects', $lists, self::$settings['cache_time']);
-
-        return $lists;
 
     }
 
@@ -917,7 +917,7 @@ EOD;
                     <?php
                     foreach ($lists as $name => $label){
                         ?>
-                        <option value="<?php echo esc_html($name) ?>" <?php selected(($name === $config["meta"]["contact_object_name"])); ?>><?php echo esc_html($label) ?></option>
+                        <option value="<?php echo esc_html($name) ?>" <?php selected(isset($config["meta"]["contact_object_name"]) && ($name === $config["meta"]["contact_object_name"])); ?>><?php echo esc_html($label) ?></option>
                         <?php
                     }
                     ?>
@@ -1315,7 +1315,7 @@ jQuery(document).ready(function() {
 
         foreach((array)$merge_vars as $var){
 
-            if($var['type'] === 'reference' && apply_filters('gf_salesforce_skip_reference_types', true)) { continue; }
+            if($var['type'] === 'reference' && empty($var['req']) && apply_filters('gf_salesforce_skip_reference_types', true)) { continue; }
 
             $selected_field = isset($config["meta"]["field_map"][$var["tag"]]) ? $config["meta"]["field_map"][$var["tag"]] : false;
             $required = $var["req"] === true ? "<span class='gfield_required' title='This field is required.'>(Required)</span>" : "";
@@ -1444,7 +1444,6 @@ jQuery(document).ready(function() {
     }
 
     public static function export_feed($entry, $form, $feed, $api){
-        $email = $entry[(int)$feed["meta"]["field_map"]["email"]];
 
         if(empty($feed["meta"]["contact_object_name"])) {
             return false;
@@ -1469,7 +1468,7 @@ jQuery(document).ready(function() {
                 $merge_vars[$var_tag] = empty($entry[$field_id]) ? '' : GFCommon::get_country_code(trim($entry[$field_id]));
             }
             // If, for example an user enters 0 in a text field type expecting a number
-            else if($entry[$field_id] === "0") {
+            else if(isset($entry[$field_id]) && $entry[$field_id] === "0") {
                 $merge_vars[$var_tag] = "0";
             } else if($var_tag != "email") {
                 if(!empty($entry[$field_id]) && !($entry[$field_id] == "0")) {
@@ -1488,9 +1487,10 @@ jQuery(document).ready(function() {
                             $merge_vars[$var_tag] = implode(';', array_map('html_entity_decode', array_map('htmlspecialchars', $elements)));
                             break;
                         default:
-                            $merge_vars[$var_tag] = htmlspecialchars($entry[$field_id]);
+                            $value = htmlspecialchars($entry[$field_id]);
+                            $merge_vars[$var_tag] = $value;
                     }
-                } else {
+            } else {
 
                     // This is for checkboxes
                     $elements = array();
@@ -1549,7 +1549,9 @@ jQuery(document).ready(function() {
         }
 
         if  (isset($result[0]) && !empty($result[0]->success)) {
-            if(self::is_debug()) { echo '<h2>Success</h2>'.$debug; }
+            if(self::is_debug()) {
+                echo '<h2>Success</h2>'.'<h3>This is only visible to administrators. To disable this code from being displayed, uncheck the "Debug Form Submissions for Administrators" box in the <a href="'.admin_url('admin.php?page=gf_settings&addon=Salesforce').'">Gravity Forms Salesforce</a> settings.</h3>'.$debug;
+            }
             gform_update_meta($entry['id'], 'salesforce_id', $result[0]->id);
             self::add_note($entry["id"], sprintf(__('Successfully added to Salesforce with ID #%s . View entry at %s', 'gravity-forms-salesforce'), $result[0]->id, 'https://na9.salesforce.com/'.$result[0]->id));
             return $result[0]->id;
@@ -1559,6 +1561,7 @@ jQuery(document).ready(function() {
 
             if(self::is_debug()) {
                 echo '<h2>Error</h2>'.$debug;
+                '<h3>This is only visible to administrators. To disable this code from being displayed, uncheck the "Debug Form Submissions for Administrators" box in the <a href="'.admin_url('admin.php?page=gf_settings&addon=Salesforce').'">Gravity Forms Salesforce</a> settings.</h3>';
                 echo '<h2>Errors</h2><pre>'.print_r($errors, true).'</pre>';
             }
 
@@ -1586,6 +1589,11 @@ jQuery(document).ready(function() {
         if(function_exists('mb_convert_encoding') && !seems_utf8($string)) {
             $string = mb_convert_encoding($string, "UTF-8");
         }
+
+        // Salesforce can't handle newlines in SOAP; we encode them instead.
+        $string = str_replace("\n", '&#x0a;', $string);
+        $string = str_replace("\r", '&#x0d;', $string);
+        $string = str_replace("\t", '&#09;', $string);
 
         // Remove control characters (like page break, etc.)
         $string = preg_replace('/[[:cntrl:]]+/', '', $string);
