@@ -1486,6 +1486,23 @@ jQuery(document).ready(function() {
                             // implode the array to be picklist format for SF
                             $merge_vars[$var_tag] = implode(';', array_map('html_entity_decode', array_map('htmlspecialchars', $elements)));
                             break;
+
+                        case 'likert':
+                        	$value = $entry[ $field_id ];
+
+                        	foreach ( $field[ 'choices' ] as $choice ) {
+                        		if ( $value == $choice[ 'value' ] ) {
+                        			$value = $choice[ 'text' ];
+
+                        			break;
+                        		}
+                        	}
+
+                        	$value = htmlspecialchars( $value );
+                        	$merge_vars[ $var_tag ] = $value;
+                        
+                        	break;
+
                         default:
                             $value = htmlspecialchars($entry[$field_id]);
                             $merge_vars[$var_tag] = $value;
