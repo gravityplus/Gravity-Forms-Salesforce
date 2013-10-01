@@ -1,7 +1,7 @@
 === Gravity Forms Salesforce Add-on ===
 Tags: gravity forms, forms, gravity, form, crm, gravity form, salesforce, salesforce plugin, form, forms, gravity, gravity form, gravity forms, secure form, simplemodal contact form, wp contact form, widget, sales force, customer, contact, contacts, address, addresses, address book
-Requires at least: 3.2
-Tested up to: 3.6
+Requires at least: 3.3
+Tested up to: 3.6.1
 Stable tag: trunk
 Contributors: katzwebdesign,katzwebservices
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Gravity%20Forms%20Salesforce%20Addon&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
@@ -90,6 +90,14 @@ function change_salesforce_implode_glue($glue, $field) {
 
 `
 
+= How do I modify the Soap, Proxy, WSDL and connection settings? =
+
+* `gf_salesforce_wsdl` - Path to the WSDL (string)
+* `gf_salesforce_proxy` - Proxy settings as an object with properties host, port (integer, not a string), login and password (object, ideally a `ProxySettings` object)
+* `gf_salesforce_soap_options` Additional options to send to the SoapClient constructor. (array) See <a href="http://php.net/manual/en/soapclient.soapclient.php">http://php.net/manual/en/soapclient.soapclient.php</a>
+* `gf_salesforce_connection` - Modify the `SforcePartnerClient` object before it's returned.
+
+See the FAQ item above for an example of using a filter.
 
 = Do I need both plugins activated? =
 No, you only need one, and the __API plugin is recommended__: the Web to Lead plugin is no longer being actively developed. __If you are using Web to Lead, you don't need the API plugin activated. If you are using the API plugin, you don't need the Web to Lead activated.__
@@ -131,7 +139,7 @@ function make_my_own_lead_source($lead_source, $form_meta, $data) {
 
 = Can I use Salesforce Custom Fields? (Web to Lead) =
 
-With version 1.1, you can. When you are trying to map a custom field, you need to set either the "Admin Label" for the input (in the Advanced tab of each field in the  Gravity Forms form editor) or the Parameter Name (in Advanced tab, visible after checking "Allow field to be populated dynamically") to be the API Name of the Custom Field as shown in Salesforce. For example, a Custom Field with a Field Label "Web Source" could have an API Name of `SFGA__Web_Source__c`.
+You can. When you are trying to map a custom field, you need to set either the "Admin Label" for the input (in the Advanced tab of each field in the  Gravity Forms form editor) or the Parameter Name (in Advanced tab, visible after checking "Allow field to be populated dynamically") to be the API Name of the Custom Field as shown in Salesforce. For example, a Custom Field with a Field Label "Web Source" could have an API Name of `SFGA__Web_Source__c`.
 
 You can find your Custom Fields under [Your Name] &rarr; Setup &rarr; Leads &rarr; Fields, then at the bottom of the page, there's a list of "Lead Custom Fields & Relationships". This is where you will find the "API Name" to use in the Admin Label or Parameter Name.
 
@@ -139,6 +147,10 @@ You can find your Custom Fields under [Your Name] &rarr; Setup &rarr; Leads &rar
 This plugin is released under a GPL license.
 
 == Changelog ==
+
+= 2.4 =
+* Added filters to modify connection details. See the FAQ item "How do I modify the Soap, Proxy, WSDL and connection settings?"
+* Updated to latest Salesforce PHP Toolkit library
 
 = 2.3 & 2.3.1 & 2.3.2 =
 * API

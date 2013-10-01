@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms Salesforce API Add-On
 Plugin URI: http://www.seodenver.com/salesforce/
 Description: Integrates <a href="http://formplugin.com?r=salesforce">Gravity Forms</a> with Salesforce allowing form submissions to be automatically sent to your Salesforce account
-Version: 2.3.2
+Version: 2.4
 Author: Katz Web Services, Inc.
 Author URI: http://www.katzwebservices.com
 
@@ -37,7 +37,7 @@ class GFSalesforce {
     private static $path = "gravity-forms-salesforce/salesforce-api.php";
     private static $url = "http://formplugin.com";
     private static $slug = "gravity-forms-salesforce";
-    private static $version = "2.3.2";
+    private static $version = "2.4";
     private static $min_gravityforms_version = "1.3.9";
     private static $is_debug = NULL;
     private static $cache_time = 86400; // 24 hours
@@ -642,9 +642,6 @@ EOD;
     }
 
     public static function get_api($settings = array()){
-        if(!class_exists("SforcePartnerClient")) {
-            require_once plugin_dir_path(__FILE__).'developerforce/include/SforcePartnerClient.php';
-        }
 
         // If it's already set, use it.
         if(!empty(self::$api)) { return self::$api; }
@@ -656,19 +653,47 @@ EOD;
             }
         }
 
+        // If the settings aren't set...return false
         if(!is_array($settings) || empty($settings)) {
             return false;
         }
 
         extract($settings);
 
+        $libpath = plugin_dir_path(__FILE__).'Force.com-Toolkit-for-PHP/soapclient/';
+
+        if(!class_exists("SforcePartnerClient")) {
+            require_once $libpath.'SforcePartnerClient.php';
+        }
+
         try {
             //This is instantiating the service used for the sfdc api
-            $conn = new SforcePartnerClient();
-            $conn->createconnection(plugin_dir_path(__FILE__).'developerforce/include/partner.wsdl.xml');
-            $mylogin = $conn->login($username,$password.$securitytoken);
-            self::$api = apply_filters('gf_salesforce_connection', $conn);
-            return $conn;
+            $mySforceConnection = new SforcePartnerClient();
+
+            /**
+            * Create a connection using SforceBaseClient::createConnection().
+            *
+            * @param string $wsdl   Salesforce.com Partner WSDL
+            * @param object $proxy  (optional) proxy settings with properties host, port,
+            *                       login and password
+            * @param array $soap_options (optional) Additional options to send to the
+            *                       SoapClient constructor. @see
+            *                       http://php.net/manual/en/soapclient.soapclient.php
+            */
+            $mySforceConnection->createConnection(
+                apply_filters('gf_salesforce_wsdl', $libpath.'partner.wsdl.xml'),
+                apply_filters('gf_salesforce_proxy', NULL),
+                apply_filters('gf_salesforce_soap_options', array())
+            );
+
+            $mylogin = $mySforceConnection->login($username,$password.$securitytoken);
+
+            $mySforceConnection = apply_filters('gf_salesforce_connection', $mySforceConnection);
+
+            self::$api = $mySforceConnection;
+
+            return $mySforceConnection;
+
         } catch(Exception $e) {
             return isset($e->faultstring) ? $e->faultstring : false;
         }
@@ -1473,6 +1498,21 @@ jQuery(document).ready(function() {
             } else if($var_tag != "email") {
                 if(!empty($entry[$field_id]) && !($entry[$field_id] == "0")) {
                     switch($input_type) {
+                        // Thanks to Scott Kingsley Clark
+                        // http://wordpress.org/support/topic/likert-field-compatibility-with-survey-add-on
+                        case 'likert':
+                            $value = $entry[$field_id];
+
+                            foreach($field['choices'] as $choice ) {
+                                if($value === $choice['value']) {
+                                    $value = $choice['text'];
+                                    break;
+                                }
+                            }
+
+                            $value = htmlspecialchars($value);
+
+                            break;
                         case 'multiselect':
                             // If there are commas in the value, this makes it so it can be comma exploded.
                             // Values cannot contain semicolons: http://boards.developerforce.com/t5/NET-Development/Salesforce-API-inserting-values-into-multiselect-fields-using/td-p/125910
@@ -1484,12 +1524,14 @@ jQuery(document).ready(function() {
 
                             // We decode first so that the commas are commas again, then
                             // implode the array to be picklist format for SF
-                            $merge_vars[$var_tag] = implode(';', array_map('html_entity_decode', array_map('htmlspecialchars', $elements)));
+                            $value = implode(';', array_map('html_entity_decode', array_map('htmlspecialchars', $elements)));
                             break;
                         default:
                             $value = htmlspecialchars($entry[$field_id]);
-                            $merge_vars[$var_tag] = $value;
                     }
+
+                    $merge_vars[$var_tag] = $value;
+
             } else {
 
                     // This is for checkboxes
@@ -1504,6 +1546,8 @@ jQuery(document).ready(function() {
             }
 
         }
+
+        $merge_vars = apply_filters( 'gf_salesforce_create_data', $merge_vars, $form, $entry );
 
         // Make sure the charset is UTF-8 for Salesforce.
         $merge_vars = array_map(array('GFSalesforce', '_convert_to_utf_8'), $merge_vars);

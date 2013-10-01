@@ -2,7 +2,7 @@
 /*
 Plugin Name: Gravity Forms Salesforce Web to Lead Add-On
 Description: Integrate <a href="http://formplugin.com?r=salesforce">Gravity Forms</a> with Salesforce - form submissions are automatically sent to your Salesforce account!
-Version: 2.3.2
+Version: 2.4
 Author: Katz Web Services, Inc.
 Author URI: http://www.katzwebservices.com
 
@@ -33,7 +33,7 @@ class GFSalesforceWebToLead {
     private static $path = "gravity-forms-salesforce/salesforce.php";
     private static $url = "http://www.gravityforms.com";
     private static $slug = "gravity-forms-salesforce";
-    private static $version = "2.3.2";
+    private static $version = "2.4";
     private static $min_gravityforms_version = "1.3.9";
 
     //Plugin starting point. Will load appropriate files
@@ -461,7 +461,11 @@ For more information on custom fields, %sread this Salesforce.com Help Article%s
             'sslverify' => false,
         );
 
+        $args = apply_filters( 'gf_salesforce_request_args', $args, $debug );
+
         $sub = $debug ? 'test' : 'www';
+
+        $sub = apply_filters( 'gf_salesforce_request_subdomain', $sub, $debug );
 
         $result = wp_remote_post('https://'.$sub.'.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8', $args);
 
@@ -588,9 +592,25 @@ For more information on custom fields, %sread this Salesforce.com Help Article%s
                } elseif(isset($valuearray["{$field['inputName']}"])) {
                     $data[$label] = implode(apply_filters('gf_salesforce_implode_glue', ', ', $field), $valuearray["{$field['inputName']}"]);
                     $data[$label] = str_replace(', ,', ',', $data[$label]); // Get rid of empty values
-               }
+                }
 
-           } else {
+           } else if ( 'survey' == $field[ 'type' ] && 'likert' == $field[ 'inputType' ] ) {
+
+                // handling likert field values for mapping properly
+                $value = trim( stripslashes( @$_POST[ "input_" . $field[ "id" ] ] ) );
+
+                foreach ( $field[ 'choices' ] as $choice ) {
+                    if ( $value == $choice[ 'value' ] ) {
+                        $value = $choice[ 'text' ];
+                        break;
+                    }
+                }
+
+                $label = self::getLabel($field["label"], $field);
+
+                $data[ $label ] = $value;
+
+            } else {
                //handling single-input fields such as text and paragraph (textarea)
                $value = trim(rtrim(stripslashes(@$_POST["input_" . $field["id"]])));
                $label = self::getLabel($field["label"], $field);
@@ -636,6 +656,10 @@ For more information on custom fields, %sread this Salesforce.com Help Article%s
         $data['lead_source'] = apply_filters('gf_salesforce_lead_source', $lead_source, $form_meta, $data);
         $data['debug']          = 0;
         $data = array_map('stripslashes', $data);
+
+        // You can tap into the data and filter it.
+        $data = apply_filters( 'gf_salesforce_push_data', $data, $form_meta, $entry );
+
         $result = self::send_request($data);
 
         if($result && !empty($result)) {
