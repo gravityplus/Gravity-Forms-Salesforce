@@ -589,8 +589,26 @@ For more information on custom fields, %sread this Salesforce.com Help Article%s
                     $data[$label] = implode(apply_filters('gf_salesforce_implode_glue', ', ', $field), $valuearray["{$field['inputName']}"]);
                     $data[$label] = str_replace(', ,', ',', $data[$label]); // Get rid of empty values
                }
-
-           } else {
+            } elseif ( 'survey' == $field[ 'type' ] && 'likert' == $field[ 'inputType' ] ) {
+            	// handling likert field values for mapping properly
+            	$value = '';
+            	
+            	if ( isset( $_POST[ 'input_' . $field[ 'id' ] ] ) ) {
+            	    $value = trim( stripslashes( $_POST[ 'input_' . $field[ 'id' ] ] ) );
+            	}
+            
+            	foreach ( $field[ 'choices' ] as $choice ) {
+            		if ( $value == $choice[ 'value' ] ) {
+            			$value = $choice[ 'text' ];
+            
+            			break;
+            		}
+            	}
+            	
+            	$label = self::getLabel( $field[ 'label' ], $field );
+            
+            	$data[ $label ] = $value;
+            } else {
                //handling single-input fields such as text and paragraph (textarea)
                $value = trim(rtrim(stripslashes(@$_POST["input_" . $field["id"]])));
                $label = self::getLabel($field["label"], $field);
