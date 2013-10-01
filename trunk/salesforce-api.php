@@ -663,11 +663,16 @@ EOD;
         extract($settings);
 
         try {
+			$wsdl_xml = apply_filters( 'gf_salesforce_partner_wsdl_xml', plugin_dir_path(__FILE__).'developerforce/include/partner.wsdl.xml' );
+
             //This is instantiating the service used for the sfdc api
             $conn = new SforcePartnerClient();
-            $conn->createconnection(plugin_dir_path(__FILE__).'developerforce/include/partner.wsdl.xml');
+			$conn->createconnection( $wsdl_xml );
+
             $mylogin = $conn->login($username,$password.$securitytoken);
+
             self::$api = apply_filters('gf_salesforce_connection', $conn);
+
             return $conn;
         } catch(Exception $e) {
             return isset($e->faultstring) ? $e->faultstring : false;
