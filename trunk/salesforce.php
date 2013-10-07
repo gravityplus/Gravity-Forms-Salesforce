@@ -633,13 +633,24 @@ For more information on custom fields, %sread this Salesforce.com Help Article%s
                } else if (trim(strtolower($label)) == 'salesforce' ) {
                     $salesforce = $value;
                } else {
+                    $field_name = null;
+
                     if(!empty($field['inputName']) && (apply_filters('gf_salesforce_use_inputname', true) === true)) {
-                        $data["{$field['inputName']}"] = $value ;
+                        $field_name = $field[ 'inputName' ];
                     } elseif(!empty($field['adminLabel']) && (apply_filters('gf_salesforce_use_adminlabel', true) === true)) {
-                        $data["{$field['adminLabel']}"] = $value ;
+                        $field_name = $field[ 'adminLabel' ];
                     } elseif((!empty($data["{$label}"]) && !empty($value) && $value !== '0') || empty($data["{$label}"]) && (array_key_exists("{$label}", $defaults) || apply_filters('gf_salesforce_use_custom_fields', true) === true)) {
-                        $data["{$label}"] = $value ;
-                   }
+                        $field_name = $label;
+                    }
+
+                    $field_name = apply_filters( 'gf_salesforce_mapped_field_name', $field_name, $field, $form_meta, $entry );
+
+                    $value = apply_filters( 'gf_salesforce_mapped_value_' . $field_name, $value, $field, $field_name, $form_meta, $entry );
+                    $value = apply_filters( 'gf_salesforce_mapped_value', $value, $field, $field_name, $form_meta, $entry );
+
+                    if ( null !== $field_name ) {
+                        $data["{$field_name}"] = $value;
+                    }
                }
            }
        }
