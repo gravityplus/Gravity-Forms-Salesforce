@@ -1544,6 +1544,9 @@ jQuery(document).ready(function() {
                     $merge_vars[$var_tag] = implode(';',array_map('htmlspecialchars', $elements));
                 }
             }
+            
+            $merge_vars[ $var_tag ] = apply_filters( 'gf_salesforce_mapped_value_' . $var_tag, $merge_vars[ $var_tag ], $field, $var_tag, $form, $entry );
+            $merge_vars[ $var_tag ] = apply_filters( 'gf_salesforce_mapped_value', $merge_vars[ $var_tag ], $field, $var_tag, $form, $entry );
 
         }
 
