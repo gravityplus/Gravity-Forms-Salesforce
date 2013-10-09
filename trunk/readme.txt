@@ -148,6 +148,9 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 2.4.1 =
+* Added more filters: `gf_salesforce_mapped_field_name`, `gf_salesforce_mapped_value`, `gf_salesforce_mapped_value_{$field_name}`. Thanks, @sc0ttkclark!
+
 = 2.4 =
 * Added filters to modify connection details. See the FAQ item "How do I modify the Soap, Proxy, WSDL and connection settings?"
 * Updated to latest Salesforce PHP Toolkit library
@@ -250,6 +253,13 @@ This plugin is released under a GPL license.
 * Launch!
 
 == Upgrade Notice ==
+
+= 2.4.1 =
+* Added more filters: `gf_salesforce_mapped_field_name`, `gf_salesforce_mapped_value`, `gf_salesforce_mapped_value_{$field_name}`. Thanks, @sc0ttkclark!
+
+= 2.4 =
+* Added filters to modify connection details. See the FAQ item "How do I modify the Soap, Proxy, WSDL and connection settings?"
+* Updated to latest Salesforce PHP Toolkit library
 
 = 2.3 & 2.3.1 & 2.3.2 =
 * API
