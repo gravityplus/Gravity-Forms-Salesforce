@@ -847,7 +847,7 @@ For more information on custom fields, %sread this Salesforce.com Help Article%s
     }
 
     //Returns the url of the plugin's root folder
-    protected function get_base_url(){
+    protected static function get_base_url(){
         return plugins_url(null, __FILE__);
     }
 
