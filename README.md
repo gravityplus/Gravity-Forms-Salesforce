@@ -56,7 +56,7 @@ If you have questions, comments, or issues with this plugin, <strong>please leav
 = Web to Lead: My input values are being cut off in Salesforce =
 If you are submitting to a "Multi PickList" field in Salesforce, the values need to be separated with ';' instead of ','. Add a filter to your `functions.php` file:
 
-`
+```php
 add_filter('gf_salesforce_implode_glue', 'change_salesforce_implode_glue');
 
 /**
@@ -78,8 +78,7 @@ function change_salesforce_implode_glue($glue, $field) {
 	// Otherwise, return default.
 	return $glue;
 }
-
-`
+```
 
 
 = Do I need both plugins activated? =
@@ -93,6 +92,23 @@ Your server must support the following:
 * SSL Enabled
 * cURL Enabled
 * OpenSSL Enabled
+
+= My Assignment Rule is not triggered.  How do I fix this? = 
+
+```php
+add_action('gf_salesforce_connection', 'gf_salesforce_set_default_assignement_rule');
+
+function gf_salesforce_set_default_assignement_rule($client) {
+    //  Two Options for Setting Assignment Rule
+    //    1.  Pass in AssignmentRule ID and "false" to use a specific assignment rule.
+    //    2.  Pass in null and true to trigger the DEFAULT AssignementRule
+    $header = new \AssignmentRuleHeader(null, true);
+
+    $client->setAssignmentRuleHeader($header);
+
+    return $client;
+}
+```
 
 = How do I configure the API plugin? =
 
