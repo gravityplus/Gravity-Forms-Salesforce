@@ -1,7 +1,7 @@
 === Gravity Forms Salesforce Add-on ===
 Tags: gravity forms, forms, gravity, form, crm, gravity form, salesforce, salesforce plugin, form, forms, gravity, gravity form, gravity forms, secure form, simplemodal contact form, wp contact form, widget, sales force, customer, contact, contacts, address, addresses, address book
 Requires at least: 3.3
-Tested up to: 3.6.1
+Tested up to: 3.7.1
 Stable tag: trunk
 Contributors: katzwebdesign,katzwebservices
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Gravity%20Forms%20Salesforce%20Addon&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
@@ -65,7 +65,7 @@ If you have questions, comments, or issues with this plugin, <strong>please leav
 = Web to Lead: My input values are being cut off in Salesforce =
 If you are submitting to a "Multi PickList" field in Salesforce, the values need to be separated with ';' instead of ','. Add a filter to your `functions.php` file:
 
-`
+```
 add_filter('gf_salesforce_implode_glue', 'change_salesforce_implode_glue');
 
 /**
@@ -88,7 +88,7 @@ function change_salesforce_implode_glue($glue, $field) {
 	return $glue;
 }
 
-`
+```
 
 = How do I modify the Soap, Proxy, WSDL and connection settings? =
 
@@ -125,7 +125,7 @@ This feature support was added in version 1.1.1. `gf_salesforce_lead_source` is 
 
 Add the following to your theme's `functions.php` file. Modify as you see fit:
 
-`
+```
 add_filter('gf_salesforce_lead_source', 'make_my_own_lead_source', 1, 3);
 
 function make_my_own_lead_source($lead_source, $form_meta, $data) {
@@ -135,7 +135,24 @@ function make_my_own_lead_source($lead_source, $form_meta, $data) {
 
     return $lead_source; // Return something else if you want to.
 }
-`
+```
+
+= My Assignment Rule is not triggered.  How do I fix this? = 
+
+```php
+add_action('gf_salesforce_connection', 'gf_salesforce_set_default_assignement_rule');
+
+function gf_salesforce_set_default_assignement_rule($client) {
+    //  Two Options for Setting Assignment Rule
+    //    1.  Pass in AssignmentRule ID and "false" to use a specific assignment rule.
+    //    2.  Pass in null and true to trigger the DEFAULT AssignementRule
+    $header = new \AssignmentRuleHeader(null, true);
+
+    $client->setAssignmentRuleHeader($header);
+
+    return $client;
+}
+```
 
 = Can I use Salesforce Custom Fields? (Web to Lead) =
 

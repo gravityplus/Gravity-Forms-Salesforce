@@ -852,7 +852,7 @@ For more information on custom fields, %sread this Salesforce.com Help Article%s
     }
 
     //Returns the physical path of the plugin's root folder
-    protected function get_base_path(){
+    protected static function get_base_path(){
         $folder = basename(dirname(__FILE__));
         return WP_PLUGIN_DIR . "/" . $folder;
     }
