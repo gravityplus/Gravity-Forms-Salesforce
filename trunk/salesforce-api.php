@@ -635,10 +635,10 @@ EOD;
         if($api === false || is_string($api) || !empty($api->lastError)) {
             return false;
         }
-        elseif ( !is_a($api, 'SforcePartnerClient') && !is_a($api, 'SforceEnterpriseClient')) {
+        elseif(!is_a($api, 'SforcePartnerClient') && !is_a($api, 'SforceEnterpriseClient')) {
             return false;
         }
-        elseif( !method_exists($api, 'getLastResponseHeaders') || !preg_match('/200\sOK/ism', $api->getLastResponseHeaders())) {
+        elseif(!method_exists($api, 'getLastResponseHeaders') || !preg_match('/200\sOK/ism', $api->getLastResponseHeaders())) {
             return false;
         }
         return true;
@@ -673,14 +673,15 @@ EOD;
                 if(!class_exists("SforceEnterpriseClient")) {
                     require_once $libpath.'SforceEnterpriseClient.php';
                 }
+                
+                $mySforceConnection = new SforceEnterpriseClient();
             }
             else {
                 if(!class_exists("SforcePartnerClient")) {
                     require_once $libpath.'SforcePartnerClient.php';
                 }
-            }
-            if (!class_exists("SforceEnterpriseClient")) {
-                require_once $libpath.'SforceEnterpriseClient.php';
+                
+                $mySforceConnection = new SforcePartnerClient();
             }
 
             /**
