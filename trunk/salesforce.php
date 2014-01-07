@@ -1,13 +1,14 @@
 <?php
 /*
-Plugin Name: Gravity Forms Salesforce Web to Lead Add-On
-Description: Integrate <a href="http://formplugin.com?r=salesforce">Gravity Forms</a> with Salesforce - form submissions are automatically sent to your Salesforce account!
-Version: 2.4.1
+Plugin Name: Gravity Forms Salesforce - Web to Lead (**OLD VERSION**)
+Description: This version is provided for backward compatibility only. Please use the new plugin, named "Gravity Forms Salesforce - Web-to-Lead Add-On". This version will be removed in the future.
+Version: 2.5
+Requires at least: 3.3
 Author: Katz Web Services, Inc.
 Author URI: http://www.katzwebservices.com
 
 ------------------------------------------------------------------------
-Copyright 2013 Katz Web Services, Inc.
+Copyright 2014 Katz Web Services, Inc.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -33,7 +34,7 @@ class GFSalesforceWebToLead {
     private static $path = "gravity-forms-salesforce/salesforce.php";
     private static $url = "http://www.gravityforms.com";
     private static $slug = "gravity-forms-salesforce";
-    private static $version = "2.4.1";
+    private static $version = "2.5";
     private static $min_gravityforms_version = "1.3.9";
 
     //Plugin starting point. Will load appropriate files
@@ -51,6 +52,11 @@ class GFSalesforceWebToLead {
 
         if(!self::is_gravityforms_supported()){
            return;
+        }
+
+        // The newer add-on is being used.
+        if(class_exists('KWSGFWebToLeadAddon')) {
+            add_action("admin_notices", array('GFSalesforceWebToLead', 'newer_version_installed'), 10);
         }
 
         if(is_admin()){
@@ -90,11 +96,17 @@ class GFSalesforceWebToLead {
         add_filter("gform_confirmation", array('GFSalesforceWebToLead', 'confirmation_error'));
     }
 
+    function newer_version_installed() {
+        $message = __('<h3>You are running two versions of the Gravity Forms Salesforce Web-to-Lead Add-on at the same time.</h3><p>Please convert your existing form settings into Feeds then disable the old version of the plugin (look for "**OLD VERSION**" in the plugin name).</p><h4>To convert your old Salesforce form settings:</h4><ol class="ol-decimal"><li>Go to <a href="'.admin_url('admin.php?page=gf_edit_forms').'">Forms</a></li><li>Click on the name of the form you want to link with Salesforce</li><li>Hover over "Form Settings" and click on the "Salesforce: Web to Lead" link</li><li>Follow the instructions to create a Feed.</li></ol><p>Once you do this, <strong>disable the old version of the plugin on the Plugins page</strong> and you will no longer see this message.</p>', 'gravity-forms-salesforce');
+        echo '<style>.ol-decimal li {list-style: decimal outside; }</style><div id="message" class="updated"><p>'.$message.'</p></div>';
+    }
+
     public static function is_gravity_forms_installed($asd = '', $echo = true) {
         global $pagenow, $page, $showed_is_gravity_forms_installed; $message = '';
 
         $installed = 0;
         $name = self::$name;
+
         if(!class_exists('RGForms')) {
             if(file_exists(WP_PLUGIN_DIR.'/gravityforms/gravityforms.php')) {
                 $installed = 1;
@@ -225,13 +237,9 @@ EOD;
 
         $('#gform_settings_tab_2 .gforms_form_settings, #gform_tab_container_1').append("<li><input type='checkbox' id='gform_enable_salesforce' /> <label for='gform_enable_salesforce' id='gform_enable_salesforce_label'><?php _e("Enable Salesforce integration", "gravity-forms-salesforce") ?> <?php echo $tooltip; ?></label></li>");
 
-        if($().prop) {
-            $("#gform_enable_salesforce").prop("checked", form.enableSalesforce ? true : false);
-        } else {
-            $("#gform_enable_salesforce").attr("checked", form.enableSalesforce ? true : false);
-        }
+        $("#gform_enable_salesforce").prop("checked", form.enableSalesforce ? true : false);
 
-        $("#gform_enable_salesforce").live('click change load ready', function(e) {
+        $(document).on('click change load ready', "#gform_enable_salesforce", function(e) {
 
             var checked = $(this).is(":checked")
 
@@ -245,29 +253,14 @@ EOD;
 
         }).trigger('ready');
 
-        if($.qtip || $.fn.qtip) {
-            $('.tooltip_form_salesforce').qtip({
-                 content: $('.tooltip_form_salesforce').attr('tooltip'), // Use the tooltip attribute of the element for the content
-                 show: { delay: 200, solo: true },
-                 hide: { when: 'mouseout', fixed: true, delay: 200, effect: 'fade' },
-                 style: 'gformsstyle', // custom tooltip style
-                 position: {
-                    corner: {
-                        target: 'topRight'
-                        ,tooltip: 'bottomLeft'
-                    }
-                 }
-            });
-        } else {
-            // This is necessary because we're dynamically adding the tooltip via JS
-            jQuery( ".tooltip_form_salesforce" ).tooltip({
-                show: 500,
-                hide: 1000,
-                content: function () {
-                    return jQuery(this).prop('title');
-                }
-            });
-        }
+        // This is necessary because we're dynamically adding the tooltip via JS
+        jQuery( ".tooltip_form_salesforce" ).tooltip({
+            show: 500,
+            hide: 1000,
+            content: function () {
+                return jQuery(this).prop('title');
+            }
+        });
 
     });
 </script><?php
@@ -288,7 +281,7 @@ EOD;
         // Adding submenu if user has access
         $permission = self::has_access("gravityforms_salesforce");
         if(!empty($permission))
-            $menus[] = array("name" => "gf_salesforce_webtolead", "label" => __("<span style='line-height:1.1; white-space:nowrap;'>Salesforce Web to Lead</span>", "gravityformssalesforce"), "callback" =>  array("GFSalesforceWebToLead", "salesforce_page"), "permission" => $permission);
+            $menus[] = array("name" => "gf_salesforce_webtolead", "label" => __("Salesforce Web to Lead", "gravityformssalesforce"), "callback" =>  array("GFSalesforceWebToLead", "salesforce_page"), "permission" => $permission);
 
         return $menus;
     }
@@ -323,13 +316,13 @@ EOD;
             $valid = true;
         } elseif($api) {
             $class = "updated";
-            $validimage = '<img src="'.GFCommon::get_base_url().'/images/tick.png"/>';
+            $validimage = '<img src="'.self::get_base_url().'/images/tick.png"/>';
             $valid = true;
         } elseif(!empty($settings)){
             $message = "<p>".__('Invalid Salesforce Organization ID.', "gravityformssalesforce")."</p>";
             $class = "error";
             $valid = false;
-            $validimage = '<img src="'.GFCommon::get_base_url().'/images/cross.png"/>';
+            $validimage = '<img src="'.self::get_base_url().'/images/cross.png"/>';
         }
 
         ?>
@@ -447,8 +440,9 @@ For more information on custom fields, %sread this Salesforce.com Help Article%s
 
     public static function send_request($post, $debug = false) {
         global $wp_version;
-        $post['oid']            = get_option("gf_salesforce_oid");
-        $post['debug']          = $debug;
+
+        $post['oid']    = get_option("gf_salesforce_oid");
+        $post['debug']  = $debug;
 
         if(empty($post['oid'])) { return false; }
 
@@ -515,7 +509,7 @@ For more information on custom fields, %sread this Salesforce.com Help Article%s
             'emailOptOut'   => array('label' => 'Opt Out of Emails'),
             'faxOptOut'     => array('label' => 'Opt Out of Faxes'),
             'doNotCall'     => array('label' => 'Do Not Call'),
-            'retURL'        => array('label' => 'Return URL')
+            'retURL'        => array('label' => 'Return URL'),
         );
 
         $data = array();
@@ -650,7 +644,7 @@ For more information on custom fields, %sread this Salesforce.com Help Article%s
 
                     if ( null !== $field_name ) {
                         $data["{$field_name}"] = $value;
-                    }
+                   }
                }
            }
        }

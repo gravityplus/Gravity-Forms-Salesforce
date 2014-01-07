@@ -1,7 +1,7 @@
 === Gravity Forms Salesforce Add-on ===
-Tags: gravity forms, forms, gravity, form, crm, gravity form, salesforce, salesforce plugin, form, forms, gravity, gravity form, gravity forms, secure form, simplemodal contact form, wp contact form, widget, sales force, customer, contact, contacts, address, addresses, address book
+Tags: gravity forms, forms, gravity, form, crm, gravity form, salesforce, salesforce plugin, form, forms, gravity, gravity form, gravity forms, secure form, simplemodal contact form, wp contact form, widget, sales force, customer, contact, contacts, address, addresses, address book, web to lead, web to case, web-to-lead, web-to-case, cases, leads, lead
 Requires at least: 3.3
-Tested up to: 3.7.1
+Tested up to: 3.8
 Stable tag: trunk
 Contributors: katzwebdesign,katzwebservices
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Gravity%20Forms%20Salesforce%20Addon&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
@@ -18,7 +18,7 @@ Add one setting, check a box when configuring your forms, and all your form entr
 
 ###Gravity Forms + Salesforce = A Powerful Combination
 
-This free Salesforce Add-On for Gravity Forms adds contacts into Salesforce automatically, making customer relationship management simple. The setup process takes less than three minutes, and your contact form will be linked with Salesforce.
+This free Salesforce Add-On for Gravity Forms adds contacts into Salesforce automatically, making customer relationship management simple. The setup process takes a few minutes, and your contact form will be linked with Salesforce.
 
 #### Now with Custom Field support! ####
 <a href="http://wordpress.org/extend/plugins/gravity-forms-salesforce/faq/">Read the FAQ</a> for information on how to integrate with Custom Fields.
@@ -30,11 +30,14 @@ If you have the following Salesforce Editions, you can use the included API Add-
 * Unlimited Edition
 * Developer Edition
 
-If you use the following Editions, you will use the included Web to Lead Add-on:
+If you use the following Editions, you will use the included Web-to-Lead Add-on:
 
 - Personal Edition
 - Group Edition
 - Professional Edition<br />*Note: You can also purchase API access for a Professional Edition.*
+
+### Web to Case
+When using the Web-to-Lead Add-on, you can choose to have form entries sent to Salesforce as Cases (like when using the Web-to-Case form) instead of as Leads.
 
 #### Other Gravity Forms Add-ons:
 
@@ -50,20 +53,59 @@ If you have questions, comments, or issues with this plugin, <strong>please leav
 1. Configure Salesforce field mapping. Set up custom objects.
 1. Integrate with more than one form.
 3. Salesforce.com settings page
+4. Web-To-Lead: View of Form Feeds. You can have multiple feeds for each form.
+5. Web-To-Lead: View of the Web-To-Lead Settings screen.
+6. Web-To-Lead: You can easily configure the field mapping for export to Salesforce using Feeds.
+7. Web-To-Lead: The plugin integrates with the [Gravity Forms Logging Tool](http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool) to log all activity and/or errors.
+8. Web-To-Lead: Specify custom fields and use the Salesforce API ID to send additional data to Salesforce.
 
 == Installation ==
 
 1. Upload plugin files to your plugins folder, or install using WordPress' built-in Add New Plugin installer
 1. Activate the plugin
-1. Go to the plugin settings page (under Forms > Salesforce)
+1. Go to the plugin settings page (under Forms > Settings > Salesforce)
 1. Enter the information requested by the plugin.
 1. Click Save Settings.
 1. If the settings are correct, it will say so.
 1. Follow on-screen instructions for integrating with Salesforce.
 
+__If you are using the Web-To-Lead Add-on__ you must have Web-To-Lead enabled. [Read how to enable Web-to-Lead on Salesforce.com](https://help.salesforce.com/apex/HTViewHelpDoc?id=setting_up_web-to-lead.htm).
+
 == Frequently Asked Questions ==
 
-= Web to Lead: My input values are being cut off in Salesforce =
+= Web-to-Lead: I'm not seeing any errors, but the entry didn't get added to Salesforce! =
+Please check the box "Enable Salesforce debugging emails" in the Web-to-Lead settings page. Salesforce will send you an email with a reason the lead or case wasn't added.
+
+= Web-to-Lead: How do I convert my existing form configuration to Feeds? =
+See "Web-to-Lead: How do I create a Feed" below.
+
+= Web-to-Lead: How do I create a Feed? =
+
+__To create a feed:__
+
+1. Go to "Forms" in your admin
+1. Click on the name of the form you want to link with Salesforce
+1. Hover over "Form Settings" and click on the "Salesforce: Web-to-Lead" link
+1. Follow the instructions to create a Feed.
+
+= Web-to-Lead: How do I modify the debug email address? =
+The Salesforce debugging emails are sent to the website administrator by default. To modify this, add a filter to `gf_salesforce_salesforce_debug_email_address` that returns an email address.
+
+= Web-to-Lead: How do I add an entry to a Campaign? =
+To associate a Web-to-Lead with a Campaign, you must also set the "Member Status". [Read the Salesforce help article](http://help.salesforce.com/apex/HTViewSolution?id=000006417)
+
+* Add two fields to your form:
+	1. "Campaign ID" - The "Campaign ID" form field will be a hidden field. Add a hidden field, click the "Advanced" tab, and add the ID of the Campaign you want to add the entry to (it will look something like `902A0000000aBC1`). *For Advanced Users: Alternately, you can make this form a Radio Button field with different Campaign IDs values for different options.*
+	2. "Member Status" - Your campaign has different statuses for campaign members, such as "Sent" and "Responded". You can either create a hidden field with a pre-determined value, or a Radio Button field with different status options. The values should match up with your Salesforce Campaign Status options.
+* Save the form
+* Go to Form Settings > Salesforce: Web-to-Lead
+* Create a Feed or edit an existing Feed (see "Web-to-Lead: How do I create a Feed?" above for more information)
+* Find the "Campaign ID" row and select the Campaign ID field you just created
+* Find the "Member Status" row and select the Status field you just created
+* Save/Update the Feed.
+* There you go!
+
+= Web-to-Lead: My input values are being cut off in Salesforce =
 If you are submitting to a "Multi PickList" field in Salesforce, the values need to be separated with ';' instead of ','. Add a filter to your `functions.php` file:
 
 `
@@ -101,7 +143,7 @@ function change_salesforce_implode_glue($glue, $field) {
 See the FAQ item above for an example of using a filter.
 
 = Do I need both plugins activated? =
-No, you only need one, and the __API plugin is recommended__: the Web to Lead plugin is no longer being actively developed. __If you are using Web to Lead, you don't need the API plugin activated. If you are using the API plugin, you don't need the Web to Lead activated.__
+No, you only need one, and the __API plugin is recommended__: the Web-to-Lead plugin is no longer being actively developed. __If you are using Web-to-Lead, you don't need the API plugin activated. If you are using the API plugin, you don't need the Web-to-Lead activated.__
 
 = What are the server requirements? =
 Your server must support the following:
@@ -121,7 +163,7 @@ Your server must support the following:
 3. Come back to this settings page and enter your Security Token, Salesforce.com Username and Password.
 4. Save the settings, and you should be done!
 
-= How do I set a custom Lead Source? (Web to Lead) =
+= How do I set a custom Lead Source? (Web-to-Lead) =
 This feature support was added in version 1.1.1. `gf_salesforce_lead_source` is the filter.
 
 Add the following to your theme's `functions.php` file. Modify as you see fit:
@@ -138,7 +180,7 @@ function make_my_own_lead_source($lead_source, $form_meta, $data) {
 }
 `
 
-= My Assignment Rule is not triggered.  How do I fix this? = 
+= My Assignment Rule is not triggered.  How do I fix this? =
 
 `
 add_action('gf_salesforce_connection', 'gf_salesforce_set_default_assignement_rule');
@@ -155,7 +197,7 @@ function gf_salesforce_set_default_assignement_rule($client) {
 }
 `
 
-= Can I use Salesforce Custom Fields? (Web to Lead) =
+= Can I use Salesforce Custom Fields? (Web-to-Lead) =
 
 You can. When you are trying to map a custom field, you need to set either the "Admin Label" for the input (in the Advanced tab of each field in the  Gravity Forms form editor) or the Parameter Name (in Advanced tab, visible after checking "Allow field to be populated dynamically") to be the API Name of the Custom Field as shown in Salesforce. For example, a Custom Field with a Field Label "Web Source" could have an API Name of `SFGA__Web_Source__c`.
 
@@ -165,6 +207,11 @@ You can find your Custom Fields under [Your Name] &rarr; Setup &rarr; Leads &rar
 This plugin is released under a GPL license.
 
 == Changelog ==
+
+= 2.5 on January 7, 2014 =
+* Web-to-Lead: Completely re-wrote the add-on to provide full Feed capability. See the FAQ to learn how to set up the new feeds: "Web-to-Lead: How do I convert my existing form configuration to Feeds?" (Requires Gravity Forms 1.7+)
+* Web-to-Lead: Added integration with the <a href="http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool">Gravity Forms Logging Tool</a>
+* Web-to-Lead: Added option for Salesforce debugging emails, which are very helpful!
 
 = 2.4.1 =
 * Added more filters: `gf_salesforce_mapped_field_name`, `gf_salesforce_mapped_value`, `gf_salesforce_mapped_value_{$field_name}`. Thanks, @sc0ttkclark!
@@ -271,6 +318,11 @@ This plugin is released under a GPL license.
 * Launch!
 
 == Upgrade Notice ==
+
+= 2.5 on January 7, 2014 =
+* Web-to-Lead: Completely re-wrote the add-on to provide full Feed capability. See the FAQ to learn how to set up the new feeds: "Web-to-Lead: How do I convert my existing form configuration to Feeds?" (Requires Gravity Forms 1.7+)
+* Web-to-Lead: Added integration with the <a href="http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool">Gravity Forms Logging Tool</a>
+* Web-to-Lead: Added option for Salesforce debugging emails, which are very helpful!
 
 = 2.4.1 =
 * Added more filters: `gf_salesforce_mapped_field_name`, `gf_salesforce_mapped_value`, `gf_salesforce_mapped_value_{$field_name}`. Thanks, @sc0ttkclark!
