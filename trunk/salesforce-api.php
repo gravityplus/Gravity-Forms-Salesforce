@@ -635,10 +635,13 @@ EOD;
         if($api === false || is_string($api) || !empty($api->lastError)) {
             return false;
         }
-        if(is_a($api, 'SforcePartnerClient') && method_exists($api, 'getLastResponseHeaders') && preg_match('/200\sOK/ism', $api->getLastResponseHeaders())) {
-            return true;
+        elseif(!is_a($api, 'SforcePartnerClient') && !is_a($api, 'SforceEnterpriseClient')) {
+            return false;
         }
-        return false;
+        elseif(!method_exists($api, 'getLastResponseHeaders') || !preg_match('/200\sOK/ism', $api->getLastResponseHeaders())) {
+            return false;
+        }
+        return true;
     }
 
     public static function get_api($settings = array()){
@@ -662,13 +665,24 @@ EOD;
 
         $libpath = plugin_dir_path(__FILE__).'Force.com-Toolkit-for-PHP/soapclient/';
 
-        if(!class_exists("SforcePartnerClient")) {
-            require_once $libpath.'SforcePartnerClient.php';
-        }
+        $enterprise = apply_filters('gf_salesforce_enterprise', false, $settings);
 
         try {
             //This is instantiating the service used for the sfdc api
-            $mySforceConnection = new SforcePartnerClient();
+            if($enterprise) {
+                if(!class_exists("SforceEnterpriseClient")) {
+                    require_once $libpath.'SforceEnterpriseClient.php';
+                }
+                
+                $mySforceConnection = new SforceEnterpriseClient();
+            }
+            else {
+                if(!class_exists("SforcePartnerClient")) {
+                    require_once $libpath.'SforcePartnerClient.php';
+                }
+                
+                $mySforceConnection = new SforcePartnerClient();
+            }
 
             /**
             * Create a connection using SforceBaseClient::createConnection().
