@@ -154,6 +154,11 @@ Your server must support the following:
 * cURL Enabled
 * OpenSSL Enabled
 
+= I have Salesforce Enterprise Edition, not Partner Edition = 
+Add the following to the bottom of your theme's `functions.php` file, before `?>`, if it exists:
+
+`add_filter('gf_salesforce_enterprise', '__return_true');`
+
 = How do I configure the API plugin? =
 
 ### How to set up integration:
@@ -208,10 +213,11 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
-= 2.5 on January 7, 2014 =
+= 2.5 & 2.5.1 on January 7, 2014 =
 * Web-to-Lead: Completely re-wrote the add-on to provide full Feed capability. See the FAQ to learn how to set up the new feeds: "Web-to-Lead: How do I convert my existing form configuration to Feeds?" (Requires Gravity Forms 1.7+)
 * Web-to-Lead: Added integration with the <a href="http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool">Gravity Forms Logging Tool</a>
 * Web-to-Lead: Added option for Salesforce debugging emails, which are very helpful!
+* API: Added a filter `gf_salesforce_enterprise` to use the Enterprise Client instead of the Partner client. Thanks, [@sc0ttkclark](https://github.com/sc0ttkclark)
 
 = 2.4.1 =
 * Added more filters: `gf_salesforce_mapped_field_name`, `gf_salesforce_mapped_value`, `gf_salesforce_mapped_value_{$field_name}`. Thanks, @sc0ttkclark!
@@ -319,10 +325,11 @@ This plugin is released under a GPL license.
 
 == Upgrade Notice ==
 
-= 2.5 on January 7, 2014 =
+= 2.5 & 2.5.1 on January 7, 2014 =
 * Web-to-Lead: Completely re-wrote the add-on to provide full Feed capability. See the FAQ to learn how to set up the new feeds: "Web-to-Lead: How do I convert my existing form configuration to Feeds?" (Requires Gravity Forms 1.7+)
 * Web-to-Lead: Added integration with the <a href="http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool">Gravity Forms Logging Tool</a>
 * Web-to-Lead: Added option for Salesforce debugging emails, which are very helpful!
+* API: Added a filter `gf_salesforce_enterprise` to use the Enterprise Client instead of the Partner client. Thanks, [@sc0ttkclark](https://github.com/sc0ttkclark)
 
 = 2.4.1 =
 * Added more filters: `gf_salesforce_mapped_field_name`, `gf_salesforce_mapped_value`, `gf_salesforce_mapped_value_{$field_name}`. Thanks, @sc0ttkclark!
