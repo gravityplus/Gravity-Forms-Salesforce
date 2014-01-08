@@ -101,7 +101,10 @@ class GFSalesforce {
 
             //enqueueing sack for AJAX requests
             wp_enqueue_script(array("sack"));
-
+            
+			// since 2.5.2
+			add_action( 'admin_enqueue_scripts', array( 'GFSalesforce', 'add_custom_script') );
+			
             //loading data lib
             require_once(self::get_base_path() . "/data.php");
 
@@ -119,6 +122,8 @@ class GFSalesforce {
 
             add_action('wp_ajax_rg_update_feed_active', array('GFSalesforce', 'update_feed_active'));
             add_action('wp_ajax_gf_select_salesforce_form', array('GFSalesforce', 'select_salesforce_form'));
+            //since 2.5.2
+			add_action( 'wp_ajax_get_options_as_fields', array( 'GFSalesforce', 'get_options_as_fields') );
 
         }
         else{
@@ -631,18 +636,16 @@ EOD;
         <?php
     }
 
-    static private function api_is_valid($api) {
-        if($api === false || is_string($api) || !empty($api->lastError)) {
-            return false;
-        }
-        elseif(!is_a($api, 'SforcePartnerClient') && !is_a($api, 'SforceEnterpriseClient')) {
-            return false;
-        }
-        elseif(!method_exists($api, 'getLastResponseHeaders') || !preg_match('/200\sOK/ism', $api->getLastResponseHeaders())) {
-            return false;
-        }
-        return true;
-    }
+	static private function api_is_valid($api) {
+		if($api === false || is_string($api) || !empty($api->lastError)) {
+			return false;
+		} elseif( !is_a($api, 'SforcePartnerClient') && !is_a($api, 'SforceEnterpriseClient')) {
+			return false;
+		} elseif(!method_exists($api, 'getLastResponseHeaders') || !preg_match('/200\sOK/ism', $api->getLastResponseHeaders())) {
+			return false;
+		}
+		return true;
+	}
 
     public static function get_api($settings = array()){
 
@@ -665,25 +668,26 @@ EOD;
 
         $libpath = plugin_dir_path(__FILE__).'Force.com-Toolkit-for-PHP/soapclient/';
 
-        $enterprise = apply_filters('gf_salesforce_enterprise', false, $settings);
+		$enterprise = apply_filters('gf_salesforce_enterprise', false, $settings);
 
         try {
             //This is instantiating the service used for the sfdc api
-            if($enterprise) {
-                if(!class_exists("SforceEnterpriseClient")) {
-                    require_once $libpath.'SforceEnterpriseClient.php';
-                }
-
-                $mySforceConnection = new SforceEnterpriseClient();
-            }
-            else {
-                if(!class_exists("SforcePartnerClient")) {
-                    require_once $libpath.'SforcePartnerClient.php';
-                }
-
-                $mySforceConnection = new SforcePartnerClient();
-            }
-
+			if($enterprise) {
+				if(!class_exists("SforceEnterpriseClient")) {
+					require_once $libpath.'SforceEnterpriseClient.php';
+				}
+			
+				$mySforceConnection = new SforceEnterpriseClient();
+			}
+			else {
+				if(!class_exists("SforcePartnerClient")) {
+					require_once $libpath.'SforcePartnerClient.php';
+				}
+				
+				$mySforceConnection = new SforcePartnerClient();
+			}
+			
+			
             /**
             * Create a connection using SforceBaseClient::createConnection().
             *
@@ -917,6 +921,7 @@ EOD;
             $config["meta"]["optin_field_id"] = $config["meta"]["optin_enabled"] ? isset($_POST["salesforce_optin_field_id"]) ? $_POST["salesforce_optin_field_id"] : '' : "";
             $config["meta"]["optin_operator"] = $config["meta"]["optin_enabled"] ? isset($_POST["salesforce_optin_operator"]) ? $_POST["salesforce_optin_operator"] : '' : "";
             $config["meta"]["optin_value"] = $config["meta"]["optin_enabled"] ? $_POST["salesforce_optin_value"] : "";
+			$config["meta"]["primary_field"] = !empty( $_POST['salesforce_primary_field'] ) ? $_POST['salesforce_primary_field'] : ''; // since 2.5.2
 
             if($is_valid){
                 $id = GFSalesforceData::update_feed($id, $config["form_id"], $config["is_active"], $config["meta"]);
@@ -1064,7 +1069,7 @@ EOD;
                             </tr>
                         </table>
                     </div>
-
+                    
                     <script type="text/javascript">
                         <?php
                         if(!empty($config["form_id"])){
@@ -1083,6 +1088,23 @@ EOD;
                         ?>
                     </script>
                 </div>
+                
+				<?php /** define the field to be used as primary key when exporting entry to salesforce, thus avoiding duplicate entries (since 2.5.2) */ ?>
+				<?php if( !empty( $config['meta']['contact_object_name'] ) ) :
+					$current_primary_field = !empty( $config['meta']['primary_field'] ) ? $config['meta']['primary_field'] : ''; ?>
+					<div class="margin_vertical_10">
+						<table>
+							<tr valign="top">
+								<td scope="row"><label for="salesforce_primary_field"><?php esc_html_e( 'Define Salesforce field to be used as primary key', 'gravity-forms-salesforce' ); ?></label></td>
+								<td>
+									<select id="salesforce_primary_field" name="salesforce_primary_field">
+										<?php echo self::render_options_as_fields( $config['meta']['contact_object_name'], $current_primary_field ); ?>
+									</select>
+								</td>
+							</tr>
+						</table>
+					</div>
+				<?php endif; ?>
 
                 <div id="salesforce_submit_container" class="margin_vertical_10">
                     <input type="submit" name="gf_salesforce_submit" value="<?php echo empty($id) ? __("Save Feed", "gravity-forms-salesforce") : __("Update Feed", "gravity-forms-salesforce"); ?>" class="button-primary"/>
@@ -1265,12 +1287,90 @@ jQuery(document).ready(function() {
                 }
                 return str;
             }
-
+			
         </script>
 
         <?php
 
     }
+	
+	
+	/**
+	 * Render html select options where values are the fields of a specific salesforce object
+	 * 
+	 * @access public
+	 * @static
+	 * @param mixed $form_id
+	 * since 2.5.2
+	 *
+	 * @param string $current (default: '')
+	 * @return string html
+	 */
+	public static function render_options_as_fields( $object, $current = '' ) {
+		if( empty( $object ) ) {
+			return '';
+		}
+		$fields = self::getFields( $object );
+		
+		$output = '<option value="" '. selected( $current, '', false ) .'>'. esc_html__( 'None', 'gravity-forms-salesforce' ) .'</option>';
+		if( !empty( $fields ) ) {
+			foreach( $fields as $field ) {
+				$output .= '<option value="'. esc_attr( $field['tag'] ) .'" '. selected( $current , $field['tag'], false ) .'>'.esc_html( $field['name'] ) .'</option>';
+			}
+		}
+		
+		return $output;
+		
+	}
+	
+	
+	/**
+	 * Ajax support function. Retrieve html for select options for a specific Salesforce object
+	 * 
+	 * @access public
+	 * @static
+	 * @return string html
+	 * since 2.5.2
+	 */
+	public static function get_options_as_fields() {
+		
+		$response = false;
+		
+		if( empty( $_POST['sf_object'] ) || ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gf_salesforce_edit_feed' ) ) {
+			echo $response;
+			die();
+		}
+		
+		$response = self::render_options_as_fields( $_POST['sf_object'] );
+		
+		echo $response;
+		die();
+	}
+	
+	
+	/**
+	 * Enqueue custom scripts at salesforce settings page.
+	 * 
+	 * @access public
+	 * @static
+	 * @param mixed $hook
+	 * @return void
+	 * since 2.5.2
+	 */
+	public static function add_custom_script( $hook ) {
+
+		if( !in_array( $hook , array( 'forms_page_gf_salesforce' ) ) ) {
+			return;
+		}
+
+		wp_register_script( 'gf_salesforce_edit_feed', plugin_dir_url( __FILE__ ) . 'includes/edit-feed.js', array( 'jquery' ) );
+		
+		wp_enqueue_script( 'gf_salesforce_edit_feed');
+		
+		wp_localize_script('gf_salesforce_edit_feed', 'ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'gf_salesforce_edit_feed' ) ) );
+		
+	}
+	
 
     public static function add_permissions(){
         global $wp_roles;
@@ -1349,7 +1449,7 @@ jQuery(document).ready(function() {
 
         //getting list of all fields for the selected form
         $form_fields = self::get_form_fields($form_id);
-
+        
         $str = "<table cellpadding='0' cellspacing='0'><thead><tr><th scope='col' class='salesforce_col_heading'>" . __("List Fields", "gravity-forms-salesforce") . "</th><th scope='col' class='salesforce_col_heading'>" . __("Form Fields", "gravity-forms-salesforce") . "</th></tr></thead><tbody>";
 
         foreach((array)$merge_vars as $var){
@@ -1583,16 +1683,23 @@ jQuery(document).ready(function() {
         $account->type = $feed['meta']['contact_object_name'];
 
         try {
-            $result = $api->create(array($account));
+        	// since 2.5.2, to avoid duplicates at salesforce
+			if( !empty( $feed['meta']['primary_field'] ) ) {
+				$result = $api->upsert( $feed['meta']['primary_field'] , array($account) );
+			} else {
+				$result = $api->create( array($account) );
+			}
             $api_exception = '';
         } catch (Exception $e) {
-            $api_exception = "
-                Message: "  . $e->getMessage() .
-                "\nFaultstring: " . $e->faultstring .
-                "\nFile: " . $e->getFile() .
-                "\nLine: " . $e->getLine() .
-                "\nArgs: ". serialize($merge_vars) .
-                "\nTrace: " . serialize($e->getTrace());
+
+	            $api_exception = "
+	                Message: "  . $e->getMessage() .
+	                "\nFaultstring: " . $e->faultstring .
+	                "\nFile: " . $e->getFile() .
+	                "\nLine: " . $e->getLine() .
+	                "\nArgs: ". serialize($merge_vars) .
+	                "\nTrace: " . serialize($e->getTrace());
+/* 	        } */
         }
 
         $debug = '';
@@ -1749,4 +1856,3 @@ jQuery(document).ready(function() {
 
 
 }
-
