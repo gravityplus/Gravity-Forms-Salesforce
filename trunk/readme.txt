@@ -211,7 +211,13 @@ You can find your Custom Fields under [Your Name] &rarr; Setup &rarr; Leads &rar
 = What's the license for this plugin? =
 This plugin is released under a GPL license.
 
+= How'd you rock OAuth so hard? = 
+That'd be thanks to the [PHPoAuthLib](https://github.com/Lusitanian/PHPoAuthLib) library. Thanks!
+
 == Changelog ==
+
+= 2.6 = 
+* Converted plugin to using OAuth
 
 = 2.5.2 =
 * Added "Upsert" functionality - if an object (Lead or Contact for example) already exists in Salesforce, update it rather than creating another object. Configure this setting at the bottom of existing Feeds.
