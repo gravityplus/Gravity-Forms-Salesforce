@@ -1272,22 +1272,26 @@ EOD;
                 <?php /** define the field to be used as primary key when exporting entry to salesforce, thus avoiding duplicate entries (since 2.5.2) */ ?>
                 <?php if( !empty( $config['meta']['contact_object_name'] ) ) :
                     $current_primary_field = !empty( $config['meta']['primary_field'] ) ? $config['meta']['primary_field'] : ''; ?>
-                    <div class="margin_vertical_10">
+                    <div id="salesforce_optin_container" class="margin_vertical_10">
+                        <h2><?php _e('4. Choose a "Primary Key" field.', "gravity-forms-salesforce"); ?></h2>
+                        <h3 class="description"><?php _e('What field should be used to update existing objects?', "gravity-forms-salesforce"); ?></h3>
+                        <label for="salesforce_primary_field" class="left_header"><?php esc_html_e( 'Update Field', 'gravity-forms-salesforce' ); ?></label>
                         <table>
                             <tr valign="top">
-                                <td scope="row"><label for="salesforce_primary_field"><?php esc_html_e( 'Define Salesforce field to be used as primary key', 'gravity-forms-salesforce' ); ?></label></td>
+                                <td scope="row"></td>
                                 <td>
                                     <select id="salesforce_primary_field" name="salesforce_primary_field">
                                         <?php echo self::render_options_as_fields( $config['meta']['contact_object_name'], $current_primary_field ); ?>
                                     </select>
+                                    <span class="howto"><?php _e('If you want to update a pre-existing object, define what should be used as an unique identifier ("Primary Key"). For example, this may be an email address, Lead ID, or address.', 'gravity-forms-salesforce'); ?></span>
                                 </td>
                             </tr>
                         </table>
                     </div>
                 <?php endif; ?>
 
-                <div id="salesforce_submit_container" class="margin_vertical_10">
-                    <input type="submit" name="gf_salesforce_submit" value="<?php echo empty($id) ? __("Save Feed", "gravity-forms-salesforce") : __("Update Feed", "gravity-forms-salesforce"); ?>" class="button-primary"/>
+                <div class="button-controls submit">
+                    <input type="submit" name="gf_salesforce_submit" value="<?php echo empty($id) ? __("Save Feed", "gravity-forms-salesforce") : __("Update Feed", "gravity-forms-salesforce"); ?>" class="button button-primary button-hero"/>
                 </div>
             </div>
         </form>
