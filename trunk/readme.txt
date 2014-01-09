@@ -154,7 +154,7 @@ Your server must support the following:
 * cURL Enabled
 * OpenSSL Enabled
 
-= I have Salesforce Enterprise Edition, not Partner Edition = 
+= I have Salesforce Enterprise Edition, not Partner Edition =
 Add the following to the bottom of your theme's `functions.php` file, before `?>`, if it exists:
 
 `add_filter('gf_salesforce_enterprise', '__return_true');`
@@ -212,6 +212,9 @@ You can find your Custom Fields under [Your Name] &rarr; Setup &rarr; Leads &rar
 This plugin is released under a GPL license.
 
 == Changelog ==
+
+= 2.5.2 =
+* Added "Upsert" functionality - if an object (Lead or Contact for example) already exists in Salesforce, update it rather than creating another object. Configure this setting at the bottom of existing Feeds.
 
 = 2.5 & 2.5.1 on January 7, 2014 =
 * Web-to-Lead: Completely re-wrote the add-on to provide full Feed capability. See the FAQ to learn how to set up the new feeds: "Web-to-Lead: How do I convert my existing form configuration to Feeds?" (Requires Gravity Forms 1.7+)
@@ -324,6 +327,9 @@ This plugin is released under a GPL license.
 * Launch!
 
 == Upgrade Notice ==
+
+= 2.5.2 =
+* Added "Upsert" functionality - if an object (Lead or Contact for example) already exists in Salesforce, update it rather than creating another object. Configure this setting at the bottom of existing Feeds.
 
 = 2.5 & 2.5.1 on January 7, 2014 =
 * Web-to-Lead: Completely re-wrote the add-on to provide full Feed capability. See the FAQ to learn how to set up the new feeds: "Web-to-Lead: How do I convert my existing form configuration to Feeds?" (Requires Gravity Forms 1.7+)
