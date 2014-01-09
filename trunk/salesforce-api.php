@@ -354,7 +354,7 @@ EOD;
             <?php wp_nonce_field("update", "gf_salesforce_update") ?>
             <?php if(!$valid)  { ?>
             <div class="delete-alert alert_gray">
-                <h4><?php _e(sprintf('If you have issues with these steps, please %scontact Salesforce%s by calling (877) 820-7837 in the US or (919) 957-6150.', '<a href="http://www.salesforce.com/contact">', '</a>'), "gravity-forms-salesforce"); ?></h4>
+                <h4><?php _e(sprintf('If you have issues with these steps, please %scontact Salesforce%s by calling 1-800-667-6389 in the US. %sFor international support numbers, check out this page.%s', '<a href="http://www.salesforce.com/contact">', '</a>', '<a href="https://help.salesforce.com/HTViewSolution?id=000001000">', '</a>'), "gravity-forms-salesforce"); ?></h4>
                 <h3><?php _e('How to set up integration:', "gravity-forms-salesforce"); ?></h3>
                 <ol class="ol-decimal" style="margin-top:1em;">
                     <li style="list-style:decimal outside;"><?php echo sprintf(__('If you don\'t have your security token, %sfollow this link to Reset Your Security Token%s', "gravity-forms-salesforce"), '<a href="https://na9.salesforce.com/_ui/system/security/ResetApiTokenEdit" target="_blank">', '</a>', "gravity-forms-salesforce") ?></li>
