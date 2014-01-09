@@ -118,7 +118,7 @@ class GFSalesforce {
             require_once(plugin_dir_path(__FILE__) . "/data.php");
 
             //loading Gravity Forms tooltips
-            require_once(plugin_dir_path(__FILE__) . "/tooltips.php");
+            require_once(GFCommon::get_base_path() . "/tooltips.php");
             add_filter('gform_tooltips', array('GFSalesforce', 'tooltips'));
 
             //runs the setup when version changes
@@ -570,9 +570,9 @@ EOD;
         $api = self::get_api();
         ?>
         <div class="wrap">
-            <img alt="<?php _e("Salesforce.com Feeds", "gravity-forms-salesforce") ?>" src="<?php echo self::get_base_url()?>/images/salesforce-50x50.png" style="float:left; margin:0 7px 0 0;" width="50" height="50" />
+            <img alt="<?php _e("Salesforce.com Feeds", "gravity-forms-salesforce") ?>" src="<?php echo plugins_url('images/salesforce-50x50.png', __FILE__); ?>" style="float:left; margin:0 7px 0 0;" width="50" height="50" />
             <h2><?php _e("Salesforce.com Feeds", "gravity-forms-salesforce"); ?>
-            <a class="button add-new-h2" href="admin.php?page=gf_salesforce&view=edit&id=0"><?php _e("Add New", "gravity-forms-salesforce") ?></a>
+            <a class="button add-new-h2" href="admin.php?page=gf_salesforce&amp;view=edit&amp;id=0"><?php _e("Add New", "gravity-forms-salesforce") ?></a>
             </h2>
 
             <?php
@@ -580,7 +580,7 @@ EOD;
             ?>
             <div class="error" id="message" style="margin-top:20px;">
                 <h3><?php _e('Salesforce Error', "gravity-forms-salesforce");?></h3>
-                <p><?php echo empty($api) ? __(sprintf("To get started, please configure your %sSalesforce Settings%s.", '<a href="admin.php?page=gf_settings&addon=Salesforce">', "</a>"), "gravity-forms-salesforce") : $api; ?></p>
+                <p><?php echo __(sprintf("To get started, please configure your %sSalesforce Settings%s.", '<a href="admin.php?page=gf_settings&addon=Salesforce">', "</a>"), "gravity-forms-salesforce"); ?></p>
             </div>
             <?php
                 } else {
@@ -729,15 +729,15 @@ EOD;
         <?php
     }
 
-    static private function api_is_valid($api) {
-        if($api === false || is_string($api) || !empty($api->lastError)) {
-            return false;
-        } elseif( !is_a($api, 'SforcePartnerClient') && !is_a($api, 'SforceEnterpriseClient')) {
-            return false;
-        } elseif(!method_exists($api, 'getLastResponseHeaders') || !preg_match('/200\sOK/ism', $api->getLastResponseHeaders())) {
-            return false;
-        }
-        return true;
+    /**
+     * Check whether the token is valid
+     * @return boolean      Valid API token
+     */
+    static private function api_is_valid() {
+
+        $token = self::getAccessToken();
+
+        return !empty($token);
     }
 
     public static function get_api($settings = array()){
@@ -1118,7 +1118,7 @@ EOD;
             }
         }
         if(!function_exists('gform_tooltip')) {
-            require_once(plugin_dir_path(__FILE__) . "/tooltips.php");
+            require_once(GFCommon::get_base_path() . "/tooltips.php");
         }
 ?>
         <form method="post" action="<?php echo remove_query_arg('refresh'); ?>">
