@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms Salesforce API Add-On
 Plugin URI: https://katz.co/plugins/gravity-forms-salesforce/
 Description: Integrates <a href="http://formplugin.com?r=salesforce">Gravity Forms</a> with Salesforce allowing form submissions to be automatically sent to your Salesforce account. Requires Salesforce API access. <strong>If you don't have API access</strong>, use the "Gravity Forms Salesforce - Web-to-Lead Add-On" plugin instead.
-Version: 2.5.2.1
+Version: 2.6.0
 Author: Katz Web Services, Inc.
 Author URI: http://www.katzwebservices.com
 
@@ -89,7 +89,7 @@ class GFSalesforce {
 
 			self::refresh_transients();
 			
-			// since 2.5.3 - send entry to Salesforce if updated in the admin
+			// since 2.6.0 - send entry to Salesforce if updated in the admin
 			add_action( 'gform_after_update_entry', array( 'GFSalesforce', 'manual_export' ), 10, 2);
 		}
 
@@ -925,7 +925,7 @@ EOD;
 			$config["meta"]["optin_operator"] = $config["meta"]["optin_enabled"] ? isset($_POST["salesforce_optin_operator"]) ? $_POST["salesforce_optin_operator"] : '' : "";
 			$config["meta"]["optin_value"] = $config["meta"]["optin_enabled"] ? $_POST["salesforce_optin_value"] : "";
 			
-			$config['meta']['manual_export'] = !empty($_POST['salesforce_manual_export']) ? true : false; // since 2.5.3
+			$config['meta']['manual_export'] = !empty($_POST['salesforce_manual_export']) ? true : false; // since 2.6.0
 			$config["meta"]["primary_field"] = !empty( $_POST['salesforce_primary_field'] ) ? $_POST['salesforce_primary_field'] : ''; // since 2.5.2
 
 			if($is_valid){
@@ -1041,7 +1041,7 @@ EOD;
 					<div class="clear"></div>
 				</div>
 				
-				<?php /** Manual Export - Bypass automatic export (since 2.5.3) */ ?>
+				<?php /** Manual Export - Bypass automatic export (since 2.6.0) */ ?>
 				<div id="salesforce_manual_export_container" class="margin_vertical_10">
 					<table class="form-table">
 						<tr valign="top">
@@ -1583,7 +1583,7 @@ jQuery(document).ready(function() {
 
 
 	/**
-	 * Called when entry is manually updated in the admin (since 2.5.3)
+	 * Called when entry is manually updated in the admin (since 2.6.0)
 	 * 
 	 * @access public
 	 * @static
@@ -1616,7 +1616,7 @@ jQuery(document).ready(function() {
 		$feeds = GFSalesforceData::get_feed_by_form( $form["id"], true);
 
 		foreach( $feeds as $feed ) {
-			// If feed has Manual Export disabled, stop manual export - since 2.5.3
+			// If feed has Manual Export disabled, stop manual export - since 2.6.0
 			if( empty( $feed['meta']['manual_export'] ) && apply_filters( 'gf_salesforce_allow_manual_export', true, $feed, $form ) ) {
 				return;
 			}
@@ -1644,7 +1644,7 @@ jQuery(document).ready(function() {
 		$feeds = GFSalesforceData::get_feed_by_form($form["id"], true);
 
 		foreach($feeds as $feed){
-			// If feed has Manual Export enabled, stop export - since 2.5.3
+			// If feed has Manual Export enabled, stop export - since 2.6.0
 			if( !empty( $feed['meta']['manual_export'] ) ) {
 				return;
 			}
