@@ -213,6 +213,9 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 2.5.2.1 =
+* Fixed: Minor PHP static method warning
+
 = 2.5.2 =
 * Added "Upsert" functionality - if an object (Lead or Contact for example) already exists in Salesforce, update it rather than creating another object. Configure this setting at the bottom of existing Feeds.
 
@@ -327,6 +330,9 @@ This plugin is released under a GPL license.
 * Launch!
 
 == Upgrade Notice ==
+
+= 2.5.2.1 =
+* Fixed: Minor PHP static method warning
 
 = 2.5.2 =
 * Added "Upsert" functionality - if an object (Lead or Contact for example) already exists in Salesforce, update it rather than creating another object. Configure this setting at the bottom of existing Feeds.
