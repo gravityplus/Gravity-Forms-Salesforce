@@ -43,12 +43,19 @@ class StreamClient extends AbstractClient
             $extraHeaders['Content-type'] = 'Content-type: application/x-www-form-urlencoded';
         }
 
-        $extraHeaders['Host']       = 'Host: '.$endpoint->getHost();
+        $host = 'Host: '.$endpoint->getHost();
+        // Append port to Host if it has been specified
+        if ($endpoint->hasExplicitPortSpecified()) {
+            $host .= ':'.$endpoint->getPort();
+        }
+
+        $extraHeaders['Host']       = $host;
         $extraHeaders['Connection'] = 'Connection: close';
 
         if (is_array($requestBody)) {
-            $requestBody = http_build_query($requestBody, null, '&');
+            $requestBody = http_build_query($requestBody, '', '&');
         }
+        $extraHeaders['Content-length'] = 'Content-length: '.strlen($requestBody);
 
         $context = $this->generateStreamContext($requestBody, $extraHeaders, $method);
 
@@ -72,7 +79,7 @@ class StreamClient extends AbstractClient
             array(
                 'http' => array(
                     'method'           => $method,
-                    'header'           => array_values($headers),
+                    'header'           => implode("\r\n", array_values($headers)),
                     'content'          => $body,
                     'protocol_version' => '1.1',
                     'user_agent'       => $this->userAgent,

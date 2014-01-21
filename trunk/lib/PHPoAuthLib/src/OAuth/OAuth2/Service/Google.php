@@ -12,6 +12,7 @@ class Google extends AbstractService
      * Defined scopes -- Google has way too many Application Programming Interfaces
      */
     const SCOPE_ADSENSE = 'https://www.googleapis.com/auth/adsense';
+    const SCOPE_ADWORDS = 'https://adwords.google.com/api/adwords/';
     const SCOPE_GAN = 'https://www.googleapis.com/auth/gan'; // google affiliate network...?
     const SCOPE_ANALYTICS = 'https://www.googleapis.com/auth/analytics.readonly';
     const SCOPE_BOOKS = 'https://www.googleapis.com/auth/books';
@@ -22,6 +23,7 @@ class Google extends AbstractService
     const SCOPE_CONTENTFORSHOPPING = 'https://www.googleapis.com/auth/structuredcontent'; // what even is this
     const SCOPE_CHROMEWEBSTORE = 'https://www.googleapis.com/auth/chromewebstore.readonly';
     const SCOPE_DOCUMENTSLIST = 'https://docs.google.com/feeds/';
+    const SCOPE_EMAIL = 'email';
     const SCOPE_GOOGLEDRIVE = 'https://www.googleapis.com/auth/drive';
     const SCOPE_GOOGLEDRIVE_FILES = 'https://www.googleapis.com/auth/drive.file';
     const SCOPE_GMAIL = 'https://mail.google.com/mail/feed/atom';
@@ -33,7 +35,9 @@ class Google extends AbstractService
         // creepy stalker api...
     const SCOPE_MODERATOR = 'https://www.googleapis.com/auth/moderator';
     const SCOPE_NICKNAME_PROVISIONING = 'https://apps-apis.google.com/a/feeds/alias/';
+    const SCOPE_OPENID = 'openid';
     const SCOPE_ORKUT = 'https://www.googleapis.com/auth/orkut'; // evidently orkut still exists. who knew?
+    const SCOPE_PROFILE = 'profile';
     const SCOPE_PICASAWEB = 'https://picasaweb.google.com/data/';
     const SCOPE_SITES = 'https://sites.google.com/feeds/';
     const SCOPE_SPREADSHEETS = 'https://spreadsheets.google.com/feeds/';
@@ -44,6 +48,11 @@ class Google extends AbstractService
     const SCOPE_USER_PROVISIONING = 'https://apps-apis.google.com/a/feeds/user/';
     const SCOPE_WEBMASTERTOOLS = 'https://www.google.com/webmasters/tools/feeds/';
     const SCOPE_YOUTUBE = 'https://gdata.youtube.com';
+
+    const SCOPE_GLASS_TIMELINE = 'https://www.googleapis.com/auth/glass.timeline';
+    const SCOPE_GLASS_LOCATION = 'https://www.googleapis.com/auth/glass.location';
+
+
 
     /**
      * {@inheritdoc}

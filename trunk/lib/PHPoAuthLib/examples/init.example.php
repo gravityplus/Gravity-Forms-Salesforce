@@ -15,6 +15,10 @@
  * @var array A list of all the credentials to be used by the different services in the examples
  */
 $servicesCredentials = array(
+    'bitbucket' => array(
+        'key'       => '',
+        'secret'    => '',
+    ),    
     'bitly' => array(
         'key'       => '',
         'secret'    => '',
@@ -32,6 +36,10 @@ $servicesCredentials = array(
         'secret'    => '',
     ),
     'microsoft' => array(
+        'key'       => '',
+        'secret'    => '',
+    ),
+    'runkeeper' => array(
         'key'       => '',
         'secret'    => '',
     ),
@@ -88,6 +96,14 @@ $servicesCredentials = array(
         'secret'    => '',
     ),
     'dailymotion' => array(
+        'key'       => '',
+        'secret'    => '',
+    ),
+    'flickr' => array(
+        'key'       => '',
+        'secret'    => '',
+    ),
+    'reddit' => array(
         'key'       => '',
         'secret'    => '',
     ),

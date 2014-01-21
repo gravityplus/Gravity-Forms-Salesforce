@@ -157,10 +157,9 @@ class GFSalesforce {
     }
 
     static function include_files() {
-        include_once plugin_dir_path(__FILE__).'/lib/PHPoAuthLib/src/OAuth/bootstrap.php';
-        include_once plugin_dir_path(__FILE__).'/lib/PHPoAuthLib/src/OAuth/ServiceFactory.php';
-        include_once plugin_dir_path(__FILE__).'/lib/SalesforceOAuthService.php';
-        include_once plugin_dir_path(__FILE__).'/lib/WordPressMemory.php';
+        include_once plugin_dir_path(__FILE__).'lib/PHPoAuthLib/src/OAuth/bootstrap.php';
+        include_once plugin_dir_path(__FILE__).'lib/PHPoAuthLib/src/OAuth/ServiceFactory.php';
+        include_once plugin_dir_path(__FILE__).'lib/WordPressMemory.php';
     }
 
     static public function processSalesforceResponse() {
@@ -279,7 +278,7 @@ EOD;
 
     //--------------   Automatic upgrade ---------------------------------------------------
 
-    function settings_link( $links, $file ) {
+    public static function settings_link( $links, $file ) {
         static $this_plugin;
         if( ! $this_plugin ) $this_plugin = self::get_base_url();
         if ( $file == $this_plugin ) {
