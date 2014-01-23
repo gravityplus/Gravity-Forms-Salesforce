@@ -241,6 +241,11 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 2.6 & 2.6.1 (January 23, 2014) =
+* Added: Manual export of leads - a new setting in the Form settings configuration that prevents all entries from being sent to Salesforce; only manually-approved entries may be sent.
+* Fixed: PHP static method warnings
+* Fixed: Supports paths outside of standard WP plugin directory structure
+
 = 2.5.3 =
 * Fixed: Minor PHP static method warning
 * Fixed: Dates now export properly in API and new Web-to-Lead Addon
@@ -362,6 +367,15 @@ This plugin is released under a GPL license.
 * Launch!
 
 == Upgrade Notice ==
+
+= 2.6 & 2.6.1 (January 23, 2014) =
+* Added: Manual export of leads - a new setting in the Form settings configuration that prevents all entries from being sent to Salesforce; only manually-approved entries may be sent.
+* Fixed: PHP static method warnings
+* Fixed: Supports paths outside of standard WP plugin directory structure
+
+= 2.5.3 =
+* Fixed: Minor PHP static method warning
+* Fixed: Dates now export properly in API and new Web-to-Lead Addon
 
 = 2.5.2.1 =
 * Fixed: Minor PHP static method warning
