@@ -208,10 +208,42 @@ You can. When you are trying to map a custom field, you need to set either the "
 
 You can find your Custom Fields under [Your Name] &rarr; Setup &rarr; Leads &rarr; Fields, then at the bottom of the page, there's a list of "Lead Custom Fields & Relationships". This is where you will find the "API Name" to use in the Admin Label or Parameter Name.
 
+__If that doesn't work__
+If the fields are not submitting properly still, you may need to try a different approach: under "Lead Custom Fields & Relationships", click on the name of the field. The URL of the page you go to will be formatted like this: `https://na123.salesforce.com/12AB0000003CDe4?setupid=LeadFields`. You want to copy the part of the URL that looks similar to <strong><code>12AB0000003CDe4</code></strong>. Use that value instead of the API Name.
+
+= I need to send a "Date/Time" field, not a "Date" field. How do I do that? (Web-to-Lead) =
+Salesforce makes this a little difficult, sorry!
+
+You need to add the following to your theme's `functions.php` file:
+
+`
+add_filter('gf_salesforce_use_datetime', 'filter_the_gf_salesforce_datetime', 10, 3);
+
+/**
+ * Modify whether to use Date/Time format instead of Date based on the field key.
+ * @param  boolean $use_datetime Whether to use Date/Time.
+ * @param  string  $key          Key of field.
+ * @param  array   $vars         Array of relevant data: 'form', 'entry', 'field', 'feed'
+ * @return boolean               True: Use "Date/Time" format; False: use "Date" format
+ */
+function filter_the_gf_salesforce_datetime($use_datetime = false, $key = '', $vars = array()) {
+
+	// CHANGE THE NAME BELOW to the field name you want to use Date/Time for!
+	if($key === 'MY__Custom_DateTime_Key') { return true; }
+
+	// If it's not a match, use default (Date)
+	return $use_datetime;
+}
+`
+
 = What's the license for this plugin? =
 This plugin is released under a GPL license.
 
 == Changelog ==
+
+= 2.5.3 =
+* Fixed: Minor PHP static method warning
+* Fixed: Dates now export properly in API and new Web-to-Lead Addon
 
 = 2.5.2.1 =
 * Fixed: Minor PHP static method warning

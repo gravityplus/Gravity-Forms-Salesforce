@@ -21,7 +21,7 @@
 if (class_exists("GFForms")) {
 
 	class KWSGFWebToLeadAddon extends KWSGFAddOn2 {
-		protected $_version = "2.5.2.1";
+		protected $_version = "2.5.3";
 		protected $_min_gravityforms_version = "1.7";
 		protected $_slug = "sf-web-to-lead";
 		protected $_path = "gravity-forms-salesforce/web-to-lead.php";
@@ -367,36 +367,66 @@ if (class_exists("GFForms")) {
 			self::log_debug( sprintf("Opt-in condition met; adding entry {$entry["id"]} to %s", $this->_service_name) );
 
 			try {
+
 				$temp_merge_vars = $this->get_merge_vars_from_entry($feed, $entry, $form);
 
 				$merge_vars = array();
-				foreach($temp_merge_vars as $key => $var) {
+				foreach($temp_merge_vars as $key => $value) {
+
+					// Get the field ID for the current value
+					$field_id = $feed['meta'][$key];
+
 					// The field names have a trailing underscore for some reason.
 					$key = ltrim($key, '_');
-					if(is_array($var)) {
+
+					// We need to specially format some data going to Salesforce
+					// If it's a field ID, get the field data
+					if(is_numeric($field_id) && !empty($value)) {
+
+						$field = RGFormsModel::get_field($form, $field_id);
+						$field_type = RGFormsModel::get_input_type($field);
+
+						// Right now, we only have special cases for dates.
+						switch ($field_type) {
+							case 'date':
+
+								// Format the date in Salesforce-recognized format.
+								// These formats are US-style, even though Salesforce recommends `Y-m-d\'\T\'H:i:s`
+								// For some reason, that didn't work.
+								if(apply_filters( 'gf_salesforce_use_datetime', false, $key, compact('form', 'entry', 'field', 'feed'))) {
+									$value = get_gmt_from_date($value, 'm/d/Y h:i A');
+								} else {
+									$value = get_gmt_from_date($value, 'm/d/Y');
+								}
+
+								break;
+						}
+					}
+
+					if(is_array($value)) {
 
 						// Filter the implode glue
 						$glue = apply_filters('gf_salesforce_implode_glue', ';', $key);
 
-						$var = implode($glue, $var);
+						$value = implode($glue, $value);
 
 						// Get rid of empty array values that would result in
 						// List Item 1;;List Item 2 - that causes weird things to happen in
 						// Salesforce
-						$var = preg_replace('/'.preg_quote($glue).'+/', $glue, $data[$label]);
+						$value = preg_replace('/'.preg_quote($glue).'+/', $glue, $data[$label]);
 
 						unset($glue);
 
 					} else {
-						$var = GFCommon::trim_all($var);
+						$value = GFCommon::trim_all($value);
 					}
 
 					// If the value is empty, don't send it.
-					if(empty($var) && $var !== '0') {
+					if(empty($value) && $value !== '0') {
 						unset($merge_vars[$key]);
 					} else {
 						// Add the value to the data being sent
-						$merge_vars[$key] = $var;
+						$merge_vars[$key] = $value;
 					}
 				}
 
@@ -428,7 +458,7 @@ if (class_exists("GFForms")) {
 
 			} catch(Exception $e) {
 				// Otherwise, it was a success.
-				self::log_error( "Error: ".$e->getMessage());
+				self::log_error( sprintf("Error: %s", $e->getMessage()) );
 			}
 
 			return;
@@ -481,7 +511,7 @@ if (class_exists("GFForms")) {
 
 		    // We need an Org ID to post to Salesforce successfully.
 		    if(empty($post['oid']) && empty($post['orgid'])) {
-		    	self::log_error( "No Salesforce Org. ID was specified.");
+		    	self::log_error( __("No Salesforce Org. ID was specified.", 'gravity-forms-salesforce') );
 		    	return NULL;
 		    }
 
@@ -513,6 +543,9 @@ if (class_exists("GFForms")) {
 
 		    	}
 		    }
+		    unset($post['debugEmail']);
+
+		    $post['retURL'] = 'http://www.google.com';
 
 		    // Set SSL verify to false because of server issues.
 		    $args = array(
@@ -531,7 +564,7 @@ if (class_exists("GFForms")) {
 		    // Use (test|www) subdomain and WebTo(Lead|Case) based on setting
 		    $url = apply_filters( 'gf_salesforce_request_url', sprintf('https://%s.salesforce.com/servlet/servlet.WebTo%s?encoding=UTF-8', $sub, $type), $args);
 
-		    self::log_debug( sprintf("This is the data sent to %s:\n%s", $this->_service_name, print_r($args, true)) );
+		    self::log_debug( sprintf("This is the data sent to %s (at %s:\n%s)", $this->_service_name, $url, print_r($args, true)) );
 
 		    // POST the data to Salesforce
 		    $result = wp_remote_post($url, $args);
