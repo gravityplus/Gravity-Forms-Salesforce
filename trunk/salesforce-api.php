@@ -1737,7 +1737,7 @@ jQuery(document).ready(function() {
 
 		}
 
-		$merge_vars = apply_filters( 'gf_salesforce_create_data', $merge_vars, $form, $entry );
+		$merge_vars = apply_filters( 'gf_salesforce_create_data', $merge_vars, $form, $entry, $feed, $api );
 
 		// Make sure the charset is UTF-8 for Salesforce.
 		$merge_vars = array_map(array('GFSalesforce', '_convert_to_utf_8'), $merge_vars);
