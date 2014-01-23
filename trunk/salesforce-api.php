@@ -37,7 +37,7 @@ class GFSalesforce {
 	private static $path = "gravity-forms-salesforce/salesforce-api.php";
 	private static $url = "http://formplugin.com";
 	private static $slug = "gravity-forms-salesforce";
-	private static $version = "2.5.2";
+	private static $version = "2.5.3";
 	private static $min_gravityforms_version = "1.3.9";
 	private static $is_debug = NULL;
 	private static $cache_time = 86400; // 24 hours
@@ -216,7 +216,7 @@ EOD;
 
 	//--------------   Automatic upgrade ---------------------------------------------------
 
-	function settings_link( $links, $file ) {
+	public static function settings_link( $links, $file ) {
 		static $this_plugin;
 		if( ! $this_plugin ) $this_plugin = self::get_base_url();
 		if ( $file == $this_plugin ) {
@@ -745,7 +745,7 @@ EOD;
 		}
 	}
 
-	public function getFields($objectType = 'account', $type = null) {
+	public static function getFields($objectType = 'account', $type = null) {
 		$lists = maybe_unserialize(get_site_transient('sfgf_lists_fields_'.$objectType));
 		if($lists && !empty($lists) && is_array($lists) && (!isset($_REQUEST['refresh']) || (isset($_REQUEST['refresh']) && $_REQUEST['refresh'] !== 'lists'))) {
 			foreach($lists as $key => $list) {
