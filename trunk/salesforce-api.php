@@ -3,7 +3,11 @@
 Plugin Name: Gravity Forms Salesforce API Add-On
 Plugin URI: https://katz.co/plugins/gravity-forms-salesforce/
 Description: Integrates <a href="http://formplugin.com?r=salesforce">Gravity Forms</a> with Salesforce allowing form submissions to be automatically sent to your Salesforce account. Requires Salesforce API access. <strong>If you don't have API access</strong>, use the "Gravity Forms Salesforce - Web-to-Lead Add-On" plugin instead.
+<<<<<<< HEAD
 Version: 2.5.3
+=======
+Version: 2.6.0
+>>>>>>> manual-export
 Author: Katz Web Services, Inc.
 Author URI: http://www.katzwebservices.com
 
@@ -88,6 +92,9 @@ class GFSalesforce {
 			}
 
 			self::refresh_transients();
+			
+			// since 2.6.0 - send entry to Salesforce if updated in the admin
+			add_action( 'gform_after_update_entry', array( 'GFSalesforce', 'manual_export' ), 10, 2);
 		}
 
 		//integrating with Members plugin
@@ -921,6 +928,8 @@ EOD;
 			$config["meta"]["optin_field_id"] = $config["meta"]["optin_enabled"] ? isset($_POST["salesforce_optin_field_id"]) ? $_POST["salesforce_optin_field_id"] : '' : "";
 			$config["meta"]["optin_operator"] = $config["meta"]["optin_enabled"] ? isset($_POST["salesforce_optin_operator"]) ? $_POST["salesforce_optin_operator"] : '' : "";
 			$config["meta"]["optin_value"] = $config["meta"]["optin_enabled"] ? $_POST["salesforce_optin_value"] : "";
+			
+			$config['meta']['manual_export'] = !empty($_POST['salesforce_manual_export']) ? true : false; // since 2.6.0
 			$config["meta"]["primary_field"] = !empty( $_POST['salesforce_primary_field'] ) ? $_POST['salesforce_primary_field'] : ''; // since 2.5.2
 
 			if($is_valid){
@@ -1034,6 +1043,24 @@ EOD;
 					?>
 					</div>
 					<div class="clear"></div>
+				</div>
+				
+				<?php /** Manual Export - Bypass automatic export (since 2.6.0) */ ?>
+				<div id="salesforce_manual_export_container" class="margin_vertical_10">
+					<table class="form-table">
+						<tr valign="top">
+							<th scope="row"><?php esc_html_e('Disable Automatic Export', "gravity-forms-salesforce"); ?></th>
+							<td> 
+								<fieldset>
+									<legend class="screen-reader-text"><span><?php _e('Disable Automatic Export', "gravity-forms-salesforce"); ?></span></legend>
+									<label for="salesforce_manual_export">
+										<input name="salesforce_manual_export" type="checkbox" id="salesforce_manual_export" value="1" <?php echo !empty( $config['meta']['manual_export'] ) ? 'checked="checked"' : ''; ?>>
+										<?php esc_html_e( 'Entries will be sent to Salesforce when updated in the admin', "gravity-forms-salesforce"); ?>
+									</label>
+								</fieldset>
+							</td>
+						</tr>
+					</table>
 				</div>
 
 				<div id="salesforce_optin_container" class="margin_vertical_10">
@@ -1558,6 +1585,53 @@ jQuery(document).ready(function() {
 		return $str;
 	}
 
+
+	/**
+	 * Called when entry is manually updated in the admin (since 2.6.0)
+	 * 
+	 * @access public
+	 * @static
+	 * @param object $form
+	 * @param string $entry_id
+	 * @return void
+	 */
+	public static function manual_export( $form, $entry_id ) {
+		//Login to Salesforce
+		$api = self::get_api();
+
+		if(!self::api_is_valid($api) || !preg_match('/200\sOK/ism', $api->getLastResponseHeaders())) {
+			do_action('gf_salesforce_error', 'export', $api);
+			return;
+		}
+		
+		// Fetch entry (use new GF API from version 1.8)
+		if( class_exists( 'GFAPI' ) && !empty( $entry_id ) ) {
+			$entry = GFAPI::get_entry( $entry_id );
+		} elseif( class_exists( 'RGFormsModel' ) && !empty( $entry_id ) ) {
+			$entry = RGFormsModel::get_lead( $entry_id );
+		} else {
+			return;
+		}
+		
+		//loading data class
+		require_once(self::get_base_path() . "/data.php");
+
+		//getting all active feeds
+		$feeds = GFSalesforceData::get_feed_by_form( $form["id"], true);
+
+		foreach( $feeds as $feed ) {
+			// If feed has Manual Export disabled, stop manual export - since 2.6.0
+			if( empty( $feed['meta']['manual_export'] ) && apply_filters( 'gf_salesforce_allow_manual_export', true, $feed, $form ) ) {
+				return;
+			}
+			//only export if user has opted in
+			if( self::is_optin_ok( $entry, $feed ) ) {
+				self::export_feed( $entry, $form, $feed, $api );
+			}
+		}
+	}
+	
+	
 	public static function export($entry, $form){
 		//Login to Salesforce
 		$api = self::get_api();
@@ -1574,6 +1648,10 @@ jQuery(document).ready(function() {
 		$feeds = GFSalesforceData::get_feed_by_form($form["id"], true);
 
 		foreach($feeds as $feed){
+			// If feed has Manual Export enabled, stop export - since 2.6.0
+			if( !empty( $feed['meta']['manual_export'] ) ) {
+				return;
+			}
 			//only export if user has opted in
 			if(self::is_optin($form, $feed)) {
 				self::export_feed($entry, $form, $feed, $api);
@@ -1810,6 +1888,13 @@ jQuery(document).ready(function() {
 		update_option('recently_activated', array($plugin => time()) + (array)get_option('recently_activated'));
 	}
 
+
+
+	/**
+	 * Opt-in logic: returns true if entry is OK to be exported
+	 * 
+	 * @return boolean
+	 */
 	public static function is_optin($form, $settings){
 		$config = $settings["meta"];
 		$operator = $config["optin_operator"];
@@ -1822,6 +1907,35 @@ jQuery(document).ready(function() {
 	}
 
 
+	/**
+	 * Alternative is_optin function to use when entry is manually updated, 
+	 * returns true if entry is OK to be exported
+	 * 
+	 * @access public
+	 * @static
+	 * @param array $entry
+	 * @param array $settings
+	 * @return boolean
+	 */
+	public static function is_optin_ok( $entry, $settings ){
+		if( empty( $settings['meta']['optin_enabled'] ) ) {
+			return true;
+		}
+		
+		$operator = $settings['meta']['optin_operator'];
+		
+		foreach( $entry as $key => $value ) {
+			if( floor( $key ) == $settings['meta']['optin_field_id'] ) {
+				$field_value[] = empty( $value ) ? '' : $value;
+			}
+		}
+		
+		$is_value_match = is_array( $field_value ) ? in_array( $settings['meta']['optin_value'], $field_value) : false;
+		
+		return ( $operator == "is" && $is_value_match ) || ( $operator == "isnot" && !$is_value_match );
+	}
+	
+	
 	private static function is_gravityforms_installed(){
 		return class_exists("RGForms");
 	}
