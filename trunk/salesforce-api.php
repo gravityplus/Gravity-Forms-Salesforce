@@ -1791,6 +1791,9 @@ jQuery(document).ready(function() {
 			}
 			gform_update_meta($entry['id'], 'salesforce_id', $result[0]->id);
 			self::add_note($entry["id"], sprintf(__('Successfully added to Salesforce with ID #%s . View entry at %s', 'gravity-forms-salesforce'), $result[0]->id, 'https://na9.salesforce.com/'.$result[0]->id));
+			
+			self::admin_screen_message( __( 'Entry Updated in Salesforce.', 'gravity-forms-salesforce' ), 'updated');
+			
 			return $result[0]->id;
 		} else {
 
@@ -1809,7 +1812,7 @@ jQuery(document).ready(function() {
 			}
 
 			self::add_note($entry["id"], sprintf(__('Errors when adding to Salesforce: %s', 'gravity-forms-salesforce'), $errors->message.$api_exception));
-
+			self::admin_screen_message( __( 'Errors when adding to Salesforce. Entry not sent!', 'gravity-forms-salesforce' ), 'error');
 			return false;
 		}
 	}
@@ -1865,6 +1868,26 @@ jQuery(document).ready(function() {
 	 */
 	public static function entry_info_send_to_salesforce( $form_id, $lead ) {
 		echo '<input type="checkbox" name="update_to_salesforce" id="update_to_salesforce" value="1"><label for="update_to_salesforce">'. esc_html__('Update to Salesforce', 'gravity-forms-salesforce') .'</label><br /><br />';
+	}
+	
+	
+	
+	/**
+	 * admin_screen_message function.
+	 * 
+	 * @since 2.6.1
+	 * @access public
+	 * @static
+	 * @param string $message
+	 * @param string $level
+	 * @return void
+	 */
+	public static function admin_screen_message( $message, $level = 'updated') {
+		if( is_admin() ) {
+			echo '<div class="'. esc_attr( $level ) .' fade" style="padding:6px;">';
+			echo esc_html( $message );
+			echo '</div>';
+		}
 	}
 	
 
