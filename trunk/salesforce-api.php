@@ -1876,7 +1876,7 @@ EOD;
 		$feeds = GFSalesforceData::get_feed_by_form( $form_id , true);
 
 		foreach ($feeds as $feed) {
-			if($feed['id'] === $form_id) {
+			if($feed['form_id'] === $form_id) {
 				return true;
 			}
 		}
