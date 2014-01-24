@@ -1794,7 +1794,7 @@ EOD;
 			gform_update_meta($entry['id'], 'salesforce_id', $result[0]->id);
 			self::add_note($entry["id"], sprintf(__('Successfully added to Salesforce with ID #%s . View entry at %s', 'gravity-forms-salesforce'), $result[0]->id, 'https://na9.salesforce.com/'.$result[0]->id));
 
-			self::admin_screen_message( __( 'Entry Updated in Salesforce.', 'gravity-forms-salesforce' ), 'updated');
+			self::admin_screen_message( __( 'Entry added/updated in Salesforce.', 'gravity-forms-salesforce' ), 'updated');
 
 			return $result[0]->id;
 		} else {
@@ -1814,6 +1814,7 @@ EOD;
 			}
 
 			self::add_note($entry["id"], sprintf(__('Errors when adding to Salesforce: %s', 'gravity-forms-salesforce'), $errors->message.$api_exception));
+
 			self::admin_screen_message( __( 'Errors when adding to Salesforce. Entry not sent!', 'gravity-forms-salesforce' ), 'error');
 			return false;
 		}
@@ -1858,6 +1859,13 @@ EOD;
 		}
 	}
 
+	/**
+	 * Whether to show the Entry "Send to Salesforce" button or not
+	 *
+	 * If the entry's form has been mapped to Salesforce feed, show the Send to Salesforce button. Otherwise, don't.
+	 *
+	 * @return boolean True: Show the button; False: don't show the button.
+	 */
 	private static function show_send_to_salesforce_button() {
 
 		//loading data lib
