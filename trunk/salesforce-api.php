@@ -1623,6 +1623,9 @@ EOD;
 				self::export_feed( $entry, $form, $feed, $api );
 			}
 		}
+
+		// Don't send twice.
+		unset($_POST['update_to_salesforce']);
 	}
 
 
