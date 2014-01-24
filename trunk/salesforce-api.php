@@ -89,9 +89,11 @@ class GFSalesforce {
 
 			self::refresh_transients();
 
-			// since 2.6.0 - send entry to Salesforce if updated in the admin
-			add_action( 'gform_after_update_entry', array( 'GFSalesforce', 'manual_export' ), 10, 2);
 		}
+
+		// since 2.6.0 - send entry to Salesforce if updated in the admin
+		add_action( 'gform_after_update_entry', array( 'GFSalesforce', 'manual_export' ), 10, 2);
+		add_action( 'admin_init', array( 'GFSalesforce', 'manual_export' ), 10, 2);
 
 		//integrating with Members plugin
 		if(function_exists('members_get_capabilities'))
@@ -133,13 +135,12 @@ class GFSalesforce {
 			 //handling post submission.
 			add_action("gform_after_submission", array('GFSalesforce', 'export'), 10, 2);
 		}
-		add_action('gform_entry_info', array('GFSalesforce', 'entry_info_link_to_salesforce'), 10, 2);
-		
-		add_action( 'gform_entry_info', array('GFSalesforce', 'entry_info_send_to_salesforce'), 99, 2);
+
+		add_action( 'gform_entry_info', array('GFSalesforce', 'entry_info_send_to_salesforce_checkbox'), 99, 2);
+		add_filter( 'gform_entrydetail_update_button', array('GFSalesforce', 'entry_info_send_to_salesforce_button'), 999, 1);
 	}
 
 	static function force_refresh_transients() {
-		global $wpdb;
 		self::refresh_transients(true);
 	}
 
@@ -1180,20 +1181,9 @@ EOD;
 		</script>
 		<script type="text/javascript">
 
-			/*
-jQuery(document).ready(function() {
-
-				SelectList(jQuery('#gf_salesforce_list').val());
-
-				SelectForm(jQuery('#gf_salesforce_list').val(), jQuery('#gf_salesforce_form').val());
-
-			});
-
-*/
 			function SelectList(listId){
 				if(listId){
 					jQuery("#salesforce_form_container").slideDown();
-				   // jQuery("#gf_salesforce_form").val("");
 				}
 				else{
 					jQuery("#salesforce_form_container").slideUp();
@@ -1572,8 +1562,11 @@ jQuery(document).ready(function() {
 
 
 	/**
-	 * Called when entry is manually updated in the admin
+	 * Called when entry is manually updated in the Single Entry view of Gravity Forms.
 	 *
+	 * This method is called by both `admin_init` and `gforms_after_update_entry`.
+	 *
+	 * @todo  Convert to using GFCommon::send_notification() instead
 	 * @since 2.6.0
 	 * @access public
 	 * @static
@@ -1581,13 +1574,26 @@ jQuery(document).ready(function() {
 	 * @param int $entry_id Entry ID
 	 * @return void
 	 */
-	public static function manual_export( $form, $entry_id ) {
-		
-		//check whether submission asked for sending update to Salesforce
-		if( empty( $_POST['update_to_salesforce'] ) ) {
+	public static function manual_export( $form, $entry_id = NULL ) {
+		global $plugin_page;
+
+		// Is this the Gravity Forms entries page?
+		if(false === (self::is_gravity_page('gf_entries') && rgget("view") == 'entry' && (rgget('lid') || !rgblank(rgget('pos'))))) {
 			return;
 		}
-	
+
+		// Both admin_init and gforms_after_update_entry will have this set
+		if(empty($_POST['gforms_save_entry']) || empty($_POST['action']) || empty($_POST['update_to_salesforce'])) { return; }
+
+		// Verify authenticity of request
+		check_admin_referer('gforms_save_entry', 'gforms_save_entry');
+
+		// For admin_init hook, get the entry ID from the URL
+		if(empty($entry_id)) {
+			$form = RGFormsModel::get_form_meta(rgget('id'));
+			$entry_id = rgget('lid');
+		}
+
 		//Login to Salesforce
 		$api = self::get_api();
 
@@ -1612,10 +1618,6 @@ jQuery(document).ready(function() {
 		$feeds = GFSalesforceData::get_feed_by_form( $form["id"], true);
 
 		foreach( $feeds as $feed ) {
-			// If feed has Manual Export disabled, stop manual export - since 2.6.0
-			if( empty( $feed['meta']['manual_export'] ) && apply_filters( 'gf_salesforce_allow_manual_export', true, $feed, $form ) ) {
-				return;
-			}
 			//only export if user has opted in
 			if( self::is_optin_ok( $entry, $feed ) ) {
 				self::export_feed( $entry, $form, $feed, $api );
@@ -1733,7 +1735,7 @@ jQuery(document).ready(function() {
 
 		}
 
-		$merge_vars = apply_filters( 'gf_salesforce_create_data', $merge_vars, $form, $entry );
+		$merge_vars = apply_filters( 'gf_salesforce_create_data', $merge_vars, $form, $entry, $feed, $api );
 
 		// Make sure the charset is UTF-8 for Salesforce.
 		$merge_vars = array_map(array('GFSalesforce', '_convert_to_utf_8'), $merge_vars);
@@ -1791,9 +1793,9 @@ jQuery(document).ready(function() {
 			}
 			gform_update_meta($entry['id'], 'salesforce_id', $result[0]->id);
 			self::add_note($entry["id"], sprintf(__('Successfully added to Salesforce with ID #%s . View entry at %s', 'gravity-forms-salesforce'), $result[0]->id, 'https://na9.salesforce.com/'.$result[0]->id));
-			
+
 			self::admin_screen_message( __( 'Entry Updated in Salesforce.', 'gravity-forms-salesforce' ), 'updated');
-			
+
 			return $result[0]->id;
 		} else {
 
@@ -1855,10 +1857,28 @@ jQuery(document).ready(function() {
 			echo sprintf(__('Salesforce ID: %s', 'gravity-forms-salesforce'), '<a href="https://na9.salesforce.com/'.$salesforce_id.'">'.$salesforce_id.'</a><br /><br />');
 		}
 	}
-	
+
+	private static function show_send_to_salesforce_button() {
+
+		//loading data lib
+		require_once(self::get_base_path() . "/data.php");
+
+		$form_id = rgget('id');
+
+		$feeds = GFSalesforceData::get_feed_by_form( $form_id , true);
+
+		foreach ($feeds as $feed) {
+			if($feed['id'] === $form_id) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	/**
-	 * Add checkbox to entry info - option to send entry to salesforce
-	 * 
+	 * Add button to entry info - option to send entry to Salesforce
+	 *
 	 * @since 2.6.1
 	 * @access public
 	 * @static
@@ -1866,15 +1886,46 @@ jQuery(document).ready(function() {
 	 * @param array $lead
 	 * @return void
 	 */
-	public static function entry_info_send_to_salesforce( $form_id, $lead ) {
-		echo '<input type="checkbox" name="update_to_salesforce" id="update_to_salesforce" value="1"><label for="update_to_salesforce">'. esc_html__('Update to Salesforce', 'gravity-forms-salesforce') .'</label><br /><br />';
+	public static function entry_info_send_to_salesforce_button( $button = '' ) {
+
+		// If this entry's form isn't connected to salesforce, don't show the button
+		if(!self::show_send_to_salesforce_button()) { return $button; }
+
+		// Is this the view or the edit screen?
+		$mode = empty($_POST["screen_mode"]) ? "view" : $_POST["screen_mode"];
+
+		if($mode === 'view') {
+			$button .= sprintf('<input type="hidden" name="update_to_salesforce" id="update_to_salesforce" value="" /><input type="submit" class="button button-large button-secondary alignright" value="%s" title="%s" onclick="jQuery(\'#update_to_salesforce\').val(\'1\'); jQuery(\'#action\').val(\'update_to_salesforce\')" />', esc_html__('Send to Salesforce', 'gravity-forms-salesforce'), esc_html__('Create or update this entry in Salesforce. The fields will be mapped according to the form feed settings.', 'gravity-forms-salesforce'));
+		}
+
+		return $button;
 	}
-	
-	
-	
+
+	/**
+	 * Add checkbox to entry info - option to send entry to salesforce
+	 *
+	 * @since 2.6.1
+	 * @access public
+	 * @static
+	 * @param int $form_id
+	 * @param array $lead
+	 * @return void
+	 */
+	public static function entry_info_send_to_salesforce_checkbox( $form_id, $lead ) {
+
+		// If this entry's form isn't connected to salesforce, don't show the checkbox
+		if(!self::show_send_to_salesforce_button()) { return; }
+
+		// If this is not the Edit screen, get outta here.
+		if(empty($_POST["screen_mode"]) || $_POST["screen_mode"] === 'view') { return; }
+
+		printf('<input type="checkbox" name="update_to_salesforce" id="update_to_salesforce" value="1" /><label for="update_to_salesforce" title="%s">%s</label><br /><br />', esc_html__('Create or update this entry in Salesforce. The fields will be mapped according to the form feed settings.', 'gravity-forms-salesforce'), esc_html__('Send to Salesforce', 'gravity-forms-salesforce'));
+	}
+
+
 	/**
 	 * admin_screen_message function.
-	 * 
+	 *
 	 * @since 2.6.1
 	 * @access public
 	 * @static
@@ -1889,7 +1940,7 @@ jQuery(document).ready(function() {
 			echo '</div>';
 		}
 	}
-	
+
 
 	private static function add_note($id, $note) {
 
