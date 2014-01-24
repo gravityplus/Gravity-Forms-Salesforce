@@ -243,6 +243,7 @@ This plugin is released under a GPL license.
 
 = 2.6 & 2.6.1 (January 23, 2014) =
 * Added: Manual export of leads - a new setting in the Form settings configuration that prevents all entries from being sent to Salesforce; only manually-approved entries may be sent.
+* Added: `$feed` and `$api` variables into the `gf_salesforce_create_data` filter, so that additional things can be done in `$merge_vars` based on the feed options, and $api can be further tweaked (setAssignmentRuleHeader) based on the feed object name. Thanks, [@sc0ttkclark](https://github.com/sc0ttkclark)!
 * Fixed: PHP static method warnings
 * Fixed: Supports paths outside of standard WP plugin directory structure
 
