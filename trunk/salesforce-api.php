@@ -134,6 +134,8 @@ class GFSalesforce {
 			add_action("gform_after_submission", array('GFSalesforce', 'export'), 10, 2);
 		}
 		add_action('gform_entry_info', array('GFSalesforce', 'entry_info_link_to_salesforce'), 10, 2);
+		
+		add_action( 'gform_entry_info', array('GFSalesforce', 'entry_info_send_to_salesforce'), 99, 2);
 	}
 
 	static function force_refresh_transients() {
@@ -1580,6 +1582,12 @@ jQuery(document).ready(function() {
 	 * @return void
 	 */
 	public static function manual_export( $form, $entry_id ) {
+		
+		//check whether submission asked for sending update to Salesforce
+		if( empty( $_POST['update_to_salesforce'] ) ) {
+			return;
+		}
+	
 		//Login to Salesforce
 		$api = self::get_api();
 
@@ -1841,9 +1849,24 @@ jQuery(document).ready(function() {
 	static function entry_info_link_to_salesforce($form_id, $lead) {
 		$salesforce_id = gform_get_meta($lead['id'], 'salesforce_id');
 		if(!empty($salesforce_id)) {
-			echo sprintf(__('Salesforce ID: %s', 'gravity-forms-salesforce'), '<a href="https://na9.salesforce.com/'.$salesforce_id.'">%s</a><br /><br />');
+			echo sprintf(__('Salesforce ID: %s', 'gravity-forms-salesforce'), '<a href="https://na9.salesforce.com/'.$salesforce_id.'">'.$salesforce_id.'</a><br /><br />');
 		}
 	}
+	
+	/**
+	 * Add checkbox to entry info - option to send entry to salesforce
+	 * 
+	 * @since 2.6.1
+	 * @access public
+	 * @static
+	 * @param int $form_id
+	 * @param array $lead
+	 * @return void
+	 */
+	public static function entry_info_send_to_salesforce( $form_id, $lead ) {
+		echo '<input type="checkbox" name="update_to_salesforce" id="update_to_salesforce" value="1"><label for="update_to_salesforce">'. esc_html__('Update to Salesforce', 'gravity-forms-salesforce') .'</label><br /><br />';
+	}
+	
 
 	private static function add_note($id, $note) {
 
