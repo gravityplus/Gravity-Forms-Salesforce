@@ -389,16 +389,15 @@ if (class_exists("GFForms")) {
 						// Right now, we only have special cases for dates.
 						switch ($field_type) {
 							case 'date':
-
 								// Format the date in Salesforce-recognized format.
 								// These formats are US-style, even though Salesforce recommends `Y-m-d\'\T\'H:i:s`
 								// For some reason, that didn't work.
 								if(apply_filters( 'gf_salesforce_use_datetime', false, $key, compact('form', 'entry', 'field', 'feed'))) {
 									$value = get_gmt_from_date($value, 'm/d/Y h:i A');
 								} else {
-									$value = get_gmt_from_date($value, 'm/d/Y');
+									//$value = get_gmt_from_date($value, 'm/d/Y');
+									$value = apply_filters( 'gf_salesforce_format_date', date( 'm/d/Y', strtotime( $value ) ), $key, $value, compact( 'form', 'entry', 'field', 'feed') );
 								}
-
 								break;
 						}
 					}

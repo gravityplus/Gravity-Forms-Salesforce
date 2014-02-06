@@ -2,7 +2,7 @@
 /*
 Plugin Name: Gravity Forms Salesforce - Web to Lead (**OLD VERSION**)
 Description: This version is provided for backward compatibility only. Please use the new plugin, named "Gravity Forms Salesforce - Web-to-Lead Add-On". This version will be removed in the future.
-Version: 2.6.1
+Version: 2.6.1.1
 Requires at least: 3.3
 Author: Katz Web Services, Inc.
 Author URI: http://www.katzwebservices.com

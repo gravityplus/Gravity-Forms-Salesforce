@@ -1,7 +1,7 @@
 === Gravity Forms Salesforce Add-on ===
 Tags: gravity forms, forms, gravity, form, crm, gravity form, salesforce, salesforce plugin, form, forms, gravity, gravity form, gravity forms, secure form, simplemodal contact form, wp contact form, widget, sales force, customer, contact, contacts, address, addresses, address book, web to lead, web to case, web-to-lead, web-to-case, cases, leads, lead
 Requires at least: 3.3
-Tested up to: 3.8
+Tested up to: 3.8.1
 Stable tag: trunk
 Contributors: katzwebdesign,katzwebservices
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Gravity%20Forms%20Salesforce%20Addon&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
@@ -241,6 +241,9 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 2.6.1.1 (February 6, 2014) =
+* Added: Add a new filter `gf_salesforce_format_date` to change date format for Date field type before exporting to Salesforce
+
 = 2.6 & 2.6.1 (January 23, 2014) =
 * Added: Manual export of leads - a new setting in the Form settings configuration that prevents all entries from being sent to Salesforce; only manually-approved entries may be sent.
 * Added: `$feed` and `$api` variables into the `gf_salesforce_create_data` filter, so that additional things can be done in `$merge_vars` based on the feed options, and $api can be further tweaked (setAssignmentRuleHeader) based on the feed object name. Thanks, [@sc0ttkclark](https://github.com/sc0ttkclark)!
@@ -368,6 +371,9 @@ This plugin is released under a GPL license.
 * Launch!
 
 == Upgrade Notice ==
+
+= 2.6.1.1 (February 6, 2014) =
+* Added: Add a new filter `gf_salesforce_format_date` to change date format for Date field type before exporting to Salesforce
 
 = 2.6 & 2.6.1 (January 23, 2014) =
 * Added: Manual export of leads - a new setting in the Form settings configuration that prevents all entries from being sent to Salesforce; only manually-approved entries may be sent.
