@@ -21,7 +21,7 @@
 if (class_exists("GFForms")) {
 
 	class KWSGFWebToLeadAddon extends KWSGFAddOn2 {
-		protected $_version = "2.6.1";
+		protected $_version = "2.6.1.1";
 		protected $_min_gravityforms_version = "1.7";
 		protected $_slug = "sf-web-to-lead";
 		protected $_path = "gravity-forms-salesforce/web-to-lead.php";
@@ -395,7 +395,6 @@ if (class_exists("GFForms")) {
 								if(apply_filters( 'gf_salesforce_use_datetime', false, $key, compact('form', 'entry', 'field', 'feed'))) {
 									$value = get_gmt_from_date($value, 'm/d/Y h:i A');
 								} else {
-									//$value = get_gmt_from_date($value, 'm/d/Y');
 									$value = apply_filters( 'gf_salesforce_format_date', date( 'm/d/Y', strtotime( $value ) ), $key, $value, compact( 'form', 'entry', 'field', 'feed') );
 								}
 								break;
