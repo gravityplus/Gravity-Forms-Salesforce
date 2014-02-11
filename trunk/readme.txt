@@ -236,10 +236,19 @@ function filter_the_gf_salesforce_datetime($use_datetime = false, $key = '', $va
 }
 `
 
+= I know I have SOAP enabled and the API plugin says I don't. =
+Add this to the bottom of your theme's `functions.php` file to force loading even if a `SOAPClient` class does not exist:
+
+`add_filter( 'gf_salesforce_soap_is_available', '__return_true');`
+
 = What's the license for this plugin? =
 This plugin is released under a GPL license.
 
 == Changelog ==
+
+= 2.6.2 (February 11, 2014) =
+* API Version: Added a check to make sure server supports SOAP
+* API Version: Added a filter to override the SOAP check. Use `add_filter( 'gf_salesforce_soap_is_available', '__return_true');` to force loading even if a `SOAPClient` class does not exist.
 
 = 2.6.1.1 (February 6, 2014) =
 * Added: Add a new filter `gf_salesforce_format_date` to change date format for Date field type before exporting to Salesforce
@@ -371,6 +380,10 @@ This plugin is released under a GPL license.
 * Launch!
 
 == Upgrade Notice ==
+
+= 2.6.2 (February 11, 2014) =
+* API Version: Added a check to make sure server supports SOAP
+* API Version: Added a filter to override the SOAP check. Use `add_filter( 'gf_salesforce_soap_is_available', '__return_true');` to force loading even if a `SOAPClient` class does not exist.
 
 = 2.6.1.1 (February 6, 2014) =
 * Added: Add a new filter `gf_salesforce_format_date` to change date format for Date field type before exporting to Salesforce
