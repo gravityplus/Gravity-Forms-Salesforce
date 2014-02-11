@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms Salesforce API Add-On
 Plugin URI: https://katz.co/plugins/gravity-forms-salesforce/
 Description: Integrates <a href="http://formplugin.com?r=salesforce">Gravity Forms</a> with Salesforce allowing form submissions to be automatically sent to your Salesforce account. Requires Salesforce API access. <strong>If you don't have API access</strong>, use the "Gravity Forms Salesforce - Web-to-Lead Add-On" plugin instead.
-Version: 2.6.1.1
+Version: 2.6.2
 Requires at least: 3.3
 Author: Katz Web Services, Inc.
 Author URI: http://www.katzwebservices.com
@@ -38,7 +38,7 @@ class GFSalesforce {
 	private static $path = "gravity-forms-salesforce/salesforce-api.php";
 	private static $url = "http://formplugin.com";
 	private static $slug = "gravity-forms-salesforce";
-	private static $version = "2.6.1";
+	private static $version = "2.6.2";
 	private static $min_gravityforms_version = "1.3.9";
 	private static $is_debug = NULL;
 	private static $cache_time = 86400; // 24 hours
@@ -55,6 +55,14 @@ class GFSalesforce {
 	//Plugin starting point. Will load appropriate files
 	public static function init(){
 		global $pagenow;
+
+		// SOAP isn't available.
+		// You can override this check by adding a filter on `gf_salesforce_soap_is_available` with `__return_true`
+		if(!class_exists("SOAPClient") && !apply_filters( 'gf_salesforce_soap_is_available', false )) {
+			add_action("admin_notices", array('GFSalesforce', 'is_soap_installed'), 10);
+			return;
+		}
+
 		require_once(self::get_base_path() . "/edit-form.php");
 		if($pagenow === 'plugins.php' && is_admin()) {
 			add_action("admin_notices", array('GFSalesforce', 'is_gravity_forms_installed'), 10);
@@ -194,6 +202,13 @@ EOD;
 			return true;
 		}
 		return $installed;
+	}
+
+	/**
+	 * Show a notice if SOAP isn't available
+	 */
+	public static function is_soap_installed() {
+		echo sprintf('<div id="message" class="error"><h3>%s</h3>%s</div>', __('The Gravity Form Salesforce Add-On could not be loaded.', 'gravity-forms-salesforce'), wpautop(__('The Gravity Form Salesforce Add-On requires that your server support SOAP. Please contact your hosting provider and ask them to enable SOAP on your server.', 'gravity-forms-salesforce')));
 	}
 
 	public static function plugin_row(){
