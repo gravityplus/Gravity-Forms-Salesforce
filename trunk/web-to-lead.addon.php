@@ -21,7 +21,7 @@
 if (class_exists("GFForms")) {
 
 	class KWSGFWebToLeadAddon extends KWSGFAddOn2_1 {
-		protected $_version = "2.6.3";
+		protected $_version = "2.6.3.1";
 		protected $_min_gravityforms_version = "1.7";
 		protected $_slug = "sf-web-to-lead";
 		protected $_path = "gravity-forms-salesforce/web-to-lead.php";
