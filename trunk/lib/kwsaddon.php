@@ -2,11 +2,11 @@
 /*
 
 KWS Gravity Forms Add-On
-Version: 2.0
+Version: 2.1
 
 ------------------------------------------------------------------------
 
-Copyright 2013 Katz Web Services, Inc.
+Copyright 2014 Katz Web Services, Inc.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,15 +23,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-if (class_exists("GFForms") && !class_exists('KWSGFAddOn2')) {
+if (class_exists("GFForms") && !class_exists('KWSGFAddOn2_1')) {
     GFForms::include_feed_addon_framework();
 
     /**
      * Extend the GFFeedAddOn with lots of default functionality for KWS GF addons.
      */
-    abstract class KWSGFAddOn2 extends GFFeedAddOn {
+    abstract class KWSGFAddOn2_1 extends GFFeedAddOn {
 
-        protected $_version = "2.0";
+        protected $_version = "2.1";
         protected $_min_gravityforms_version = "1.7";
         protected $_slug = "kwsaddon";
         protected $_path = "kwsaddon/kwsaddon.php";
@@ -56,6 +56,8 @@ if (class_exists("GFForms") && !class_exists('KWSGFAddOn2')) {
          */
         protected $_service_icon = NULL;
 
+        protected $_service_favicon_path = NULL;
+
         protected $_service_api_valid = NULL;
 
         protected $_service_api = NULL;
@@ -66,8 +68,13 @@ if (class_exists("GFForms") && !class_exists('KWSGFAddOn2')) {
         public function add_custom_hooks() {
             global $pagenow;
 
-            if($pagenow === 'plugins.php') {
-                add_action('admin_notices', array(&$this, 'gf_installation_notice'), 10);
+            switch ($pagenow) {
+                case 'plugins.php':
+                    add_action('admin_notices', array(&$this, 'gf_installation_notice'), 10);
+                    break;
+                case 'admin.php':
+                    add_action('admin_head', array(&$this, 'show_addon_status'));
+                    break;
             }
 
             // Add support for logging
@@ -226,6 +233,10 @@ EOD;
 
         public function get_service_icon() {
             return $this->_service_icon;
+        }
+
+        public function get_service_favicon_path() {
+            return $this->_service_favicon_path;
         }
 
         /**
@@ -416,6 +427,75 @@ EOD;
             <a href="#" class="button submit button-large button-secondary" id="kws_add_custom_field"><?php _e('Add a custom field', 'kwsaddon'); ?></a>
 
             <?php
+        }
+
+        /**
+         * Add a little service favicon next to the forms that have active feeds for the service
+         *
+         * @todo Separate out the CSS/JS into files so no inline code. Yeah, yeah, I know.
+         *
+         */
+        public function show_addon_status() {
+            global $pagenow,$plugin_page;
+
+            // Only show this on the plugins page.
+            if(!($plugin_page === 'gf_edit_forms' && !isset($_REQUEST['id']))) { return; }
+
+            // If the icon's not defined, don't do this
+            if(!$favicon = $this->get_service_favicon_path()) { return; }
+
+            $activeforms = array();
+
+            // Get all feeds
+            $feeds = $this->get_feeds();
+
+            // Get a list of active forms by looping through all forms and checking `is_active`
+            foreach($feeds as $feed) {
+
+                // Only add the icon if the feed is active
+                if($feed['is_active']) {
+
+                    // If the feed isn't already in the active forms list, add it.
+                    if(!in_array($feed['form_id'], $activeforms)) {
+                        $activeforms[] = $feed['form_id'];
+                    }
+                }
+            }
+
+            // If there are no active forms, get outta here.
+            if(empty($activeforms)) { return; }
+
+            $class = sanitize_html_class($this->get_slug());
+    ?>
+    <style type="text/css">
+        .enabled_<?php echo $class; ?> {
+            position: absolute;
+            background: url('<?php echo $favicon; ?>') right top no-repeat;
+            height: 16px;
+            width: 16px;
+            margin-left: 10px;
+        }
+    </style>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+
+            var <?php echo __CLASS__; ?>ActiveForms = [<?php echo implode(',', $activeforms); ?>];
+
+            var $span = $('<span />', {
+                'class': 'enabled_<?php echo $class; ?>',
+                'title': "<?php esc_attr_e(sprintf(__("%s integration is enabled for this Form", 'kwsaddon'), $this->get_service_name())); ?>"
+            });
+
+            // Loop through the rows of forms
+            $('table .user-list tr').each(function() {
+                // If the current form ID is in the array of active forms
+                if($.inArray(parseInt($(this).attr('data-id')), <?php echo __CLASS__; ?>ActiveForms) > -1) {
+                    $('.row-title', $(this)).append($span); // Then add the icon to the title.
+                }
+            });
+        });
+    </script>
+    <?php
         }
 
         /**

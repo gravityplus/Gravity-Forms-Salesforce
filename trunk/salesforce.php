@@ -2,7 +2,7 @@
 /*
 Plugin Name: Gravity Forms Salesforce - Web to Lead (**OLD VERSION**)
 Description: This version is provided for backward compatibility only. Please use the new plugin, named "Gravity Forms Salesforce - Web-to-Lead Add-On". This version will be removed in the future.
-Version: 2.6.2
+Version: 2.6.3
 Requires at least: 3.3
 Author: Katz Web Services, Inc.
 Author URI: http://www.katzwebservices.com
@@ -34,7 +34,7 @@ class GFSalesforceWebToLead {
     private static $path = "gravity-forms-salesforce/salesforce.php";
     private static $url = "http://www.gravityforms.com";
     private static $slug = "gravity-forms-salesforce";
-    private static $version = "2.6.2";
+    private static $version = "2.6.3";
     private static $min_gravityforms_version = "1.3.9";
 
     //Plugin starting point. Will load appropriate files

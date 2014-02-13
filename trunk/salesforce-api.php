@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms Salesforce API Add-On
 Plugin URI: https://katz.co/plugins/gravity-forms-salesforce/
 Description: Integrates <a href="http://formplugin.com?r=salesforce">Gravity Forms</a> with Salesforce allowing form submissions to be automatically sent to your Salesforce account. Requires Salesforce API access. <strong>If you don't have API access</strong>, use the "Gravity Forms Salesforce - Web-to-Lead Add-On" plugin instead.
-Version: 2.6.2
+Version: 2.6.3
 Requires at least: 3.3
 Author: Katz Web Services, Inc.
 Author URI: http://www.katzwebservices.com
@@ -38,7 +38,7 @@ class GFSalesforce {
 	private static $path = "gravity-forms-salesforce/salesforce-api.php";
 	private static $url = "http://formplugin.com";
 	private static $slug = "gravity-forms-salesforce";
-	private static $version = "2.6.2";
+	private static $version = "2.6.3";
 	private static $min_gravityforms_version = "1.3.9";
 	private static $is_debug = NULL;
 	private static $cache_time = 86400; // 24 hours

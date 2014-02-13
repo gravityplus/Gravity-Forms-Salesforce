@@ -7,7 +7,7 @@ Contributors: katzwebdesign,katzwebservices
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Gravity%20Forms%20Salesforce%20Addon&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
 License: GPLv2 or later
 
-Integrate the remarkable Gravity Forms plugin with Salesforce.
+This is the most powerful Salesforce integration available to WordPress.
 
 == Description ==
 
@@ -39,14 +39,7 @@ If you use the following Editions, you will use the included Web-to-Lead Add-on:
 ### Web to Case
 When using the Web-to-Lead Add-on, you can choose to have form entries sent to Salesforce as Cases (like when using the Web-to-Case form) instead of as Leads.
 
-#### Other Gravity Forms Add-ons:
-
-* <a href="http://wordpress.org/extend/plugins/gravity-forms-highrise/">Gravity Forms Highrise Add-on</a> - Integrate Gravity Forms with Highrise, a CRM
-* <a href="http://wordpress.org/extend/plugins/gravity-forms-addons/">Gravity Forms Directory & Addons</a> - Turn Gravity Forms into a WordPress Directory plugin.
-* <a href="http://wordpress.org/extend/plugins/gravity-forms-constant-contact/">Gravity Forms + Constant Contact</a> - If you use Constant Contact and Gravity Forms, this plugin is for you.
-* <a href="http://wordpress.org/extend/plugins/gravity-forms-exacttarget/">Gravity Forms ExactTarget Add-on</a> - Integrate Gravity Forms with ExactTarget
-
-If you have questions, comments, or issues with this plugin, <strong>please leave your feedback on the <a href="http://wordpress.org/tags/gravity-forms-salesforce?forum_id=10">Plugin Support Forum</a></strong>.
+If you have questions, comments, or issues with this plugin, <strong>please leave your feedback on the <a href="https://github.com/katzwebservices/Gravity-Forms-Salesforce/issues?state=open">Plugin Support Forum</a></strong>.
 
 == Screenshots ==
 
@@ -246,6 +239,10 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 2.6.3 (February 13, 2014) =
+* Web-to-Lead: Re-added the functionality to show the little Salesforce icon in the forms list that indicate active feeds are enabled for that form.
+	- Integrated that method into the KWSAddon class
+
 = 2.6.2 (February 11, 2014) =
 * API Version: Added a check to make sure server supports SOAP
 * API Version: Added a filter to override the SOAP check. Use `add_filter( 'gf_salesforce_soap_is_available', '__return_true');` to force loading even if a `SOAPClient` class does not exist.
@@ -380,6 +377,10 @@ This plugin is released under a GPL license.
 * Launch!
 
 == Upgrade Notice ==
+
+= 2.6.3 (February 13, 2014) =
+* Web-to-Lead: Re-added the functionality to show the little Salesforce icon in the forms list that indicate active feeds are enabled for that form.
+	- Integrated that method into the KWSAddon class
 
 = 2.6.2 (February 11, 2014) =
 * API Version: Added a check to make sure server supports SOAP

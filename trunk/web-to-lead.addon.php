@@ -20,8 +20,8 @@
 //------------------------------------------
 if (class_exists("GFForms")) {
 
-	class KWSGFWebToLeadAddon extends KWSGFAddOn2 {
-		protected $_version = "2.6.2";
+	class KWSGFWebToLeadAddon extends KWSGFAddOn2_1 {
+		protected $_version = "2.6.3";
 		protected $_min_gravityforms_version = "1.7";
 		protected $_slug = "sf-web-to-lead";
 		protected $_path = "gravity-forms-salesforce/web-to-lead.php";
@@ -30,12 +30,17 @@ if (class_exists("GFForms")) {
 		protected $_short_title = "Salesforce: Web-to-Lead";
 		protected $_service_name = "Salesforce";
 		protected $_custom_field_placeholder = "Salesforce API ID";
-		/**
+
+	    /**
 		 * Add the logo for the Feeds page
 		 * @return string IMG HTML tag
 		 */
 		public function get_service_icon() {
 			return '<img src="'.plugins_url( 'images/salesforce-50x50.png', $this->_full_path ).'" class="alignleft" style="margin:0 10px 10px 0" />';
+		}
+
+		public function get_service_favicon_path() {
+			return plugins_url( 'images/salesforce-16x16.png', $this->_full_path );
 		}
 
 		/**
