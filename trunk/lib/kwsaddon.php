@@ -2,7 +2,7 @@
 /*
 
 KWS Gravity Forms Add-On
-Version: 2.1
+Version: 2.1.1
 
 ------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ if (class_exists("GFForms") && !class_exists('KWSGFAddOn2_1')) {
      */
     abstract class KWSGFAddOn2_1 extends GFFeedAddOn {
 
-        protected $_version = "2.1";
+        protected $_version = "2.1.1";
         protected $_min_gravityforms_version = "1.7";
         protected $_slug = "kwsaddon";
         protected $_path = "kwsaddon/kwsaddon.php";
@@ -484,13 +484,14 @@ EOD;
             var $span = $('<span />', {
                 'class': 'enabled_<?php echo $class; ?>',
                 'title': "<?php esc_attr_e(sprintf(__("%s integration is enabled for this Form", 'kwsaddon'), $this->get_service_name())); ?>"
+            //    , 'text': 'SF'
             });
 
             // Loop through the rows of forms
             $('table .user-list tr').each(function() {
                 // If the current form ID is in the array of active forms
                 if($.inArray(parseInt($(this).attr('data-id')), <?php echo __CLASS__; ?>ActiveForms) > -1) {
-                    $('.row-title', $(this)).append($span); // Then add the icon to the title.
+                    $('.row-title', $(this)).append($span.clone()); // Then add the icon to the title.
                 }
             });
         });
