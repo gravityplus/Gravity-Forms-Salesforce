@@ -239,8 +239,15 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 2.6.4 (February 20, 2014) =
+* Fixed (API Version): Live Remote Field Mapping improvements
+	- Fixed endless spinning
+	- Empty options are better managed; shows "No Picklist Fields" message
+	- Now shows an error message if the field cannot be used for Remote Field Mapping
+	- Static PHP warning fixed when `WP_DEBUG` enabled
+
 = 2.6.3.4 (February 20, 2014) =
-* Added: new hook "gf_salesforce_show_manual_export_button" to disable "send to salesforce" button/checkbox
+* Added (API Version): new hook "gf_salesforce_show_manual_export_button" to disable "send to salesforce" button/checkbox
 
 = 2.6.3 to 2.6.3.3 (February 14, 2014) =
 * Web-to-Lead: Re-added the functionality to show the "Salesforce enabled" icon in the forms list that indicate active feeds are enabled for that form.
@@ -383,8 +390,15 @@ This plugin is released under a GPL license.
 
 == Upgrade Notice ==
 
+= 2.6.4 (February 20, 2014) =
+* Fixed (API Version): Live Remote Field Mapping improvements
+	- Fixed endless spinning
+	- Empty options are better managed; shows "No Picklist Fields" message
+	- Now shows an error message if the field cannot be used for Remote Field Mapping
+	- Static PHP warning fixed when `WP_DEBUG` enabled
+
 = 2.6.3.4 (February 20, 2014) =
-* Added: new hook "gf_salesforce_show_manual_export_button" to disable "send to salesforce" button/checkbox
+* Added (API Version): new hook "gf_salesforce_show_manual_export_button" to disable "send to salesforce" button/checkbox
 
 = 2.6.3 to 2.6.3.3 (February 14, 2014) =
 * Web-to-Lead: Re-added the functionality to show the "Salesforce enabled" icon in the forms list that indicate active feeds are enabled for that form.
