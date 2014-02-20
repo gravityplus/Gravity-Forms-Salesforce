@@ -117,14 +117,19 @@ class GFSalesforce_FieldMapping {
         $form = RGFormsModel::get_form_meta($form_id);
 
         //getting list of all Salesforce merge variables for the selected contact list
-        $fields = GFSalesforce::getFields(esc_html($_POST['objectType']), array('picklist', 'multipicklist'));
 
-        $str = self::get_field_mapping($form_id, $fields);
+        try {
+            $fields = GFSalesforce::getFields(esc_html($_POST['objectType']), array('picklist', 'multipicklist'));
+            $str = self::get_field_mapping($form_id, $fields);
+        } catch(Exception $e) {
+            $str = sprintf('<div id="salesforce_field_group"><strong>%s</strong> %s</div>', __('Error:', 'gravity-forms-salesforce'), $e->getMessage());
+            $str = str_replace(array("\n", "\t", "\r"), '', str_replace("'", "\'", $str));
+        }
 
         die("EndSelectForm('{$str}');");
     }
 
-    private function get_picklist_ul($field) {
+    private static function get_picklist_ul($field) {
         if(empty($field['picklistValues'])) { return ''; }
         $str = '<ul class="ul-square">';
         foreach($field['picklistValues'] as $value) {
@@ -153,6 +158,13 @@ class GFSalesforce_FieldMapping {
                     </tr>
                 </thead>
                 <tbody>";
+
+        // Don't show fields with empty picklist options
+        foreach ($fields as $key => $field) {
+            if(empty($field['picklistValues'])) {
+                unset($fields[$key]);
+            }
+        }
 
         if(!empty($fields)) {
             foreach($fields as $field){
