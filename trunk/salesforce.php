@@ -34,7 +34,7 @@ class GFSalesforceWebToLead {
     private static $path = "gravity-forms-salesforce/salesforce.php";
     private static $url = "http://www.gravityforms.com";
     private static $slug = "gravity-forms-salesforce";
-    private static $version = "2.6.3.3";
+    private static $version = "2.6.3.4";
     private static $min_gravityforms_version = "1.3.9";
 
     //Plugin starting point. Will load appropriate files
