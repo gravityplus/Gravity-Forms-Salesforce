@@ -239,6 +239,9 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 2.6.3.4 (February 20, 2014) =
+* Added: new hook "gf_salesforce_show_manual_export_button" to disable "send to salesforce" button/checkbox
+
 = 2.6.3 to 2.6.3.3 (February 14, 2014) =
 * Web-to-Lead: Re-added the functionality to show the "Salesforce enabled" icon in the forms list that indicate active feeds are enabled for that form.
 	- Integrated that method into the KWSAddon class
@@ -379,6 +382,9 @@ This plugin is released under a GPL license.
 * Launch!
 
 == Upgrade Notice ==
+
+= 2.6.3.4 (February 20, 2014) =
+* Added: new hook "gf_salesforce_show_manual_export_button" to disable "send to salesforce" button/checkbox
 
 = 2.6.3 to 2.6.3.3 (February 14, 2014) =
 * Web-to-Lead: Re-added the functionality to show the "Salesforce enabled" icon in the forms list that indicate active feeds are enabled for that form.
