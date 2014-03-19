@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms Salesforce API Add-On
 Plugin URI: https://katz.co/plugins/gravity-forms-salesforce/
 Description: Integrates <a href="http://formplugin.com?r=salesforce">Gravity Forms</a> with Salesforce allowing form submissions to be automatically sent to your Salesforce account. Requires Salesforce API access. <strong>If you don't have API access</strong>, use the "Gravity Forms Salesforce - Web-to-Lead Add-On" plugin instead.
-Version: 2.6.4
+Version: 2.6.4.1
 Requires at least: 3.3
 Author: Katz Web Services, Inc.
 Author URI: http://www.katzwebservices.com
@@ -38,7 +38,7 @@ class GFSalesforce {
 	private static $path = "gravity-forms-salesforce/salesforce-api.php";
 	private static $url = "http://formplugin.com";
 	private static $slug = "gravity-forms-salesforce";
-	private static $version = "2.6.4";
+	private static $version = "2.6.4.1";
 	private static $min_gravityforms_version = "1.3.9";
 	private static $is_debug = NULL;
 	private static $cache_time = 86400; // 24 hours
@@ -1599,7 +1599,12 @@ EOD;
 		}
 
 		// Both admin_init and gforms_after_update_entry will have this set
-		if( empty( $_POST['gforms_save_entry'] ) || empty( $_POST['action'] ) || empty( $_POST['update_to_salesforce'] ) ) { return; }
+		if( empty( $_POST['gforms_save_entry'] ) || empty( $_POST['action'] ) ) { return; }
+		
+		// Different checks since admin_init runs in both cases but we need to wait for entry update
+		$current_hook = current_filter();
+		if( $current_hook == 'admin_init' && empty( $_POST['send_to_salesforce'] ) ) { return; }
+		if( $current_hook == 'gform_after_update_entry' && empty( $_POST['update_to_salesforce'] ) ) { return; }
 
 		// Verify authenticity of request
 		check_admin_referer('gforms_save_entry', 'gforms_save_entry');
@@ -1642,6 +1647,7 @@ EOD;
 
 		// Don't send twice.
 		unset($_POST['update_to_salesforce']);
+		unset($_POST['send_to_salesforce']);
 	}
 
 
@@ -1922,7 +1928,7 @@ EOD;
 		$mode = empty($_POST["screen_mode"]) ? "view" : $_POST["screen_mode"];
 
 		if($mode === 'view') {
-			$button .= sprintf('<input type="hidden" name="update_to_salesforce" id="update_to_salesforce" value="" /><input type="submit" class="button button-large button-secondary alignright" value="%s" title="%s" onclick="jQuery(\'#update_to_salesforce\').val(\'1\'); jQuery(\'#action\').val(\'update_to_salesforce\')" />', esc_html__('Send to Salesforce', 'gravity-forms-salesforce'), esc_html__('Create or update this entry in Salesforce. The fields will be mapped according to the form feed settings.', 'gravity-forms-salesforce'));
+			$button .= sprintf('<input type="hidden" name="send_to_salesforce" id="send_to_salesforce" value="" /><input type="submit" class="button button-large button-secondary alignright" value="%s" title="%s" onclick="jQuery(\'#send_to_salesforce\').val(\'1\'); jQuery(\'#action\').val(\'send_to_salesforce\')" />', esc_html__('Send to Salesforce', 'gravity-forms-salesforce'), esc_html__('Create or update this entry in Salesforce. The fields will be mapped according to the form feed settings.', 'gravity-forms-salesforce'));
 		}
 
 		return $button;
