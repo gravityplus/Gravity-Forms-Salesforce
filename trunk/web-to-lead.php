@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms Salesforce - Web-to-Lead Add-On
 Plugin URI: https://katz.co/plugins/gravity-forms-salesforce/
 Description: Integrate <a href="http://formplugin.com?r=salesforce">Gravity Forms</a> with Salesforce - form submissions are automatically sent to your Salesforce account! <strong>Requires Gravity Forms 1.7+</strong>.
-Version: 2.6.4.1
+Version: 2.7.0 beta Sethmatics V1
 Requires at least: 3.3
 Author: Katz Web Services, Inc.
 Author URI: http://www.katz.co
@@ -35,6 +35,17 @@ function KWSGFWebToLeadAddon_load($value='') {
 
 	if(!class_exists('KWSGFAddOn2_1')) {
 		require_once(plugin_dir_path(__FILE__).'/lib/kwsaddon.php');
+	}
+
+	if(!class_exists('KWSGFDaddyAnalyticsAddon') && class_exists('KWSGFAddOn2_1')) {
+		require_once(plugin_dir_path(__FILE__).'/lib/daddy_analytics.addon.php');
+		$KWSGFDaddyAnalyticsAddon = new KWSGFDaddyAnalyticsAddon;
+		$KWSGFDaddyAnalyticsAddon->add_custom_hooks();
+		// Add Daddy Analytics JS tracking to all public pages
+		if($KWSGFDaddyAnalyticsAddon->is_valid_api() && !is_admin()){
+			add_action('wp_footer', array($KWSGFDaddyAnalyticsAddon, 'build_daddy_analytics_javascript'));
+		}
+
 	}
 
     if(!class_exists('KWSGFWebToLeadAddon')) {
