@@ -51,6 +51,8 @@ If you have questions, comments, or issues with this plugin, <strong>please leav
 6. Web-To-Lead: You can easily configure the field mapping for export to Salesforce using Feeds.
 7. Web-To-Lead: The plugin integrates with the [Gravity Forms Logging Tool](http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool) to log all activity and/or errors.
 8. Web-To-Lead: Specify custom fields and use the Salesforce API ID to send additional data to Salesforce.
+9. Daddy Analytics Integration: The plugin integrates with Daddy Analytics
+10. The Add-on loader added in version 3.0: Choose between API or Web-to-Lead Add-Ons.
 
 == Installation ==
 
@@ -229,6 +231,22 @@ function filter_the_gf_salesforce_datetime($use_datetime = false, $key = '', $va
 }
 `
 
+__If that doesn't work__, you can modify the format for the date by using this code: 
+
+``
+add_filter('gf_salesforce_format_date', 'modify_gf_salesforce_format_date');
+
+/**
+ * The default is US-style,  though Salesforce recommends `Y-m-d\'\T\'H:i:s`
+ * You can use any date formatting as shown here:
+ * @link  http://php.net/manual/en/function.date.php
+ */
+function modify_gf_salesforce_format_date($previous = '') {
+    $date_format = 'Y-m-d\'\T\'H:i:s';
+    return $date_format;
+}
+``
+
 = I know I have SOAP enabled and the API plugin says I don't. =
 Add this to the bottom of your theme's `functions.php` file to force loading even if a `SOAPClient` class does not exist:
 
@@ -238,6 +256,19 @@ Add this to the bottom of your theme's `functions.php` file to force loading eve
 This plugin is released under a GPL license.
 
 == Changelog ==
+
+= 3.0 (May 9, 2014) =
+* __!!MAJOR UPDATE!!__ Please read through the changes below.
+* __API Add-on Changes__
+    - __You will need to update your settings__ after installing the plugin.
+    - The Add-on no longer requires your Salesforce Security Token and Email.
+    - __The API Add-on now *REQUIRES* PHP 5.3__ If your website is running PHP 5.2, the API plugin will no longer work. This is necessary to improve security.
+    - Added debug and error logging support (using the <a href="http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool">Gravity Forms Logging Tool</a>)
+* __Web-to-Lead Add-on__
+    - Now supports mapping Address 2 fields
+    - Fixed issue with some leads not being added; this was likely because of the time it took to submit a lead to Salesforce.
+* __Daddy Analytics integration__  - the Add-on now works great with Daddy Analytics. What is [Daddy Analytics](http://try.daddyanalytics.com/marketing-roi-wp2l/)? It allows you to track your leads from their original source, and with that information, you can get true marketing ROI.
+* __Changed how the plugins are loaded__ - there's now a "Salesforce" setting in the Gravity Forms Settings page. Go there to enable or disable the different plugins. There are no longer multiple visible plugins for this Add-on.
 
 = 2.6.4.1 (March 19, 2014) =
 * Fixed (API Version): Entry update improvement when set to manually export to Salesforce
@@ -393,6 +424,19 @@ This plugin is released under a GPL license.
 * Launch!
 
 == Upgrade Notice ==
+
+= 3.0 (May 9, 2014) =
+* __!!MAJOR UPDATE!!__ Please read through the changes below.
+* __API Add-on Changes__
+    - __You will need to update your settings__ after installing the plugin.
+    - The Add-on no longer requires your Salesforce Security Token and Email.
+    - __The API Add-on now *REQUIRES* PHP 5.3__ If your website is running PHP 5.2, the API plugin will no longer work. This is necessary to improve security.
+    - Added debug and error logging support (using the <a href="http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool">Gravity Forms Logging Tool</a>)
+* __Web-to-Lead Add-on__
+    - Now supports mapping Address 2 fields
+    - Fixed issue with some leads not being added; this was likely because of the time it took to submit a lead to Salesforce.
+* __Daddy Analytics integration__  - the Add-on now works great with Daddy Analytics. What is [Daddy Analytics](http://try.daddyanalytics.com/marketing-roi-wp2l/)? It allows you to track your leads from their original source, and with that information, you can get true marketing ROI.
+* __Changed how the plugins are loaded__ - there's now a "Salesforce" setting in the Gravity Forms Settings page. Go there to enable or disable the different plugins. There are no longer multiple visible plugins for this Add-on.
 
 = 2.6.4.1 (March 19, 2014) =
 * Fixed (API Version): Entry update improvement when set to manually export to Salesforce
