@@ -897,7 +897,8 @@ class GFSalesforce {
 
 		// If the settings aren't set...return false
 		if(!is_array($settings) || empty($settings)) {
-			#return false;
+			self::log_error("get_api(): Settings not set, so we can't get the Salesforce connection.");
+			return false;
 		}
 
 		extract($settings);
