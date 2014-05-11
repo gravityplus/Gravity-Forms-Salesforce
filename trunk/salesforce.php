@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 class KWS_GF_Salesforce {
 
-    const version = '3.0.0-beta';
+    const version = '3.0.1-beta';
     static $file;
     static $plugin_dir_path;
 

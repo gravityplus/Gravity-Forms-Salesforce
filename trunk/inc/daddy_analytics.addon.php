@@ -163,47 +163,60 @@ if (class_exists("GFForms")) {
 		 */
 		public function plugin_settings_fields() {
 
-			return array(
-				array(
-					"title"  => sprintf(__("%s Configuration", 'gravity-forms-salesforce'), $this->get_service_name()),
-					"description" => $this->get_ad_text(),
-					"class" => 'clear',
-					"fields" => array(
-						array(
-							"name"    => "daddy_analytics_site_id",
-							"label"   => __("Site ID", "gravity-forms-salesforce"),
-							"type"    => "text",
-							"class"   => "medium code",
+			$fields = array();
+
+			$fields[] = array(
+				"title"  => sprintf(__("%s Configuration", 'gravity-forms-salesforce'), $this->get_service_name()),
+				"description" => $this->get_ad_text(),
+				"class" => 'clear',
+				"fields" => array(
+					array(
+						"name"    => "daddy_analytics_token",
+						"label"   => __("Token", "gravity-forms-salesforce"),
+						"type"    => "text",
+						"class"   => "medium code",
+					),
+					array(
+						"name"    => "daddy_analytics_webtolead_url_id",
+						"label"   => __("Web to Lead URL ID", "gravity-forms-salesforce"),
+						"type"    => "text",
+						"class"   => "medium code",
+					),
+					array(
+						"name"    => "daddy_analytics_site_id",
+						"label"   => __("Site ID", "gravity-forms-salesforce"),
+						"type"    => "text",
+						"class"   => "medium code",
+					),
+					array(
+						"name"    => "add_js",
+						"label"   => sprintf(__("Add Javascript? %sDisable you want to add tracking code yourself.%s", "gravity-forms-salesforce"), '<span class="howto">', '</span>'),
+						"type"    => "checkbox",
+						"dependency" => array(&$this, 'using_da'),
+						"choices" => array(
+							array(
+								"name" => 'yes',
+								"label" => 'Add tracking script to the site footer?',
+								"value" => 1,
+								'default_value' => 1,
+							)
 						),
-						array(
-							"name"    => "daddy_analytics_token",
-							"label"   => __("Token", "gravity-forms-salesforce"),
-							"type"    => "text",
-							"class"   => "medium code",
-						),
-						array(
-							"name"    => "daddy_analytics_webtolead_url_id",
-							"label"   => __("Web to Lead URL ID", "gravity-forms-salesforce"),
-							"type"    => "text",
-							"class"   => "medium code",
-						),
-						array(
-							"name"    => "add_js",
-							"label"   => sprintf(__("Add Javascript? %sDisable you want to add tracking code yourself.%s", "gravity-forms-salesforce"), '<span class="howto">', '</span>'),
-							"type"    => "checkbox",
-							"dependency" => array(&$this, 'using_da'),
-							"choices" => array(
-								array(
-									"name" => 'yes',
-									"label" => 'Add tracking script to the site footer?',
-									"value" => 1,
-									'default_value' => 1,
-								)
-							),
+					),
+					array(
+						'name' => 'Save',
+						'type' => 'save',
+						'messages' => array(
+							'success' => __('Settings updated successfully.', 'gravity-forms-salesforce'),
+							'error' => __('Settings failed to update successfully.', 'gravity-forms-salesforce')
 						)
 					)
-				),
-				array(
+				)
+			);
+
+			// If you need to define custom API names, you can do so here.
+			// Sometimes Salesforce adds prefixes.
+			if( apply_filters( 'gf_salesforce_custom_da_api_names', false ) ) {
+				$fields[] = array(
 					"title"  => __("Salesforce API Name Configuration", 'gravity-forms-salesforce'),
 					"description" => wpautop(sprintf(__('Make sure the API names below match what is in Salesforce on your %sLead Fields%s page.', 'gravity-forms-salesforce'), '<a href="https://na11.salesforce.com/p/setup/layout/LayoutFieldList?setupid=LeadFields&amp;type=Lead">', '</a>')).wpautop(sprintf('<img src="%s" width="658" height="133" style="max-width:100%%;" alt="Salesforce API Fields" />', plugins_url( 'assets/images/daddy_analytics/Salesforce_API_Fields.png', KWS_GF_Salesforce::$file ))),
 					"style" => 'padding-top: 0;',
@@ -231,8 +244,10 @@ if (class_exists("GFForms")) {
 							)
 						)
 					)
-				)
-			);
+				);
+			}
+
+			return $fields;
 		}
 
 		function get_ad_term(){
