@@ -163,6 +163,10 @@ if (class_exists("GFForms")) {
 			// There's one setting: salesforce_integration, and it's empty.
 			$settings = array('salesforce_integration' => array());
 
+			if(!function_exists('is_plugin_active')) {
+				include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			}
+
 			// API used to be active
 			if(is_plugin_active( 'gravity-forms-salesforce/salesforce-api.php' )) {
 				$settings['salesforce_integration']['api'] = 1;

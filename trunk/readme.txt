@@ -257,6 +257,9 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 3.0.2 (June 4, 2014) =
+* Fixed: `is_plugin_active()` not defined fatal error on activation
+
 = 3.0.1 (May 11, 2014) =
 * Modified: Hide Daddy Analytics custom API Name settings, unless the `gf_salesforce_custom_da_api_names` filter returns true.
 * Fixed (API): Return false in `get_api()` method when settings are empty.
