@@ -557,7 +557,7 @@ class GFSalesforce {
 			$valid = true;
 		} else if(!$api) {
 			$message = sprintf(__('%sYour Salesforce connection isn&rsquo;t working properly. Please log in again below.%s
-			For more information, please install the %sGravity Forms Logging Tool%s and try again.', 'gravity-forms-salesforce'), '<h3 style="margin-top:1em;">', '</h3>', "<a href='http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool' target='_blank'>", '</a>');
+			For more information, please install the %sGravity Forms Logging Tool%s and try again.', 'gravity-forms-salesforce'), '<h3 style="margin-top:1em;">', '</h3>', "<a href='http://www.gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool' target='_blank'>", '</a>');
 			$valid = false;
 			$class = "error invalid_credentials";
 		} else {
@@ -1141,7 +1141,10 @@ class GFSalesforce {
 
 		$api = self::get_api();
 
-		if(!self::api_is_valid($api)) { return false; }
+		if(!self::api_is_valid($api)) {
+			self::log_error('getObjectTypes(): API is invalid. '.print_r($api, true));
+			return false;
+		}
 
 		try {
 			$objects = $api->describeGlobal();
@@ -1161,6 +1164,7 @@ class GFSalesforce {
 			return $lists;
 
 		} catch (Exception $e) {
+			self::log_error( sprintf( "getObjectTypes():\n\nException While Getting Object Types\n Here's the error:\n%s", $e->getMessage() ) );
 			return false;
 		}
 
@@ -1284,8 +1288,8 @@ class GFSalesforce {
 				$lists = self::getObjectTypes();
 
 				if(!$lists) {
-					echo __("Could not load Salesforce contact lists. <br/>Error: ", "gravity-forms-salesforce");
-					echo isset($api->errorMessage) ? $api->errorMessage : '';
+					echo __("Could not load Salesforce contact lists.", "gravity-forms-salesforce");
+					echo isset($api->errorMessage) ? ' <br/>'.$api->errorMessage : '';
 				} else {
 ?>
 					<select id="gf_salesforce_list" name="gf_salesforce_list" onchange="SelectList(jQuery(this).val()); SelectForm(jQuery(this).val(), jQuery('#gf_salesforce_form').val());">
