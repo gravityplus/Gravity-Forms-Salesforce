@@ -716,7 +716,7 @@ class GFSalesforce {
 			?>
 			<div class="error" id="message" style="margin-top:20px;">
 				<h3><?php _e('Salesforce Error', "gravity-forms-salesforce");?></h3>
-				<p><?php echo empty($api) ? __(sprintf("To get started, please configure your %sSalesforce Settings%s.", '<a href="admin.php?page=gf_settings&amp;addon=Salesforce">', "</a>"), "gravity-forms-salesforce") : $api; ?></p>
+				<p><?php echo empty($api) ? __(sprintf("To get started, please configure your %sSalesforce Settings%s.", '<a href="admin.php?page=gf_settings&amp;addon=Salesforce&amp;subview=Salesforce%3A+API">', "</a>"), "gravity-forms-salesforce") : $api; ?></p>
 			</div>
 			<?php
 				} else {
@@ -727,7 +727,7 @@ class GFSalesforce {
 			<?php } ?>
 			<div class="clear"></div>
 			<ul class="subsubsub" style="margin-top:0;">
-				<li><a href="<?php echo admin_url('admin.php?page=gf_settings&amp;addon=Salesforce'); ?>">Salesforce Settings</a> |</li>
+				<li><a href="<?php echo admin_url('admin.php?page=gf_settings&amp;addon=Salesforce&amp;subview=Salesforce%3A+API'); ?>">Salesforce Settings</a> |</li>
 				<li><a href="<?php echo admin_url('admin.php?page=gf_salesforce'); ?>" class="current">Salesforce Feeds</a></li>
 			</ul>
 
@@ -820,7 +820,7 @@ class GFSalesforce {
 								?>
 								<tr>
 									<td colspan="4" style="padding:20px;">
-										<?php _e(sprintf("To get started, please configure your %sSalesforce Settings%s.", '<a href="admin.php?page=gf_settings&amp;addon=Salesforce">', "</a>"), "gravity-forms-salesforce"); ?>
+										<?php _e(sprintf("To get started, please configure your %sSalesforce Settings%s.", '<a href="admin.php?page=gf_settings&amp;addon=Salesforce&amp;subview=Salesforce%3A+API">', "</a>"), "gravity-forms-salesforce"); ?>
 									</td>
 								</tr>
 								<?php
@@ -1200,7 +1200,7 @@ class GFSalesforce {
 			<img alt="<?php _e("Salesforce Feeds", "gravity-forms-salesforce") ?>" src="<?php echo self::get_base_url()?>/assets/images/salesforce-50x50.png" style="float:left; margin:15px 7px 0 0;"/>
 			<h2><?php _e("Salesforce Feeds", "gravity-forms-salesforce"); ?></h2>
 			<ul class="subsubsub">
-				<li><a href="<?php echo admin_url('admin.php?page=gf_settings&amp;addon=Salesforce'); ?>">Salesforce Settings</a> |</li>
+				<li><a href="<?php echo admin_url('admin.php?page=gf_settings&amp;addon=Salesforce&amp;subview=Salesforce%3A+API'); ?>">Salesforce Settings</a> |</li>
 				<li><a href="<?php echo admin_url('admin.php?page=gf_salesforce'); ?>">Salesforce Feeds</a></li>
 			</ul>
 		<div class="clear"></div>
