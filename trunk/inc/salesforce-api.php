@@ -946,10 +946,19 @@ class GFSalesforce {
 			 * @link  https://developer.salesforce.com/blogs/developer-relations/2011/03/oauth-and-the-soap-api.html
 			 */
 			$token = self::getAccessToken();
+
+			if( empty( $token ) ) {
+				self::log_error("get_api(): The access token is empty - app is not yet authenticated");
+				return false;
+			}
+
 			$mySforceConnection->setSessionHeader($token);
 			$mySforceConnection->setEndpoint(self::getEndpoint($token));
 
 			$mySforceConnection = apply_filters('gf_salesforce_connection', $mySforceConnection);
+
+			//let's force some action through the connection to make sure is up and running!
+			$timestamp = $mySforceConnection->getServerTimestamp();
 
 			self::$api = $mySforceConnection;
 
