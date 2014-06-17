@@ -951,6 +951,9 @@ class GFSalesforce {
 
 			$mySforceConnection = apply_filters('gf_salesforce_connection', $mySforceConnection);
 
+			//let's force some action through the connection to make sure is up and running!
+			$timestamp = $mySforceConnection->getServerTimestamp();
+
 			self::$api = $mySforceConnection;
 
 			return $mySforceConnection;
