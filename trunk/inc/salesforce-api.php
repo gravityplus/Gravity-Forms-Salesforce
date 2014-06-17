@@ -37,6 +37,11 @@ class GFSalesforce {
 		self::$version = KWS_GF_Salesforce::version;
 
 		add_action('init',  array(&$this, 'init'));
+
+		// New fields at entries export
+		add_filter( 'gform_export_fields', array( 'GFSalesforce', 'export_entries_add_fields' ), 10, 1 );
+		add_filter( 'gform_export_field_value', array( 'GFSalesforce', 'export_entries_add_values' ), 999, 4);
+
 	}
 
 	//Plugin starting point. Will load appropriate files
@@ -120,6 +125,8 @@ class GFSalesforce {
 
 		add_action( 'gform_entry_info', array('GFSalesforce', 'entry_info_send_to_salesforce_checkbox'), 99, 2);
 		add_filter( 'gform_entrydetail_update_button', array('GFSalesforce', 'entry_info_send_to_salesforce_button'), 999, 1);
+
+
 	}
 
 	/**
@@ -2160,13 +2167,16 @@ class GFSalesforce {
 				"\nFile: " . $e->getFile() .
 				"\nLine: " . $e->getLine() .
 				"\nArgs: ". serialize($merge_vars);
+
+			gform_update_meta( $entry['id'], 'salesforce_api_result', 'Error: ' . $e->getMessage() );
 		}
 
 		if  (isset($result[0]) && !empty($result[0]->success)) {
 
 			$result_id = $result[0]->id;
 
-			gform_update_meta($entry['id'], 'salesforce_id', $result_id);
+			gform_update_meta( $entry['id'], 'salesforce_id', $result_id );
+			gform_update_meta( $entry['id'], 'salesforce_api_result', 'success' );
 
 			$success_note = sprintf(__('Successfully added/updated to Salesforce with ID #%s . View entry at %s', 'gravity-forms-salesforce'), $result_id, self::getTokenParam('instance_url').'/'.$result_id);
 
@@ -2446,6 +2456,41 @@ class GFSalesforce {
 		return plugin_dir_path(KWS_GF_Salesforce::$file);
 	}
 
+	/**
+	 * Export Entries
+	 */
+
+	/**
+	 * Add meta fields to entries export screen
+	 * @param  $form object
+	 * @return object
+	 */
+	public static function export_entries_add_fields( $form ) {
+		$form["fields"][] = array('id' => 'salesforce_id' , 'label' => __( 'Salesforce ID', 'gravity-forms-salesforce' ) );
+		$form["fields"][] = array('id' => 'salesforce_api_result' , 'label' => __( 'Salesforce API result', 'gravity-forms-salesforce' ) );
+		return $form;
+	}
+
+	/**
+	 * Populate meta field values when exporting entries
+	 * @param  string $value    Value of the field being exported
+	 * @param  int $form_id     ID of the current form.
+	 * @param  int $field_id    ID of the current field.
+	 * @param  object $lead     The current entry.
+	 * @return string
+	 */
+	public static function export_entries_add_values( $value, $form_id, $field_id, $lead ) {
+		switch( $field_id ) {
+			case 'salesforce_id':
+				$value = gform_get_meta( $lead['id'], 'salesforce_id' );
+				break;
+			case 'salesforce_api_result':
+				$value = gform_get_meta( $lead['id'], 'salesforce_api_result' );
+				break;
+		}
+
+		return $value;
+	}
 
 }
 
