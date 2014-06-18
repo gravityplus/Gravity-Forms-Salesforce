@@ -288,6 +288,9 @@ class GFSalesforce {
 
 		$salesforceService = new Salesforce($credentials, $client, $storage, $scopes);
 
+		// Is this a sandbox connection?
+		$salesforceService->setSandbox( (bool) apply_filters( 'gf_salesforce_service_is_sandbox', false ) );
+
 		return $salesforceService;
 	}
 
