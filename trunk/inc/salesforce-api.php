@@ -256,6 +256,7 @@ class GFSalesforce {
 	 * @filter `gf_salesforce_service_client` `OAuth\Common\Http\Client` object. Default: `CurlClient`
 	 * @filter `gf_salesforce_service_storage` `OAuth\Common\Storage` object. Default: `WordPressMemory`
 	 * @filter  `gf_salesforce_service_scopes` Modify the access the plugin has. Needs `api` and `refresh_token`.
+	 * @filter  `gf_salesforce_service_is_sandbox` Modify whether to use the Sandbox. Returns `true` or `false`.
 	 * @return OAuth\OAuth2\Service\Salesforce
 	 */
 	static private function getSalesforceService() {
@@ -291,7 +292,6 @@ class GFSalesforce {
 
 		// If there's a cached endpoint, use it.
 		if( $cached = get_transient('salesforce_endpoint_token') ) {
-			// TODO: Enable again!
 			return $cached;
 		}
 
