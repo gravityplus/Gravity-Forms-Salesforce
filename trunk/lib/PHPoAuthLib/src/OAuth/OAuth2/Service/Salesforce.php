@@ -22,11 +22,30 @@ class Salesforce extends AbstractService
             SCOPE_REFRESH_TOKEN =   'refresh_token';
 
     /**
+     * Are we connecting to Salesforce?
+     * @var boolean
+     */
+    var     $sandbox            =   false;
+
+    /**
      * {@inheritdoc}
      */
     public function getAuthorizationEndpoint()
     {
-        return new Uri('https://login.salesforce.com/services/oauth2/authorize');
+        if ( $this->sandbox ) {
+            return new Uri('https://test.salesforce.com/services/oauth2/authorize');
+        } else {
+            return new Uri('https://login.salesforce.com/services/oauth2/authorize');
+        }
+    }
+
+    /**
+     * Define whether using Salesforce Sandbox or not.
+     *
+     * @param  boolean     $is_sandbox Should the connection use Salesforce?
+     */
+    public function setSandbox( $is_sandbox = false ) {
+        $this->sandbox = !empty( $is_sandbox );
     }
 
     /**
@@ -34,7 +53,11 @@ class Salesforce extends AbstractService
      */
     public function getAccessTokenEndpoint()
     {
-        return new Uri('https://na1.salesforce.com/services/oauth2/token');
+        if ( $this->sandbox ) {
+            return new Uri('https://test.salesforce.com/services/oauth2/token');
+        } else {
+            return new Uri('https://na1.salesforce.com/services/oauth2/token');
+        }
     }
 
     /**
