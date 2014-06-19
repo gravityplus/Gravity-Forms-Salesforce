@@ -27,7 +27,7 @@ class GFSalesforce_FieldMapping {
  * @return array       Modified GF array object
  */
     function override_form($form, $ajax = null) {
-        foreach($form['fields'] as &$field) {
+        foreach($form['fields'] as $field) {
 
             // If the field has mapping enabled, and the object and field are defined, replace it
             if(
