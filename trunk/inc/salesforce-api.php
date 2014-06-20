@@ -356,6 +356,10 @@ class GFSalesforce {
 		$Storage = new WordPressMemory;
 		self::log_debug('Token was cleared.');
 		$Storage->clearToken('Salesforce');
+
+		//Delete the refresh token if exists
+		delete_option( 'gf_salesforce_refreshtoken' );
+		self::log_debug('Refresh Token cleared');
 	}
 
 	/**
@@ -958,7 +962,7 @@ class GFSalesforce {
 			$token = self::getAccessToken();
 
 			if( empty( $token ) ) {
-				self::log_error("get_api(): The access token is empty - app is not yet authenticated");
+				self::log_debug("get_api(): The access token is empty - app is not yet authenticated");
 				return false;
 			}
 
