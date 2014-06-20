@@ -100,7 +100,14 @@ class Salesforce extends AbstractService
 
         if (isset($data['refresh_token'])) {
             $token->setRefreshToken($data['refresh_token']);
+            // Save Refresh Token persistently until it is cleared manually
+            update_option( 'gf_salesforce_refreshtoken', $data['refresh_token'] );
             unset($data['refresh_token']);
+        } else {
+            $refresh_token = get_option( 'gf_salesforce_refreshtoken' );
+            if( !empty( $refresh_token ) ) {
+                $token->setRefreshToken( $refresh_token );
+            }
         }
 
         $token->setExtraParams($data);
