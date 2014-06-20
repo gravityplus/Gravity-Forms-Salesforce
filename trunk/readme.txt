@@ -20,8 +20,7 @@ Add one setting, check a box when configuring your forms, and all your form entr
 
 This free Salesforce Add-On for Gravity Forms adds contacts into Salesforce automatically, making customer relationship management simple. The setup process takes a few minutes, and your contact form will be linked with Salesforce.
 
-#### Now with Custom Field support! ####
-<a href="http://wordpress.org/extend/plugins/gravity-forms-salesforce/faq/">Read the FAQ</a> for information on how to integrate with Custom Fields.
+> __This plugin requires PHP 5.3 or higher.__
 
 #### Using the API
 If you have the following Salesforce Editions, you can use the included API Add-on:
@@ -256,6 +255,9 @@ Add this to the bottom of your theme's `functions.php` file to force loading eve
 This plugin is released under a GPL license.
 
 == Changelog ==
+
+= 3.0.3 (June 20, 2014) =
+* Fixed: Finally nailed the OAuth Refresh Token flow. It's all working nicely now.
 
 = 3.0.2 (June 4, 2014) =
 * Fixed: `is_plugin_active()` not defined fatal error on activation
