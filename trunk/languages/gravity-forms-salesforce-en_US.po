@@ -1,0 +1,1074 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Gravity Forms Salesforce Add-On\n"
+"POT-Creation-Date: 2014-06-26 13:13-0700\n"
+"PO-Revision-Date: 2014-06-26 13:17-0700\n"
+"Last-Translator: Katz Web Services, Inc. <support@katz.co>\n"
+"Language-Team: Katz Web Services, Inc. <support@katz.co>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.5\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: inc/daddy_analytics.addon.php:169
+#, php-format
+msgid "%s Configuration"
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:175
+msgid "Token"
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:181
+msgid "Web to Lead URL ID"
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:187
+msgid "Site ID"
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:193
+#, php-format
+msgid "Add Javascript? %sDisable you want to add tracking code yourself.%s"
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:209 inc/daddy_analytics.addon.php:242
+#: inc/loader.php:285
+msgid "Settings updated successfully."
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:210 inc/daddy_analytics.addon.php:243
+#: inc/loader.php:286
+msgid "Settings failed to update successfully."
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:220
+msgid "Salesforce API Name Configuration"
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:221
+#, php-format
+msgid ""
+"Make sure the API names below match what is in Salesforce on your %sLead "
+"Fields%s page."
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:226
+msgid "Web-to-Lead URL API Name"
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:233
+msgid "Daddy Analytics Token API Name"
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:296
+#, php-format
+msgid ""
+"Daddy Analytics allows you to track your leads from their original source, "
+"such as Adwords, Google Organic, Social Media, or other blogs. With that "
+"information you can get your true marketing ROI, as each Opportunity is "
+"attributed to the marketing activity that brought in the Lead. %sWatch a "
+"video of Daddy Analytics%s"
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:297
+#, php-format
+msgid ""
+"Daddy Analytics allows you to track your leads from their original source, "
+"such as Adwords, Google Organic, Social Media, or other blogs. With that "
+"information you can get your true marketing ROI, as each Opportunity is "
+"attributed to the marketing activity that brought in the Lead. %sSign up for "
+"a free trial of Daddy Analytics%s"
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:357
+#, php-format
+msgid "Thank you for using %sDaddy Analytics%s!"
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:372
+#, php-format
+msgid ""
+"%sLeave the Lead Source field blank%s for Daddy Analytics. Daddy Analytics "
+"will populate the Lead Source field with the web source of the Lead (such as "
+"Organic - Google, Paid - Bing, or Google Adwords)."
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:390
+msgid "Daddy Analytics"
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:405
+#, php-format
+msgid "%s Active: Your Daddy Analytics configuration is valid."
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:410
+msgid ""
+"Please login to your Daddy Analytics account to obtain your account "
+"information."
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:412
+msgid "Please complete all fields for your Daddy Analytics account."
+msgstr ""
+
+#: inc/daddy_analytics.addon.php:414
+#, php-format
+msgid "%s Invalid field values - Please confirm your settings."
+msgstr ""
+
+#: inc/edit-form.php:130
+msgid "Error:"
+msgstr ""
+
+#: inc/edit-form.php:142
+msgid " <strong class=\"default\">(Default)</strong>"
+msgstr ""
+
+#: inc/edit-form.php:161
+msgid "Pickist Field"
+msgstr ""
+
+#: inc/edit-form.php:162 inc/salesforce-api.php:1814
+msgid "Form Fields"
+msgstr ""
+
+#: inc/edit-form.php:361
+msgid "Ajax error selecting the Salesforce object."
+msgstr ""
+
+#: inc/edit-form.php:419
+msgid "Enable Salesforce Field Mapping?"
+msgstr ""
+
+#: inc/edit-form.php:420
+msgid "Enable Salesforce.com Mapping"
+msgstr ""
+
+#: inc/edit-form.php:426
+msgid "Live Remote Field Mapping?"
+msgstr ""
+
+#: inc/edit-form.php:427
+msgid "Field Choices will be synced with Salesforce picklist values."
+msgstr ""
+
+#: inc/edit-form.php:430
+msgid "Only Populate Choices"
+msgstr ""
+
+#: inc/edit-form.php:431
+msgid "Field Choices will not be updated live and are editable."
+msgstr ""
+
+#: inc/edit-form.php:434
+msgid "Choose Object: "
+msgstr ""
+
+#: inc/edit-form.php:440
+msgid "Could not load Salesforce objects. <br/>Error: "
+msgstr ""
+
+#: inc/edit-form.php:444 inc/salesforce-api.php:1315
+msgid "Select a Salesforce Object"
+msgstr ""
+
+#: inc/kwsaddon.php:181
+msgid "Invalid username and/or API key. Please try another combination."
+msgstr ""
+
+#: inc/kwsaddon.php:185
+msgid "Your configuration is working!"
+msgstr ""
+
+#: inc/kwsaddon.php:315 inc/web-to-lead.php:149
+msgid "Feed Name (optional)"
+msgstr ""
+
+#: inc/kwsaddon.php:320
+#, php-format
+msgid "%s List"
+msgstr ""
+
+#: inc/kwsaddon.php:320
+#, php-format
+msgid "Select the %s list you would like to add your contacts to."
+msgstr ""
+
+#: inc/kwsaddon.php:328 inc/web-to-lead.php:173
+msgid "Map Fields"
+msgstr ""
+
+#: inc/kwsaddon.php:328 inc/web-to-lead.php:173
+#, php-format
+msgid ""
+"Associate your %s merge variables to the appropriate Gravity Form fields by "
+"selecting."
+msgstr ""
+
+#: inc/kwsaddon.php:334 inc/web-to-lead.php:179
+msgid "Custom Fields"
+msgstr ""
+
+#: inc/kwsaddon.php:340 inc/salesforce-api.php:490 inc/salesforce-api.php:1413
+#: inc/web-to-lead.php:186
+msgid "Opt-In Condition"
+msgstr ""
+
+#: inc/kwsaddon.php:340 inc/web-to-lead.php:186
+#, php-format
+msgid ""
+"When the opt-in condition is enabled, form submissions will only be exported "
+"to %s when the condition is met. When disabled all form submissions will be "
+"exported."
+msgstr ""
+
+#: inc/kwsaddon.php:366
+#, php-format
+msgid "Custom Field: <span class=\"custom_field_name\">%s</span>"
+msgstr ""
+
+#: inc/kwsaddon.php:477
+msgid "Add a custom field"
+msgstr ""
+
+#: inc/kwsaddon.php:536
+#, php-format
+msgid "%s integration is enabled for this Form"
+msgstr ""
+
+#: inc/kwsaddon.php:567
+#, php-format
+msgid "You must choose at least one %s list to receive contacts."
+msgstr ""
+
+#: inc/kwsaddon.php:631 inc/web-to-lead.php:145
+msgid "Feed Name"
+msgstr ""
+
+#: inc/kwsaddon.php:632
+msgid "Connected Lists"
+msgstr ""
+
+#: inc/kwsaddon.php:647
+#, php-format
+msgid "Untitled Feed (#%s)"
+msgstr ""
+
+#: inc/kwsaddon.php:666
+msgid "No Lists Connected."
+msgstr ""
+
+#: inc/kwsaddon.php:735
+#, php-format
+msgid "%s Add-On Settings"
+msgstr ""
+
+#: inc/loader.php:87
+msgid ""
+"As of version 2.7, the Gravity Forms Salesforce API Add-On requires PHP 5.3 "
+"or above. Please contact your hosting provider support and ask them to "
+"upgrade your server."
+msgstr ""
+
+#: inc/loader.php:89
+#, php-format
+msgid ""
+"If this is not possible, you may %sdownload the last version of the plugin%s "
+"that did not require PHP 5.3."
+msgstr ""
+
+#: inc/loader.php:95
+msgid ""
+"The API Add-On requires SOAP support. Please contact your hosting provider "
+"and ask them to enable SOAP on your server."
+msgstr ""
+
+#: inc/loader.php:100
+msgid ""
+"The API Add-On requires cURL. Please contact your hosting provider and ask "
+"them to enable cURL on your server."
+msgstr ""
+
+#: inc/loader.php:105
+msgid "The API Add-On requires server support for the OpenSSL extension."
+msgstr ""
+
+#: inc/loader.php:114 inc/loader.php:351
+msgid "The Salesforce: API Add-On could not be loaded."
+msgstr ""
+
+#: inc/loader.php:115
+msgid ""
+"Please contact your hosting provider and ask them to enable support for the "
+"following on your server:"
+msgstr ""
+
+#: inc/loader.php:121
+msgid ""
+"You can use the Salesforce Web-to-Lead Add-on; it doesn&#8217;t have the "
+"same requirements."
+msgstr ""
+
+#: inc/loader.php:264
+msgid "Salesforce Configuration"
+msgstr ""
+
+#: inc/loader.php:275
+#, php-format
+msgid "%sIntegration Method%s %sChoose the type of connection to Salesforce."
+msgstr ""
+
+#: inc/loader.php:291
+msgid ""
+"Note: for detailed plugin debug and error logs, please install the <a "
+"href='http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool' "
+"target='_blank'>Gravity Forms Logging Tool</a>."
+msgstr ""
+
+#: inc/loader.php:351
+msgid ""
+"The Gravity Form Salesforce: API Add-On requires that your server support "
+"SOAP. Please contact your hosting provider and ask them to enable SOAP on "
+"your server.\n"
+"\n"
+"\t\t\t\tYou can also use the Salesforce Web-to-Lead Add-on; this doesn&#8217;"
+"t require SOAP."
+msgstr ""
+
+#: inc/salesforce-api.php:453 inc/salesforce-api.php:488
+msgid ""
+"Select the Gravity Form you would like to integrate with Salesforce. "
+"Contacts generated by this form will be automatically added to your "
+"Salesforce account."
+msgstr ""
+
+#: inc/salesforce-api.php:453
+msgid "Feeds"
+msgstr ""
+
+#: inc/salesforce-api.php:455
+msgid "Configure your Salesforce settings."
+msgstr ""
+
+#: inc/salesforce-api.php:455 salesforce.php:72
+msgid "Settings"
+msgstr ""
+
+#: inc/salesforce-api.php:487 inc/salesforce-api.php:766
+#: inc/salesforce-api.php:775 inc/salesforce-api.php:1303
+msgid "Salesforce Object"
+msgstr ""
+
+#: inc/salesforce-api.php:487
+msgid "Select the Salesforce object you would like to add your contacts to."
+msgstr ""
+
+#: inc/salesforce-api.php:488 inc/salesforce-api.php:1351
+msgid "Gravity Form"
+msgstr ""
+
+#: inc/salesforce-api.php:489
+msgid "Map Standard Fields"
+msgstr ""
+
+#: inc/salesforce-api.php:489
+msgid ""
+"Associate your Salesforce fields to the appropriate Gravity Form fields by "
+"selecting. <a href='http://www.salesforce.com/us/developer/docs/api/Content/"
+"field_types.htm'>Learn about the Field Types</a> in Salesforce."
+msgstr ""
+
+#: inc/salesforce-api.php:490
+msgid ""
+"When the opt-in condition is enabled, form submissions will only be exported "
+"to Salesforce when the condition is met. When disabled all form submissions "
+"will be exported."
+msgstr ""
+
+#: inc/salesforce-api.php:491
+msgid "Manual Export"
+msgstr ""
+
+#: inc/salesforce-api.php:491
+msgid ""
+"If you don't want all entries sent to Salesforce, but only specific, "
+"approved entries, check this box. To send an entry to Salesforce, you go to "
+"Entries, choose the entry you would like to send to Salesforce, and then "
+"click the 'Send to Salesforce' button."
+msgstr ""
+
+#: inc/salesforce-api.php:502
+msgid "Salesforce"
+msgstr ""
+
+#: inc/salesforce-api.php:565
+#, php-format
+msgid ""
+"Valid configuration. Now go %sconfigure form integration with Salesforce%s!"
+msgstr ""
+
+#: inc/salesforce-api.php:569
+#, php-format
+msgid ""
+"%sYour Salesforce connection isn&#8217;t working properly. Please log in "
+"again below.%s For more information, please install the %sGravity Forms "
+"Logging Tool%s and try again.%s"
+msgstr ""
+
+#: inc/salesforce-api.php:585
+msgid "Salesforce Account Information"
+msgstr ""
+
+#: inc/salesforce-api.php:586
+msgid "Salesforce API"
+msgstr ""
+
+#: inc/salesforce-api.php:589
+msgid "Salesforce Account"
+msgstr ""
+
+#: inc/salesforce-api.php:600
+#, php-format
+msgid "Authorized connection to <code>%s</code> on %s"
+msgstr ""
+
+#: inc/salesforce-api.php:623
+msgid "Login with Salesforce!"
+msgstr ""
+
+#: inc/salesforce-api.php:632
+msgid "Notify by Email on Errors"
+msgstr ""
+
+#: inc/salesforce-api.php:635
+msgid ""
+"An email will be sent to this email address if an entry is not properly "
+"added to Salesforce. Leave blank to disable."
+msgstr ""
+
+#: inc/salesforce-api.php:639
+msgid "Remote Cache Time"
+msgstr ""
+
+#: inc/salesforce-api.php:639
+msgid "This is an advanced setting. You likely won't need to change this."
+msgstr ""
+
+#: inc/salesforce-api.php:643
+msgid "One Minute (for testing only!)"
+msgstr ""
+
+#: inc/salesforce-api.php:644
+msgid "One Hour"
+msgstr ""
+
+#: inc/salesforce-api.php:645
+msgid "Six Hours"
+msgstr ""
+
+#: inc/salesforce-api.php:646
+msgid "12 Hours"
+msgstr ""
+
+#: inc/salesforce-api.php:647
+msgid "1 Day"
+msgstr ""
+
+#: inc/salesforce-api.php:648
+msgid "2 Days"
+msgstr ""
+
+#: inc/salesforce-api.php:649
+msgid "3 Days"
+msgstr ""
+
+#: inc/salesforce-api.php:650
+msgid "5 Days"
+msgstr ""
+
+#: inc/salesforce-api.php:651
+msgid "1 Week"
+msgstr ""
+
+#: inc/salesforce-api.php:653
+msgid ""
+"How long should form and field data be stored? This affects how often remote "
+"picklists will be checked for the Live Remote Field Mapping feature."
+msgstr ""
+
+#: inc/salesforce-api.php:658
+msgid "Save Settings"
+msgstr ""
+
+#: inc/salesforce-api.php:671 inc/salesforce-api.php:674
+msgid "Uninstall Salesforce Add-On"
+msgstr ""
+
+#: inc/salesforce-api.php:672
+msgid "Warning! This operation deletes ALL Salesforce Feeds."
+msgstr ""
+
+#: inc/salesforce-api.php:674
+msgid ""
+"Warning! ALL Salesforce Feeds will be deleted. This cannot be undone. \\'OK"
+"\\' to delete, \\'Cancel\\' to stop"
+msgstr ""
+
+#: inc/salesforce-api.php:700
+msgid "Feed deleted."
+msgstr ""
+
+#: inc/salesforce-api.php:711
+msgid "Feeds deleted."
+msgstr ""
+
+#: inc/salesforce-api.php:718 inc/salesforce-api.php:719
+msgid "Salesforce.com Feeds"
+msgstr ""
+
+#: inc/salesforce-api.php:720
+msgid "Add New"
+msgstr ""
+
+#: inc/salesforce-api.php:727
+msgid "Salesforce Error"
+msgstr ""
+
+#: inc/salesforce-api.php:734
+msgid ""
+"Do you like this free plugin? <a href=\"http://katz.si/gfsfrate\">Please "
+"review it on WordPress.org</a>! <small class=\"description alignright"
+"\">Note: You must be logged in to WordPress.org to leave a review!</small>"
+msgstr ""
+
+#: inc/salesforce-api.php:750 inc/salesforce-api.php:752
+msgid "Bulk action"
+msgstr ""
+
+#: inc/salesforce-api.php:753 inc/salesforce-api.php:799
+msgid "Delete"
+msgstr ""
+
+#: inc/salesforce-api.php:756
+msgid "Apply"
+msgstr ""
+
+#: inc/salesforce-api.php:756
+msgid "Delete selected feeds? "
+msgstr ""
+
+#: inc/salesforce-api.php:756 inc/salesforce-api.php:799
+msgid "\\'Cancel\\' to stop, \\'OK\\' to delete."
+msgstr ""
+
+#: inc/salesforce-api.php:765 inc/salesforce-api.php:774
+msgid "Form"
+msgstr ""
+
+#: inc/salesforce-api.php:789 inc/salesforce-api.php:857
+msgid "Active"
+msgstr ""
+
+#: inc/salesforce-api.php:789 inc/salesforce-api.php:853
+msgid "Inactive"
+msgstr ""
+
+#: inc/salesforce-api.php:791 inc/salesforce-api.php:794
+msgid "Edit"
+msgstr ""
+
+#: inc/salesforce-api.php:799
+msgid "Delete this feed? "
+msgstr ""
+
+#: inc/salesforce-api.php:804
+msgid "Edit Form"
+msgstr ""
+
+#: inc/salesforce-api.php:809
+msgid "Preview Form"
+msgstr ""
+
+#: inc/salesforce-api.php:868
+msgid "Ajax error while updating feed"
+msgstr ""
+
+#: inc/salesforce-api.php:1219 inc/salesforce-api.php:1220
+msgid "Salesforce Feeds"
+msgstr ""
+
+#: inc/salesforce-api.php:1234
+#, php-format
+msgid ""
+"We are unable to login to Salesforce with the provided username and API key. "
+"Please make sure they are valid in the %sSettings Page%s"
+msgstr ""
+
+#: inc/salesforce-api.php:1287
+#, php-format
+msgid "Feed Updated. %sback to list%s"
+msgstr ""
+
+#: inc/salesforce-api.php:1294
+msgid "Feed could not be updated. Please enter all required information below."
+msgstr ""
+
+#: inc/salesforce-api.php:1302
+msgid "1. Select the Object to create when a form is submitted."
+msgstr ""
+
+#: inc/salesforce-api.php:1310
+msgid "Could not load Salesforce contact lists."
+msgstr ""
+
+#: inc/salesforce-api.php:1339
+msgid "2. Select the form to tap into."
+msgstr ""
+
+#: inc/salesforce-api.php:1346
+#, php-format
+msgid "(Currently linked with %s)"
+msgstr ""
+
+#: inc/salesforce-api.php:1354
+msgid "Select a form"
+msgstr ""
+
+#: inc/salesforce-api.php:1371
+msgid "3. Map form fields to Salesforce fields."
+msgstr ""
+
+#: inc/salesforce-api.php:1372
+msgid "About field mapping:"
+msgstr ""
+
+#: inc/salesforce-api.php:1373
+msgid "Standard Fields"
+msgstr ""
+
+#: inc/salesforce-api.php:1398 inc/salesforce-api.php:1401
+msgid "Disable Automatic Export"
+msgstr ""
+
+#: inc/salesforce-api.php:1404
+msgid "Entries will be sent to Salesforce when updated in the admin"
+msgstr ""
+
+#: inc/salesforce-api.php:1419
+msgid "Enable"
+msgstr ""
+
+#: inc/salesforce-api.php:1426
+msgid "Export to Salesforce if "
+msgstr ""
+
+#: inc/salesforce-api.php:1430
+msgid "is"
+msgstr ""
+
+#: inc/salesforce-api.php:1431
+msgid "is not"
+msgstr ""
+
+#: inc/salesforce-api.php:1438
+msgid ""
+"To create an Opt-In condition, your form must have a drop down, checkbox or "
+"multiple choice field."
+msgstr ""
+
+#: inc/salesforce-api.php:1469
+msgid "4. Choose a \"Primary Key\" field."
+msgstr ""
+
+#: inc/salesforce-api.php:1470
+msgid "What field should be used to update existing objects?"
+msgstr ""
+
+#: inc/salesforce-api.php:1471
+msgid "Update Field"
+msgstr ""
+
+#: inc/salesforce-api.php:1479
+msgid ""
+"If you want to update a pre-existing object, define what should be used as "
+"an unique identifier (\"Primary Key\"). For example, this may be an email "
+"address, Lead ID, or address."
+msgstr ""
+
+#: inc/salesforce-api.php:1487
+msgid "Save Feed"
+msgstr ""
+
+#: inc/salesforce-api.php:1487
+msgid "Update Feed"
+msgstr ""
+
+#: inc/salesforce-api.php:1559
+msgid "Ajax error while selecting a form"
+msgstr ""
+
+#: inc/salesforce-api.php:1680
+msgid "None"
+msgstr ""
+
+#: inc/salesforce-api.php:1814
+msgid "List Fields"
+msgstr ""
+
+#: inc/salesforce-api.php:1821
+msgid "(Required)"
+msgstr ""
+
+#: inc/salesforce-api.php:1825
+#, php-format
+msgid "Type: %s"
+msgstr ""
+
+#: inc/salesforce-api.php:1827
+#, php-format
+msgid "Max Length: %s"
+msgstr ""
+
+#: inc/salesforce-api.php:1850
+msgid "Entry Date"
+msgstr ""
+
+#: inc/salesforce-api.php:1851
+msgid "User IP"
+msgstr ""
+
+#: inc/salesforce-api.php:1852
+msgid "Source Url"
+msgstr ""
+
+#: inc/salesforce-api.php:1860
+msgctxt "Full address label"
+msgid "Full"
+msgstr ""
+
+#: inc/salesforce-api.php:2184
+#, php-format
+msgid "Successfully added/updated to Salesforce with ID #%s . View entry at %s"
+msgstr ""
+
+#: inc/salesforce-api.php:2189
+msgid "Entry added/updated in Salesforce."
+msgstr ""
+
+#: inc/salesforce-api.php:2202
+#, php-format
+msgid ""
+"<h3>Error Adding To Salesforce</h3><p>There was an error when attempting to "
+"add <a href='%s'>Entry #%s</a> from the form \"%s\"</p>"
+msgstr ""
+
+#: inc/salesforce-api.php:2208
+msgid "Error adding to Salesforce"
+msgstr ""
+
+#: inc/salesforce-api.php:2215
+#, php-format
+msgid "Errors when adding to Salesforce: %s"
+msgstr ""
+
+#: inc/salesforce-api.php:2217
+msgid "Errors when adding to Salesforce. Entry not sent!"
+msgstr ""
+
+#: inc/salesforce-api.php:2258
+#, php-format
+msgid "Salesforce ID: %s"
+msgstr ""
+
+#: inc/salesforce-api.php:2307 inc/salesforce-api.php:2332
+msgid "Send to Salesforce"
+msgstr ""
+
+#: inc/salesforce-api.php:2307 inc/salesforce-api.php:2332
+msgid ""
+"Create or update this entry in Salesforce. The fields will be mapped "
+"according to the form feed settings."
+msgstr ""
+
+#: inc/salesforce-api.php:2362
+msgid "Gravity Forms Salesforce Add-on"
+msgstr ""
+
+#: inc/salesforce-api.php:2371
+msgid "You don't have adequate permission to uninstall Salesforce Add-On."
+msgstr ""
+
+#: inc/salesforce-api.php:2472
+msgid "Salesforce ID"
+msgstr ""
+
+#: inc/salesforce-api.php:2473
+msgid "Salesforce API result"
+msgstr ""
+
+#: inc/web-to-lead.php:70
+#, php-format
+msgid "%s Account Information"
+msgstr ""
+
+#: inc/web-to-lead.php:86
+msgid "Salesforce Org. ID"
+msgstr ""
+
+#: inc/web-to-lead.php:89
+#, php-format
+msgid ""
+"To find your Salesforce.com Organization ID, in your Salesforce.com account, "
+"go to [Your Name] &raquo; Setup &raquo; Company Profile (near the bottom of "
+"the left sidebar) &raquo; Company Information. It will look like %s"
+msgstr ""
+
+#: inc/web-to-lead.php:93
+msgid ""
+"Receive Salesforce Debugging Emails <p class='howto'><span>For full plugin "
+"logs, install the <a href='http://gravityhelp.com/downloads/"
+"#Gravity_Forms_Logging_Tool' target='_blank'>Gravity Forms Logging Tool</a>."
+"</span></p>"
+msgstr ""
+
+#: inc/web-to-lead.php:99
+msgid ""
+"Enable Salesforce debugging emails. The site administrator will be emailed "
+"by Salesforce with import status for each form submission."
+msgstr ""
+
+#: inc/web-to-lead.php:119
+#, php-format
+msgid "%s Success: Your Org ID. is properly configured."
+msgstr ""
+
+#: inc/web-to-lead.php:125
+#, php-format
+msgid ""
+"To find your Salesforce.com Organization ID, in your Salesforce.com account, "
+"go to:%1$s %2$s[Your Name] &raquo; Setup &raquo; Company Profile%3$s (near "
+"the bottom of the left sidebar) %2$s&raquo; Company Information%3$s (it is "
+"buried in the table of information). It will look like %4$s."
+msgstr ""
+
+#: inc/web-to-lead.php:127
+msgid "Please enter your Salesforce Organization ID."
+msgstr ""
+
+#: inc/web-to-lead.php:129
+#, php-format
+msgid ""
+"%s Invalid Org ID. - Please confirm your setting. Try re-saving the form."
+msgstr ""
+
+#: inc/web-to-lead.php:142
+#, php-format
+msgid "Map your fields for export to %s."
+msgstr ""
+
+#: inc/web-to-lead.php:153
+msgid "Pick an export type."
+msgstr ""
+
+#: inc/web-to-lead.php:160
+msgid "Lead"
+msgstr ""
+
+#: inc/web-to-lead.php:165
+msgid "Case"
+msgstr ""
+
+#: inc/web-to-lead.php:168
+msgid "Object to Create in Salesforce"
+msgstr ""
+
+#: inc/web-to-lead.php:168
+msgid ""
+"When the form is exported to Salesforce, do you want to have the entry "
+"become a Lead or a Case?"
+msgstr ""
+
+#: inc/web-to-lead.php:172
+msgid "Map your fields."
+msgstr ""
+
+#: inc/web-to-lead.php:180
+#, php-format
+msgid ""
+"If you don&#8217;t see the Salesforce field you want to send data to, add a "
+"custom field. You can map any Salesforce Field using the Salesforce Field "
+"\"API Name,\" which look like %sCustom_Field_Example__c%s."
+msgstr ""
+
+#: inc/web-to-lead.php:205
+msgid "Email"
+msgstr ""
+
+#: inc/web-to-lead.php:206
+msgid "You must set an Email Address"
+msgstr ""
+
+#: inc/web-to-lead.php:211
+msgid "Salutation"
+msgstr ""
+
+#: inc/web-to-lead.php:216
+msgid "Name (First)"
+msgstr ""
+
+#: inc/web-to-lead.php:221
+msgid "Name (Last)"
+msgstr ""
+
+#: inc/web-to-lead.php:226
+msgid "Title"
+msgstr ""
+
+#: inc/web-to-lead.php:231
+msgid "Company"
+msgstr ""
+
+#: inc/web-to-lead.php:236
+msgid "Phone"
+msgstr ""
+
+#: inc/web-to-lead.php:241
+msgid "Mobile"
+msgstr ""
+
+#: inc/web-to-lead.php:246
+msgid "Fax"
+msgstr ""
+
+#: inc/web-to-lead.php:251
+msgid "Address (Street Address)"
+msgstr ""
+
+#: inc/web-to-lead.php:256
+msgid "Address (Address Line 2)"
+msgstr ""
+
+#: inc/web-to-lead.php:261
+msgid "Address (City)"
+msgstr ""
+
+#: inc/web-to-lead.php:266
+msgid "Address (State / Province)"
+msgstr ""
+
+#: inc/web-to-lead.php:271
+msgid "Address (Country)"
+msgstr ""
+
+#: inc/web-to-lead.php:276
+msgid "Address (Zip / Postal Code)"
+msgstr ""
+
+#: inc/web-to-lead.php:281
+msgid "Website"
+msgstr ""
+
+#: inc/web-to-lead.php:286
+msgid "Twitter Username"
+msgstr ""
+
+#: inc/web-to-lead.php:291 inc/web-to-lead.php:301
+msgid "Message"
+msgstr ""
+
+#: inc/web-to-lead.php:296
+msgid "Lead Source"
+msgstr ""
+
+#: inc/web-to-lead.php:306
+msgid "Industry"
+msgstr ""
+
+#: inc/web-to-lead.php:311
+msgid "Rating"
+msgstr ""
+
+#: inc/web-to-lead.php:316
+msgid "Annual Revenue"
+msgstr ""
+
+#: inc/web-to-lead.php:321
+msgid "# of Employees"
+msgstr ""
+
+#: inc/web-to-lead.php:326
+msgid "Campaign ID"
+msgstr ""
+
+#: inc/web-to-lead.php:326
+#, php-format
+msgid ""
+"To associate an entry with a Campaign, you must also set the \"Member Status"
+"\". %sRead the Salesforce help article.%s"
+msgstr ""
+
+#: inc/web-to-lead.php:331
+msgid "Member Status"
+msgstr ""
+
+#: inc/web-to-lead.php:336
+msgid "Opt Out of Emails"
+msgstr ""
+
+#: inc/web-to-lead.php:341
+msgid "Opt Out of Faxes"
+msgstr ""
+
+#: inc/web-to-lead.php:346
+msgid "Do Not Call"
+msgstr ""
+
+#: inc/web-to-lead.php:351
+msgid "Return URL"
+msgstr ""
+
+#: inc/web-to-lead.php:356
+msgid "Priority"
+msgstr ""
+
+#: inc/web-to-lead.php:361
+msgid "Lead Record Type ID"
+msgstr ""
+
+#: inc/web-to-lead.php:362
+msgid ""
+"The ID of the record type that should be created. You can get the ID by "
+"going to setup->customize -> lead -> record types"
+msgstr ""
+
+#: inc/web-to-lead.php:363
+msgid ""
+"Make sure that the profile assigned to the owner of the leads has the "
+"particular record type you're trying to assign visible to that profile. You "
+"can add it as follows: Setup -> manage users -> profiles -> edit profileName."
+msgstr ""
+
+#: inc/web-to-lead.php:555
+msgid "No Salesforce Org. ID was specified."
+msgstr ""
+
+#: inc/web-to-lead.php:642
+#, php-format
+msgid ""
+"The `is-processed` header shows an Exception: %s. This means there was an "
+"error adding the entry."
+msgstr ""
+
+#: salesforce.php:71
+msgid "Support"
+msgstr ""
