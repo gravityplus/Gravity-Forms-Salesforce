@@ -235,7 +235,7 @@ function filter_the_gf_salesforce_datetime($use_datetime = false, $key = '', $va
 
 __If that doesn't work__, you can modify the format for the date by using this code: 
 
-``
+`
 add_filter('gf_salesforce_format_date', 'modify_gf_salesforce_format_date');
 
 /**
@@ -247,7 +247,7 @@ function modify_gf_salesforce_format_date($previous = '') {
     $date_format = 'Y-m-d\'\T\'H:i:s';
     return $date_format;
 }
-``
+`
 
 = I know I have SOAP enabled and the API plugin says I don't. =
 Add this to the bottom of your theme's `functions.php` file to force loading even if a `SOAPClient` class does not exist:
