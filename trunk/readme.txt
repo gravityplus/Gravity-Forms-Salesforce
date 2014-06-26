@@ -2,7 +2,7 @@
 Tags: gravity forms, forms, gravity, form, crm, gravity form, salesforce, salesforce plugin, form, forms, gravity, gravity form, gravity forms, secure form, simplemodal contact form, wp contact form, widget, sales force, customer, contact, contacts, address, addresses, address book, web to lead, web to case, web-to-lead, web-to-case, cases, leads, lead
 Requires at least: 3.3
 Tested up to: 3.9.1
-Stable tag: trunk
+Stable tag: 3.0.5
 Contributors: katzwebdesign,katzwebservices
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Gravity%20Forms%20Salesforce%20Addon&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
 License: GPLv2 or later
@@ -20,9 +20,12 @@ Add one setting, check a box when configuring your forms, and all your form entr
 
 This free Salesforce Add-On for Gravity Forms adds contacts into Salesforce automatically, making customer relationship management simple. The setup process takes a few minutes, and your contact form will be linked with Salesforce.
 
-> __This plugin requires PHP 5.3 or higher.__
+<a href="http://wordpress.org/extend/plugins/gravity-forms-salesforce/faq/">Read the FAQ</a> for information on how to integrate with Custom Fields.
 
 #### Using the API
+
+> __The Gravity Forms Salesforce API Integration requires PHP 5.3 or higher.__
+
 If you have the following Salesforce Editions, you can use the included API Add-on:
 
 * Enterprise Edition
@@ -256,17 +259,7 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
-= 3.0.3 (June 20, 2014) =
-* Fixed: Finally nailed the OAuth Refresh Token flow. It's all working nicely now.
-
-= 3.0.2 (June 4, 2014) =
-* Fixed: `is_plugin_active()` not defined fatal error on activation
-
-= 3.0.1 (May 11, 2014) =
-* Modified: Hide Daddy Analytics custom API Name settings, unless the `gf_salesforce_custom_da_api_names` filter returns true.
-* Fixed (API): Return false in `get_api()` method when settings are empty.
-
-= 3.0.0 (May 9, 2014) =
+= 3.0.5 (June 26, 2014) =
 * __!!MAJOR UPDATE!!__ Please read through the changes below.
 * __API Add-on Changes__
     - __You will need to update your settings__ after installing the plugin.
@@ -278,6 +271,22 @@ This plugin is released under a GPL license.
     - Fixed issue with some leads not being added; this was likely because of the time it took to submit a lead to Salesforce.
 * __Daddy Analytics integration__  - the Add-on now works great with Daddy Analytics. What is [Daddy Analytics](http://try.daddyanalytics.com/marketing-roi-wp2l/)? It allows you to track your leads from their original source, and with that information, you can get true marketing ROI.
 * __Changed how the plugins are loaded__ - there's now a "Salesforce" setting in the Gravity Forms Settings page. Go there to enable or disable the different plugins. There are no longer multiple visible plugins for this Add-on.
+* __Added translation__ If you want to help translate the plugin, please submit your translation here](https://www.transifex.com/projects/p/gravity-forms-salesforce-add-on/).
+
+= 3.0.4 (June 26, 2014) =
+* Fixed: Threw invalid API warning if settings hadn't been saved.
+* Added: Localization strings
+* Fixed: Both Integration Methods were showing in the Settings menu
+
+= 3.0.3 (June 20, 2014) =
+* Fixed: Finally nailed the OAuth Refresh Token flow. It's all working nicely now.
+
+= 3.0.2 (June 4, 2014) =
+* Fixed: `is_plugin_active()` not defined fatal error on activation
+
+= 3.0.1 (May 11, 2014) =
+* Modified: Hide Daddy Analytics custom API Name settings, unless the `gf_salesforce_custom_da_api_names` filter returns true.
+* Fixed (API): Return false in `get_api()` method when settings are empty.
 
 = 2.6.4.1 (March 19, 2014) =
 * Fixed (API Version): Entry update improvement when set to manually export to Salesforce
@@ -434,7 +443,7 @@ This plugin is released under a GPL license.
 
 == Upgrade Notice ==
 
-= 3.0 (May 9, 2014) =
+= 3.0.5 (June 26, 2014) =
 * __!!MAJOR UPDATE!!__ Please read through the changes below.
 * __API Add-on Changes__
     - __You will need to update your settings__ after installing the plugin.

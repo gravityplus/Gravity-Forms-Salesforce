@@ -44,9 +44,22 @@ class KWS_GF_Salesforce {
 
         add_action('plugins_loaded', array(&$this, 'load_files'), 100);
 
+        add_action('init', array(&$this, 'init') );
+
         add_action('admin_notices', array(&$this, 'addon_compatibility'));
 
         add_filter('plugin_action_links', array(&$this, 'plugin_action_links'), 10, 2);
+    }
+
+    /**
+     * Load the translations
+     * @return  void
+     */
+    function init() {
+
+        //loading translations
+        load_plugin_textdomain('gravity-forms-salesforce', FALSE, '/gravity-forms-salesforce/languages' );
+
     }
 
     function load_files() {

@@ -48,9 +48,6 @@ class GFSalesforce {
 	public function init(){
 		global $pagenow;
 
-		//loading translations
-		load_plugin_textdomain('gravity-forms-salesforce', FALSE, '/gravity-forms-salesforce/languages' );
-
 		if($pagenow == 'plugins.php' || defined('RG_CURRENT_PAGE') && RG_CURRENT_PAGE == "plugins.php"){
 
 			add_filter('plugin_action_links', array('GFSalesforce', 'settings_link'), 10, 2 );
@@ -61,7 +58,7 @@ class GFSalesforce {
 		   return;
 		}
 
-		self::$settings = get_option("gf_salesforce_settings");
+		self::$settings = get_option( "gf_salesforce_settings", self::$settings );
 
 		self::include_files();
 
@@ -555,11 +552,7 @@ class GFSalesforce {
 		    $token = self::getAccessToken();
 		}
 
-		$settings = wp_parse_args($settings, array(
-				'notify' => false,
-				"notifyemail" => '',
-				'cache_time' => 86400,
-			));
+		$settings = wp_parse_args( $settings, self::$settings );
 
 		$api = self::get_api($settings);
 
@@ -570,8 +563,7 @@ class GFSalesforce {
 			$class = "updated valid_credentials";
 			$valid = true;
 		} else if(!$api) {
-			$message = sprintf(__('%sYour Salesforce connection isn&rsquo;t working properly. Please log in again below.%s
-			For more information, please install the %sGravity Forms Logging Tool%s and try again.', 'gravity-forms-salesforce'), '<h3 style="margin-top:1em;">', '</h3>', "<a href='http://www.gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool' target='_blank'>", '</a>');
+			$message = sprintf(__('%sYour Salesforce connection isn&#8217;t working properly. Please log in again below.%s For more information, please install the %sGravity Forms Logging Tool%s and try again.%s', 'gravity-forms-salesforce'), '<h3 style="margin-top:1em;">', '</h3><p>', "<a href='http://www.gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool' target='_blank'>", '</a>', '</p>');
 			$valid = false;
 			$class = "error invalid_credentials";
 		} else {
@@ -900,7 +892,10 @@ class GFSalesforce {
 	public static function get_api($settings = array(), $after_refresh = false){
 
 		// If it's already set, use it.
-		if(!empty(self::$api)) { return self::$api; }
+		if(!empty(self::$api)) {
+			self::log_debug("get_api(): API connection already set.");
+			return self::$api;
+		}
 
 		if(!is_array($settings) || empty($settings)) {
 			$settings = self::$settings;
@@ -914,8 +909,6 @@ class GFSalesforce {
 			self::log_error("get_api(): Settings not set, so we can't get the Salesforce connection.");
 			return false;
 		}
-
-		extract($settings);
 
 		$libpath = plugin_dir_path(KWS_GF_Salesforce::$file).'lib/Force.com-Toolkit-for-PHP/soapclient/';
 
@@ -1098,7 +1091,7 @@ class GFSalesforce {
 
 		$api = self::get_api();
 
-		if(!self::api_is_valid($api)) {
+		if( !self::api_is_valid($api)) {
 			self::log_error('Can\'t get fields because API isn\'t valid.');
 			return false;
 		}
@@ -1822,13 +1815,13 @@ class GFSalesforce {
 			if($var['type'] === 'reference' && empty($var['req']) && apply_filters('gf_salesforce_skip_reference_types', true)) { continue; }
 
 			$selected_field = isset($config["meta"]["field_map"][$var["tag"]]) ? $config["meta"]["field_map"][$var["tag"]] : false;
-			$required = $var["req"] === true ? "<span class='gfield_required' title='This field is required.'>(Required)</span>" : "";
+			$required = $var["req"] === true ? "<span class='gfield_required' title='This field is required.'>".__('(Required)', 'gravity-forms-salesforce')."</span>" : "";
 			$error_class = $var["req"] === true && empty($selected_field) && !empty($_POST["gf_salesforce_submit"]) ? " feeds_validation_error" : "";
 			$field_desc = '';
 			if(self::show_field_type_desc($var['type'])) {
-				$field_desc = '<div>Type: '.$var["type"].'</div>';
+				$field_desc = '<div>'.sprintf( __('Type: %s', 'gravity-forms-salesforce'), esc_attr( $var["type"] ) ) .'</div>';
 			}
-			if(!empty($var["length"])) { $field_desc .= '<div>Max Length: '.$var["length"].'</div>'; }
+			if(!empty($var["length"])) { $field_desc .= '<div>' . sprintf( __('Max Length: %s', 'gravity-forms-salesforce' ), esc_attr( $var["length"] ) ).'</div>'; }
 
 			// Add Daddy Analytics notice
 			if($var['tag'] === 'LeadSource') {
@@ -1861,7 +1854,7 @@ class GFSalesforce {
 
 					//If this is an address field, add full name to the list
 					if(RGFormsModel::get_input_type($field) == "address")
-						$fields[] =  array($field["id"], GFCommon::get_label($field) . " (" . __("Full" , "gravity-forms-salesforce") . ")");
+						$fields[] =  array($field["id"], GFCommon::get_label($field) . " (" . _x("Full" , 'Full address label', "gravity-forms-salesforce") . ")");
 
 					foreach($field["inputs"] as $input)
 						$fields[] =  array($input["id"], GFCommon::get_label($field, $input["id"]));
@@ -1894,7 +1887,7 @@ class GFSalesforce {
 
 	public static function get_mapped_field_list($variable_name, $selected_field, $fields){
 		$field_name = "salesforce_map_field_" . $variable_name;
-		$str = "<select name='$field_name' id='$field_name'><option value=''>" . __("", "gravity-forms-salesforce") . "</option>";
+		$str = "<select name='$field_name' id='$field_name'><option value=''></option>";
 		foreach($fields as $field){
 			$field_id = $field[0];
 			$field_label = $field[1];

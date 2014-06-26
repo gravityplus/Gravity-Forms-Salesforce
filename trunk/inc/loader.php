@@ -47,14 +47,14 @@ if (class_exists("GFForms")) {
 			if($plugins !== NULL) {
 
 				// Load the API plugin
-				if($plugins === 'api' || !empty($plugins['api'])) {
+				if($plugins === 'api' || is_array( $plugins ) && !empty($plugins['api'])) {
 					if(false === $this->is_incompatible_with_api() && !class_exists('GFSalesforce')) {
 						require_once(KWS_GF_Salesforce::$plugin_dir_path.'inc/salesforce-api.php');
 					}
 				}
 
-				// Load the Web-to-Lead plugin
-				if($plugins === 'web2lead' || !empty($plugins['web2lead'])) {
+				// Load the Web-to-Lead plugin - if the only plugin active or one of two
+				if( $plugins === 'web2lead' || is_array( $plugins ) && !empty($plugins['web2lead'])) {
 					if(!class_exists('KWSGFWebToLeadAddon') && KWS_GF_Salesforce::supports_addon_api() ) {
 					    require_once(KWS_GF_Salesforce::$plugin_dir_path.'inc/web-to-lead.php');
 					    new KWSGFWebToLeadAddon;
@@ -118,7 +118,7 @@ if (class_exists("GFForms")) {
 				$output .= '<h4>'.$key.'</h4> '.wpautop( $value );
 			}
 
-			$output .= wpautop(__('You can use the Salesforce Web-to-Lead Add-on; it doesn&rsquo;t have the same requirements.', 'gravity-forms-salesforce'));
+			$output .= wpautop(__('You can use the Salesforce Web-to-Lead Add-on; it doesn&#8217;t have the same requirements.', 'gravity-forms-salesforce'));
 
 			$output .= '</div>';
 
@@ -312,9 +312,9 @@ if (class_exists("GFForms")) {
 					"name"	=> ($type === 'radio' ? 'web2lead' : 'salesforce_integration[web2lead]'),
 					"default_value" => 1,
 					"tooltip" => '<h6>Web-to-Lead or Web-to-Case</h6>
-						<p>Web-to-Lead is available to all Salesforce Editions. If you aren&rsquo;t sure if your Salesforce Edition supports the API, you should use Web-to-Lead.</p>
+						<p>Web-to-Lead is available to all Salesforce Editions. If you aren&#8217;t sure if your Salesforce Edition supports the API, you should use Web-to-Lead.</p>
 
-						<h4>Editions that don&rsquo;t support the Salesforce API:</h4>
+						<h4>Editions that don&#8217;t support the Salesforce API:</h4>
 						<ul class="ul-disc">
 						<li style="list-style:disc;">Personal Edition</li>
 						<li style="list-style:disc;">Group Edition</li>
@@ -350,7 +350,7 @@ if (class_exists("GFForms")) {
 		public static function is_soap_installed() {
 			echo sprintf('<div id="message" class="error"><h3>%s</h3>%s</div>', __('The Salesforce: API Add-On could not be loaded.', 'gravity-forms-salesforce'), wpautop(__('The Gravity Form Salesforce: API Add-On requires that your server support SOAP. Please contact your hosting provider and ask them to enable SOAP on your server.
 
-				You can also use the Salesforce Web-to-Lead Add-on; this doesn&rsquo;t require SOAP.', 'gravity-forms-salesforce')));
+				You can also use the Salesforce Web-to-Lead Add-on; this doesn&#8217;t require SOAP.', 'gravity-forms-salesforce')));
 		}
 
 		/**

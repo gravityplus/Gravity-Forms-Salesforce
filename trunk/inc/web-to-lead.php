@@ -177,7 +177,7 @@ if (class_exists("GFForms")) {
 						array(
 							'type' => 'custom_fields',
 							'label' => __("Custom Fields", 'gravity-forms-salesforce'),
-							'tooltip' => sprintf(__("If you don&rsquo;t see the Salesforce field you want to send data to, add a custom field. You can map any Salesforce Field using the Salesforce Field \"API Name,\" which look like %sCustom_Field_Example__c%s.", 'gravity-forms-salesforce'), '<code>', '</code>'),
+							'tooltip' => sprintf(__("If you don&#8217;t see the Salesforce field you want to send data to, add a custom field. You can map any Salesforce Field using the Salesforce Field \"API Name,\" which look like %sCustom_Field_Example__c%s.", 'gravity-forms-salesforce'), '<code>', '</code>'),
 							'name' => null
 						),
 						array(
