@@ -35,6 +35,9 @@ if (class_exists("GFForms")) {
 
 			$this->_version = KWS_GF_Salesforce::version;
 
+			add_action('kwsgfwebtoleadaddon_log_debug', array( $this, 'log_debug' ));
+			add_action('kwsgfwebtoleadaddon_log_error', array( $this, 'log_error' ));
+
 			parent::__construct();
 
 		}
@@ -386,16 +389,22 @@ if (class_exists("GFForms")) {
 
 			try {
 
+				foreach ($feed['meta'] as $key => $value) {
+					// The field names have a trailing underscore for some reason.
+					$trimmed_key = ltrim($key, '_');
+					$feed['meta'][ $trimmed_key ] = $value;
+					unset( $feed['meta'][$key] );
+				}
+
 				$temp_merge_vars = $this->get_merge_vars_from_entry($feed, $entry, $form);
+
+				self::log_debug( sprintf("Temp Merge Vars: %s", print_r( $temp_merge_vars, true )) );
 
 				$merge_vars = array();
 				foreach($temp_merge_vars as $key => $value) {
 
 					// Get the field ID for the current value
 					$field_id = $feed['meta'][$key];
-
-					// The field names have a trailing underscore for some reason.
-					$key = ltrim($key, '_');
 
 					// We need to specially format some data going to Salesforce
 					// If it's a field ID, get the field data
@@ -442,7 +451,7 @@ if (class_exists("GFForms")) {
 						unset($merge_vars[$key]);
 					} else {
 						// Add the value to the data being sent
-						$merge_vars[$key] = $value;
+						$merge_vars[$key] = GFCommon::replace_variables($value, $form, $entry, false, false, false );
 					}
 				}
 

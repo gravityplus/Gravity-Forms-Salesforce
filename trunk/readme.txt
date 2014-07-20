@@ -2,7 +2,7 @@
 Tags: gravity forms, forms, gravity, form, crm, gravity form, salesforce, salesforce plugin, form, forms, gravity, gravity form, gravity forms, secure form, simplemodal contact form, wp contact form, widget, sales force, customer, contact, contacts, address, addresses, address book, web to lead, web to case, web-to-lead, web-to-case, cases, leads, lead
 Requires at least: 3.3
 Tested up to: 3.9.1
-Stable tag: 3.0.5
+Stable tag: 3.0.6
 Contributors: katzwebdesign,katzwebservices
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Gravity%20Forms%20Salesforce%20Addon&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
 License: GPLv2 or later
@@ -60,11 +60,25 @@ If you have questions, comments, or issues with this plugin, <strong>please leav
 
 1. Upload plugin files to your plugins folder, or install using WordPress' built-in Add New Plugin installer
 1. Activate the plugin
-1. Go to the plugin settings page (under Forms > Settings > Salesforce)
-1. Enter the information requested by the plugin.
-1. Click Save Settings.
-1. If the settings are correct, it will say so.
-1. Follow on-screen instructions for integrating with Salesforce.
+1. Go to the plugin settings page (under Forms > Settings > Salesforce Add-on )
+1. Choose your Integration Method (API or Web-to-Lead)
+
+### API
+- Select API as your Integration Method
+- Click Save Settings.
+- Click the "Salesforce: API" menu in the current settings
+- Click the "Login with Salesforce" button
+- Log in to Salesforce.com
+- Click on the Forms > Salesforce menu link to create a feed
+- Follow the steps to create a feed
+
+### Web-to-Lead
+- Select Web-to-Lead as your Integration Method
+- Click Save Settings
+- Go to the Gravity Forms Forms page (the Forms menu)
+- Edit the form you want to connect with Salesforce
+- On the Edit Form page, under "Form Settings", click the "Salesforce: Web-to-Lead" link
+- Click the link to create a feed
 
 __If you are using the Web-To-Lead Add-on__ you must have Web-To-Lead enabled. [Read how to enable Web-to-Lead on Salesforce.com](https://help.salesforce.com/apex/HTViewHelpDoc?id=setting_up_web-to-lead.htm).
 
@@ -76,14 +90,30 @@ Please check the box "Enable Salesforce debugging emails" in the Web-to-Lead set
 = Web-to-Lead: How do I convert my existing form configuration to Feeds? =
 See "Web-to-Lead: How do I create a Feed" below.
 
+= API: How do I create a Feed? =
+
+- Go to the plugin settings page (under Forms > Settings > Salesforce Add-on )
+- Choose your Integration Method (API or Web-to-Lead)
+- Select API as your Integration Method
+- Click Save Settings.
+- Click the "Salesforce: API" menu in the current settings
+- Click the "Login with Salesforce" button
+- Log in to Salesforce.com
+- Click on the Forms > Salesforce menu link to create a feed
+- Follow the steps to create a feed
+
+
 = Web-to-Lead: How do I create a Feed? =
 
 __To create a feed:__
 
-1. Go to "Forms" in your admin
-1. Click on the name of the form you want to link with Salesforce
-1. Hover over "Form Settings" and click on the "Salesforce: Web-to-Lead" link
-1. Follow the instructions to create a Feed.
+- Go to the plugin settings page (under Forms > Settings > Salesforce Add-on )
+- Select Web-to-Lead as your Integration Method
+- Click Save Settings
+- Go to the Gravity Forms Forms page (the Forms menu)
+- Edit the form you want to connect with Salesforce
+- On the Edit Form page, under "Form Settings", click the "Salesforce: Web-to-Lead" link
+- Click the link to create a feed
 
 = Web-to-Lead: How do I modify the debug email address? =
 The Salesforce debugging emails are sent to the website administrator by default. To modify this, add a filter to `gf_salesforce_salesforce_debug_email_address` that returns an email address.
@@ -239,7 +269,7 @@ __If that doesn't work__, you can modify the format for the date by using this c
 add_filter('gf_salesforce_format_date', 'modify_gf_salesforce_format_date');
 
 /**
- * The default is US-style,  though Salesforce recommends `Y-m-d\'\T\'H:i:s`
+ * The default is US-style,  though Salesforce recommends <code>Y-m-d\'\T\'H:i:s</code>
  * You can use any date formatting as shown here:
  * @link  http://php.net/manual/en/function.date.php
  */
@@ -258,6 +288,15 @@ Add this to the bottom of your theme's `functions.php` file to force loading eve
 This plugin is released under a GPL license.
 
 == Changelog ==
+
+= 3.0.6 (July 19, 2014) =
+* If you haven't read the 3.0.5 changelog notes, please do so!
+* Added: Enabled Merge Tag field value support ([issue #97](https://github.com/katzwebservices/Gravity-Forms-Salesforce/issues/97))
+* Added [API Add-on]: "Form Title" as an option for mapping form fields
+* Fixed: Form details were not being properly passed ([issue #94](https://github.com/katzwebservices/Gravity-Forms-Salesforce/issues/94))
+* Fixed: DaddyAnalytics API names were incorrect for the API integration
+* Fixed: PHP warning about calling static functions
+* Added: Additional Debugging
 
 = 3.0.5 (June 26, 2014) =
 * __!!MAJOR UPDATE!!__ Please read through the changes below.
@@ -442,6 +481,15 @@ This plugin is released under a GPL license.
 * Launch!
 
 == Upgrade Notice ==
+
+= 3.0.6 (July 19, 2014) =
+* If you haven't read the 3.0.5 changelog notes, please do so!
+* Added: Enabled Merge Tag field value support ([issue #97](https://github.com/katzwebservices/Gravity-Forms-Salesforce/issues/97))
+* Added [API Add-on]: "Form Title" as an option for mapping form fields
+* Fixed: Form details were not being properly passed ([issue #94](https://github.com/katzwebservices/Gravity-Forms-Salesforce/issues/94))
+* Fixed: DaddyAnalytics API names were incorrect for the API integration
+* Fixed: PHP warning about calling static functions
+* Added: Additional Debugging
 
 = 3.0.5 (June 26, 2014) =
 * __!!MAJOR UPDATE!!__ Please read through the changes below.

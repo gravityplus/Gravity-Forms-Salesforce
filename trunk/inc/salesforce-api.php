@@ -785,10 +785,10 @@ class GFSalesforce {
 									<th scope="row" class="check-column"><input type="checkbox" name="feed[]" value="<?php echo $setting["id"] ?>"/></th>
 									<td><img src="<?php echo self::get_base_url() ?>/assets/images/active<?php echo intval($setting["is_active"]) ?>.png" alt="<?php echo $setting["is_active"] ? __("Active", "gravity-forms-salesforce") : __("Inactive", "gravity-forms-salesforce");?>" title="<?php echo $setting["is_active"] ? __("Active", "gravity-forms-salesforce") : __("Inactive", "gravity-forms-salesforce");?>" onclick="ToggleActive(this, <?php echo $setting['id'] ?>); " /></td>
 									<td class="column-title">
-										<a href="admin.php?page=gf_salesforce&view=edit&id=<?php echo $setting["id"] ?>" title="<?php _e("Edit", "gravity-forms-salesforce") ?>"><?php echo $setting["form_title"] ?></a>
+										<a href="admin.php?page=gf_salesforce&amp;view=edit&amp;id=<?php echo $setting["id"] ?>" title="<?php _e("Edit", "gravity-forms-salesforce") ?>"><?php echo esc_html( $setting["form_title"] ); ?></a>
 										<div class="row-actions">
 											<span class="edit">
-											<a title="Edit this setting" href="admin.php?page=gf_salesforce&view=edit&id=<?php echo $setting["id"] ?>" title="<?php _e("Edit", "gravity-forms-salesforce") ?>"><?php _e("Edit", "gravity-forms-salesforce") ?></a>
+											<a title="Edit this setting" href="admin.php?page=gf_salesforce&amp;view=edit&amp;id=<?php echo $setting["id"] ?>" title="<?php _e("Edit", "gravity-forms-salesforce") ?>"><?php _e("Edit", "gravity-forms-salesforce") ?></a>
 											|
 											</span>
 
@@ -1847,6 +1847,8 @@ class GFSalesforce {
 		array_push($form["fields"],array("id" => "date_created" , "label" => __("Entry Date", "gravity-forms-salesforce")));
 		array_push($form["fields"],array("id" => "ip" , "label" => __("User IP", "gravity-forms-salesforce")));
 		array_push($form["fields"],array("id" => "source_url" , "label" => __("Source Url", "gravity-forms-salesforce")));
+		array_push($form["fields"],array("id" => "form_title" , "label" => __("Form Title", "gravity-forms-salesforce")));
+
 
 		if(is_array($form["fields"])){
 			foreach($form["fields"] as $field){
@@ -2082,7 +2084,7 @@ class GFSalesforce {
 							$value = htmlspecialchars($entry[$field_id]);
 					}
 
-					$merge_vars[$var_tag] = $value;
+					$merge_vars[$var_tag] = GFCommon::replace_variables($value, $form, $entry, false, false, false );
 
 			} else {
 
@@ -2093,7 +2095,10 @@ class GFSalesforce {
 							$elements[] = htmlspecialchars($value);
 						}
 					}
-					$merge_vars[$var_tag] = implode(';',array_map('htmlspecialchars', $elements));
+
+					$value = implode(';',array_map('htmlspecialchars', $elements));
+
+					$merge_vars[$var_tag] = GFCommon::replace_variables($value, $form, $entry, false, false, false );
 				}
 			}
 

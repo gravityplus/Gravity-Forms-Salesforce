@@ -777,16 +777,29 @@ EOD;
 
         protected function get_merge_vars_from_entry($feed, $entry, $form) {
 
+            $this->log_debug( 'All Feed Meta: '.print_r( $feed["meta"], true ) );
+
             $merge_vars = array();
             foreach($feed["meta"] as $var_tag => $field_id){
 
-                if(empty($field_id) || strpos($var_tag, 'feed_condition') !== false) { continue; }
+                if(empty($field_id) || strpos($var_tag, 'feed_condition') !== false) {
+                    $this->log_debug( '[get_merge_vars_from_entry]: Feed field not defined for field ID '.$var_tag );
+                    continue;
+                }
 
                 $var_tag = str_replace('field_map__', '', $var_tag);
 
-                $field = RGFormsModel::get_field($form, $field_id);
+                if( !is_numeric( $field_id ) ) {
 
-                $value = RGFormsModel::get_lead_field_value($entry, $field);
+                    $value = GFCommon::replace_variables( '{'.$field_id.'}' , $form, $entry, false, false, false );
+
+                } else {
+
+                    $field = RGFormsModel::get_field($form, $field_id);
+
+                    $value = RGFormsModel::get_lead_field_value($entry, $field);
+
+                }
 
                 // If the value is multi-part, like a name or address, there will be an array
                 // returned. In that case, we check the array for the key of the field id.

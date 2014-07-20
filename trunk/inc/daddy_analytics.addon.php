@@ -70,7 +70,7 @@ if (class_exists("GFForms")) {
 
 		function filter_web_to_lead_merge_vars($merge_vars, $form, $entry) {
 
-			KWSGFWebToLeadAddon::log_debug('DA::filter_web_to_lead_merge_vars() - Starting adding DA data to merge vars.');
+			do_action('kwsgfwebtoleadaddon_log_debug', 'DA::filter_web_to_lead_merge_vars() - Starting adding DA data to merge vars.');
 
 			// Get the $_POST data for the inserted fields
 			$submitted_token = rgpost(esc_attr($this->token), true);
@@ -80,7 +80,7 @@ if (class_exists("GFForms")) {
 			$merge_vars[esc_attr($this->url)] = $submitted_url;
 			$merge_vars[esc_attr($this->token)] = $submitted_token;
 
-			KWSGFWebToLeadAddon::log_debug("DA::filter_api_merge_vars() - Added DA data to merge vars. Token: {$submitted_token} and Url: {$submitted_url}");
+			do_action('kwsgfwebtoleadaddon_log_debug', "DA::filter_api_merge_vars() - Added DA data to merge vars. Token: {$submitted_token} and Url: {$submitted_url}");
 
 			return $merge_vars;
 		}
@@ -105,8 +105,8 @@ if (class_exists("GFForms")) {
 			$submitted_url = rgpost(esc_attr($this->url), true);
 
 			// Use defaults if not set yet, somehow.
-			$url_api_name = empty($this->url_api_name) ? 'DaddyAnalytics_Web_to_Lead_URL__c' : $this->url_api_name;
-			$token_api_name = empty($this->token_api_name) ? 'DaddyAnalytics_DA_Token__c' : $this->token_api_name;
+			$url_api_name = empty($this->url_api_name) ? 'DaddyAnalytics__DA_Web_to_Lead_URL__c' : $this->url_api_name;
+			$token_api_name = empty($this->token_api_name) ? 'DaddyAnalytics__DA_Token__c' : $this->token_api_name;
 
 			// Add the data to be pushed.
 			$merge_vars[esc_attr($url_api_name)] = $submitted_url;
@@ -225,14 +225,14 @@ if (class_exists("GFForms")) {
 							"name"    => "daddy_analytics_webtolead_url_api_name",
 							"label"   => __("Web-to-Lead URL API Name", "gravity-forms-salesforce"),
 							"type"    => "text",
-							"default_value" => 'DaddyAnalytics_Web_to_Lead_URL__c',
+							"default_value" => 'DaddyAnalytics__DA_Web_to_Lead_URL__c',
 							"class"   => "large code",
 						),
 						array(
 							"name"    => "daddy_analytics_token_api_name",
 							"label"   => __("Daddy Analytics Token API Name", "gravity-forms-salesforce"),
 							"type"    => "text",
-							"default_value" => 'DaddyAnalytics_DA_Token__c',
+							"default_value" => 'DaddyAnalytics__DA_Token__c',
 							"class"   => "large code",
 						),
 						array(
