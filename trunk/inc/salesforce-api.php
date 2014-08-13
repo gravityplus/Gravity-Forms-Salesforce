@@ -971,10 +971,12 @@ class GFSalesforce {
 
 			return $mySforceConnection;
 
-		} catch(Exception $e) {
+		} catch( Exception $e ) {
+
+			self::log_error( sprintf("get_api(): There was an error getting the connection to Salesforce. The error message was: %s\nHere's the exception: %s", $e->getMessage(),  print_r( $e, true) ) );
 
 			// The token has expired. We need to refresh the token.
-			if(isset($e->faultcode) && $e->faultcode === 'sf:INVALID_SESSION_ID' && !$after_refresh) {
+			if( isset($e->faultcode) && in_array( $e->faultcode, array( 'sf:INVALID_SESSION_ID', 'UNKNOWN_EXCEPTION' ) ) && !$after_refresh ) {
 
 				try{
 
@@ -1007,7 +1009,7 @@ class GFSalesforce {
 
 			}
 
-			self::log_error( sprintf("get_api(): There was an error getting the connection to Salesforce. The error message was: %s\nHere's the exception: %s", $e->getMessage(),  print_r($e, true)));
+			self::log_error( sprintf( "get_api(): Token was not refreshed for this error: %s ", $e->getMessage() ));
 
 			return isset($e->faultstring) ? $e->faultstring : false;
 		}
