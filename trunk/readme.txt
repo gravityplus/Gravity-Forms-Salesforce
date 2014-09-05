@@ -1,10 +1,10 @@
 === Gravity Forms Salesforce Add-on ===
 Tags: gravity forms, forms, gravity, form, crm, gravity form, salesforce, salesforce plugin, form, forms, gravity, gravity form, gravity forms, secure form, simplemodal contact form, wp contact form, widget, sales force, customer, contact, contacts, address, addresses, address book, web to lead, web to case, web-to-lead, web-to-case, cases, leads, lead
 Requires at least: 3.3
-Tested up to: 3.9.1
-Stable tag: 3.0.6.1
+Tested up to: 4.0
+Stable tag: 3.0.6.2
 Contributors: katzwebdesign,katzwebservices
-Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Gravity%20Forms%20Salesforce%20Addon&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Gravity%20Forms%20Salesforce%20Addon&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
 License: GPLv2 or later
 
 This is the most powerful Salesforce integration available for WordPress.
@@ -14,13 +14,13 @@ This is the most powerful Salesforce integration available for WordPress.
 ### This is *the* best WordPress Salesforce plugin.
 
 ### Integrate Your Forms with Salesforce
-Add one setting, check a box when configuring your forms, and all your form entries will be added to Salesforce from now on. <strong>Integrating with Salesforce has never been so simple.</strong>
+Add one setting, check a box when configuring your forms, and all your form entries will be added to Salesforce from now on. __Integrating with Salesforce has never been so simple.__
 
 ###Gravity Forms + Salesforce = A Powerful Combination
 
 This free Salesforce Add-On for Gravity Forms adds contacts into Salesforce automatically, making customer relationship management simple. The setup process takes a few minutes, and your contact form will be linked with Salesforce.
 
-<a href="http://wordpress.org/extend/plugins/gravity-forms-salesforce/faq/">Read the FAQ</a> for information on how to integrate with Custom Fields.
+[Read the FAQ](http://wordpress.org/extend/plugins/gravity-forms-salesforce/faq/) for information on how to integrate with Custom Fields.
 
 #### Using the API
 
@@ -36,12 +36,17 @@ If you use the following Editions, you will use the included Web-to-Lead Add-on:
 
 - Personal Edition
 - Group Edition
-- Professional Edition<br />*Note: You can also purchase API access for a Professional Edition.*
+- Professional Edition  
+*Note: You can also purchase API access for a Professional Edition.*
 
 ### Web to Case
 When using the Web-to-Lead Add-on, you can choose to have form entries sent to Salesforce as Cases (like when using the Web-to-Case form) instead of as Leads.
 
-If you have questions, comments, or issues with this plugin, <strong>please leave your feedback on the <a href="https://github.com/katzwebservices/Gravity-Forms-Salesforce/issues?state=open">Plugin Support Forum</a></strong>.
+If you have questions, comments, or issues with this plugin, __please leave your feedback on the [Plugin Support Forum](https://github.com/katzwebservices/Gravity-Forms-Salesforce/issues?state=open)__.
+
+### Want to help translate?
+
+The plugin fully supports multiple languages! [Please help translate the plugin!](https://www.transifex.com/projects/p/gravity-forms-salesforce-add-on/)
 
 == Screenshots ==
 
@@ -164,7 +169,7 @@ function change_salesforce_implode_glue($glue, $field) {
 
 * `gf_salesforce_wsdl` - Path to the WSDL (string)
 * `gf_salesforce_proxy` - Proxy settings as an object with properties host, port (integer, not a string), login and password (object, ideally a `ProxySettings` object)
-* `gf_salesforce_soap_options` Additional options to send to the SoapClient constructor. (array) See <a href="http://php.net/manual/en/soapclient.soapclient.php">http://php.net/manual/en/soapclient.soapclient.php</a>
+* `gf_salesforce_soap_options` Additional options to send to the SoapClient constructor. (array) See [http://php.net/manual/en/soapclient.soapclient.php](http://php.net/manual/en/soapclient.soapclient.php)
 * `gf_salesforce_connection` - Modify the `SforcePartnerClient` object before it's returned.
 
 See the FAQ item above for an example of using a filter.
@@ -185,15 +190,6 @@ Your server must support the following:
 Add the following to the bottom of your theme's `functions.php` file, before `?>`, if it exists:
 
 `add_filter('gf_salesforce_enterprise', '__return_true');`
-
-= How do I configure the API plugin? =
-
-### How to set up integration:
-
-1. In WordPress admin, go to Forms > Salesforce > Salesforce Settings
-2. If you don't have your security token, <a href="https://na9.salesforce.com/_ui/system/security/ResetApiTokenEdit">follow this link to Reset Your Security Token</a>
-3. Come back to this settings page and enter your Security Token, Salesforce.com Username and Password.
-4. Save the settings, and you should be done!
 
 = How do I set a custom Lead Source? (Web-to-Lead) =
 This feature support was added in version 1.1.1. `gf_salesforce_lead_source` is the filter.
@@ -236,7 +232,7 @@ You can. When you are trying to map a custom field, you need to set either the "
 You can find your Custom Fields under [Your Name] &rarr; Setup &rarr; Leads &rarr; Fields, then at the bottom of the page, there's a list of "Lead Custom Fields & Relationships". This is where you will find the "API Name" to use in the Admin Label or Parameter Name.
 
 __If that doesn't work__
-If the fields are not submitting properly still, you may need to try a different approach: under "Lead Custom Fields & Relationships", click on the name of the field. The URL of the page you go to will be formatted like this: `https://na123.salesforce.com/12AB0000003CDe4?setupid=LeadFields`. You want to copy the part of the URL that looks similar to <strong><code>12AB0000003CDe4</code></strong>. Use that value instead of the API Name.
+If the fields are not submitting properly still, you may need to try a different approach: under "Lead Custom Fields & Relationships", click on the name of the field. The URL of the page you go to will be formatted like this: `https://na123.salesforce.com/12AB0000003CDe4?setupid=LeadFields`. You want to copy the part of the URL that looks similar to __`12AB0000003CDe4`__. Use that value instead of the API Name.
 
 = I need to send a "Date/Time" field, not a "Date" field. How do I do that? (Web-to-Lead) =
 Salesforce makes this a little difficult, sorry!
@@ -263,13 +259,13 @@ function filter_the_gf_salesforce_datetime($use_datetime = false, $key = '', $va
 }
 `
 
-__If that doesn't work__, you can modify the format for the date by using this code:
+__If that doesn't work__, you can modify the format for the date by using this code: 
 
-`
+<pre>
 add_filter('gf_salesforce_format_date', 'modify_gf_salesforce_format_date');
 
 /**
- * The default is US-style,  though Salesforce recommends <code>Y-m-d\'\T\'H:i:s</code>
+ * The default is US-style,  though Salesforce recommends Y-m-d\'\T\'H:i:s
  * You can use any date formatting as shown here:
  * @link  http://php.net/manual/en/function.date.php
  */
@@ -277,17 +273,29 @@ function modify_gf_salesforce_format_date($previous = '') {
     $date_format = 'Y-m-d\'\T\'H:i:s';
     return $date_format;
 }
-`
+</pre>
 
 = I know I have SOAP enabled and the API plugin says I don't. =
 Add this to the bottom of your theme's `functions.php` file to force loading even if a `SOAPClient` class does not exist:
 
 `add_filter( 'gf_salesforce_soap_is_available', '__return_true');`
 
+= Checkboxes aren't being passing to Salesforce =
+Make the value of checkboxes `1` in Gravity Forms. [See how to do that here](https://github.com/katzwebservices/Gravity-Forms-Salesforce/issues/99).
+
 = What's the license for this plugin? =
 This plugin is released under a GPL license.
 
 == Changelog ==
+
+= 3.0.6.2 (September 5, 2014) =
+* Fixed: Issue saving Web-to-Lead settings for Gravity Forms 1.8.10 or higher. Thanks, [@twiginteractive](https://github.com/twiginteractive)
+* Fixed: An issue with the OAuth library clashing if the same library is used elsewhere. Thanks, [@JasonTheAdams](https://github.com/JasonTheAdams)
+* Confirmed compatibility with WordPress 4.0
+
+= 3.0.6.1 (August 18, 2014) =
+* If you haven't read the 3.0.5 notes, please do so!
+* Fixed: Issue with refreshing Salesforce authorization token
 
 = 3.0.6 (July 19, 2014) =
 * If you haven't read the 3.0.5 changelog notes, please do so!
@@ -481,6 +489,15 @@ This plugin is released under a GPL license.
 * Launch!
 
 == Upgrade Notice ==
+
+= 3.0.6.2 (September 5, 2014) =
+* Fixed: Issue saving Web-to-Lead settings for Gravity Forms 1.8.10 or higher. Thanks, [@twiginteractive](https://github.com/twiginteractive)
+* Fixed: An issue with the OAuth library clashing if the same library is used elsewhere. Thanks, [@JasonTheAdams](https://github.com/JasonTheAdams)
+* Confirmed compatibility with WordPress 4.0
+
+= 3.0.6.1 (August 18, 2014) =
+* If you haven't read the 3.0.5 notes, please do so!
+* Fixed: Issue with refreshing Salesforce authorization token
 
 = 3.0.6 (July 19, 2014) =
 * If you haven't read the 3.0.5 changelog notes, please do so!

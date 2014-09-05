@@ -2,7 +2,7 @@
 /*
 
 KWS Gravity Forms Add-On
-Version: 2.1.1
+Version: 2.2.1
 
 ------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ if (class_exists("GFForms") && !class_exists('KWSGFAddOn2_2')) {
      */
     abstract class KWSGFAddOn2_2 extends GFFeedAddOn {
 
-        protected $_version = "2.2";
+        protected $_version = "2.2.1";
         protected $_min_gravityforms_version = "1.7";
         protected $_slug = "kwsaddon";
         protected $_path = "kwsaddon/kwsaddon.php";
@@ -831,7 +831,7 @@ EOD;
         * We need to be more vigilant than that, so we check if the current `subview` parameter matches the short title.
         */
         protected function is_save_postback(){
-            return !rgempty("gform-settings-save") && rgget("subview") === $this->get_short_title();
+            return !rgempty("gform-settings-save") && ( rgget("subview") === $this->get_short_title() || rgget("subview") === $this->get_slug() );
         }
 
         /**

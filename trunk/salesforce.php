@@ -82,7 +82,7 @@ class KWS_GF_Salesforce {
     function plugin_action_links( $links, $file ) {
         if ( $file ==  plugin_basename(self::$file) ) {
             array_unshift( $links, '<a href="https://github.com/katzwebservices/Gravity-Forms-Salesforce/issues?state=open"><span class="dashicons dashicons-sos"></span>' . __('Support', 'idx-plus') . '</a>' );
-            array_unshift( $links, '<a href="' . admin_url( 'admin.php?page=gf_settings&amp;subview=Salesforce+Add-On' ) . '"><span class="dashicons dashicons-admin-generic"></span>' . __('Settings', 'idx-plus') . '</a>' );
+            array_unshift( $links, '<a href="' . admin_url( 'admin.php?page=gf_settings&amp;subview=sf-loader' ) . '"><span class="dashicons dashicons-admin-generic"></span>' . __('Settings', 'idx-plus') . '</a>' );
         }
         return $links;
     }
