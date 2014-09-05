@@ -171,9 +171,14 @@ class GFSalesforce {
 		require_once(self::get_base_path() . "inc/data.php");
 		require_once(self::get_base_path() . "inc/edit-form.php");
 
-		include_once KWS_GF_Salesforce::$plugin_dir_path.'lib/PHPoAuthLib/src/OAuth/bootstrap.php';
-		include_once KWS_GF_Salesforce::$plugin_dir_path.'lib/PHPoAuthLib/src/OAuth/ServiceFactory.php';
-		include_once KWS_GF_Salesforce::$plugin_dir_path.'lib/WordPressMemory.php';
+		if ( !class_exists('OAuth\Common\autoloader') )
+			include_once KWS_GF_Salesforce::$plugin_dir_path.'lib/PHPoAuthLib/src/OAuth/bootstrap.php';
+			
+		if ( !class_exists('OAuth\ServiceFactory') )			
+			include_once KWS_GF_Salesforce::$plugin_dir_path.'lib/PHPoAuthLib/src/OAuth/ServiceFactory.php';
+			
+		if ( !class_exists('WordpressMemory') )
+			include_once KWS_GF_Salesforce::$plugin_dir_path.'lib/WordPressMemory.php';
 	}
 
 	/**
