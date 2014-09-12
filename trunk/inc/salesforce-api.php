@@ -2058,7 +2058,6 @@ class GFSalesforce {
 
 			$field = RGFormsModel::get_field($form, $field_id);
 			$input_type = RGFormsModel::get_input_type($field);
-			var_dump($var_tag);
 
 			if($var_tag == 'address_full') {
 				$merge_vars[$var_tag] = self::get_address($entry, $field_id);

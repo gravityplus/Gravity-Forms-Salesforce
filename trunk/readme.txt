@@ -2,7 +2,7 @@
 Tags: gravity forms, forms, gravity, form, crm, gravity form, salesforce, salesforce plugin, form, forms, gravity, gravity form, gravity forms, secure form, simplemodal contact form, wp contact form, widget, sales force, customer, contact, contacts, address, addresses, address book, web to lead, web to case, web-to-lead, web-to-case, cases, leads, lead
 Requires at least: 3.3
 Tested up to: 4.0
-Stable tag: 3.0.6.2
+Stable tag: 3.0.6.3
 Contributors: katzwebdesign,katzwebservices
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Gravity%20Forms%20Salesforce%20Addon&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
 License: GPLv2 or later
@@ -288,6 +288,9 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 3.0.6.3 (September 12, 2014) =
+* Fixed: Removed field var_dump
+
 = 3.0.6.2 (September 5, 2014) =
 * Fixed: Issue saving Web-to-Lead settings for Gravity Forms 1.8.10 or higher. Thanks, [@twiginteractive](https://github.com/twiginteractive)
 * Fixed: An issue with the OAuth library clashing if the same library is used elsewhere. Thanks, [@JasonTheAdams](https://github.com/JasonTheAdams)
@@ -489,6 +492,9 @@ This plugin is released under a GPL license.
 * Launch!
 
 == Upgrade Notice ==
+
+= 3.0.6.3 (September 12, 2014) =
+* Fixed: Removed field var_dump
 
 = 3.0.6.2 (September 5, 2014) =
 * Fixed: Issue saving Web-to-Lead settings for Gravity Forms 1.8.10 or higher. Thanks, [@twiginteractive](https://github.com/twiginteractive)
