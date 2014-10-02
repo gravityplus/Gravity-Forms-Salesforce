@@ -319,7 +319,7 @@ class GFSalesforce {
 		$id = self::getTokenParam('id');
 		$url = add_query_arg(array('oauth_token' => $auth), $id );
 
-		$request = wp_remote_get( $url, array( 'verify_ssl' => false, 'timeout' => 60 ));
+		$request = wp_remote_get( $url, array( 'sslverify' => false, 'timeout' => 60 ));
 
 		if(!is_wp_error( $request ) && (int)$request['response']['code'] === 200) {
 			$response = $request['body'];
