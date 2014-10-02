@@ -215,7 +215,7 @@ class GFSalesforce {
 
 				$settings['error'] = self::processErrorMessage($e->getMessage());
 
-				self::log_error('processSalesforceResponse: '.$settings['error']);
+				self::log_error('processSalesforceResponse: '.$settings['error'] .' [Raw error message: '. $e->getMessage() .']' );
 			}
 
 			update_option("gf_salesforce_settings", $settings);
