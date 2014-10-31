@@ -2,7 +2,7 @@
 Tags: gravity forms, forms, gravity, form, crm, gravity form, salesforce, salesforce plugin, form, forms, gravity, gravity form, gravity forms, secure form, simplemodal contact form, wp contact form, widget, sales force, customer, contact, contacts, address, addresses, address book, web to lead, web to case, web-to-lead, web-to-case, cases, leads, lead
 Requires at least: 3.3
 Tested up to: 4.0
-Stable tag: 3.0.6.3
+Stable tag: 3.1
 Contributors: katzwebdesign,katzwebservices
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Gravity%20Forms%20Salesforce%20Addon&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
 License: GPLv2 or later
@@ -36,7 +36,7 @@ If you use the following Editions, you will use the included Web-to-Lead Add-on:
 
 - Personal Edition
 - Group Edition
-- Professional Edition  
+- Professional Edition
 *Note: You can also purchase API access for a Professional Edition.*
 
 ### Web to Case
@@ -259,7 +259,7 @@ function filter_the_gf_salesforce_datetime($use_datetime = false, $key = '', $va
 }
 `
 
-__If that doesn't work__, you can modify the format for the date by using this code: 
+__If that doesn't work__, you can modify the format for the date by using this code:
 
 <pre>
 add_filter('gf_salesforce_format_date', 'modify_gf_salesforce_format_date');
@@ -287,6 +287,20 @@ Make the value of checkboxes `1` in Gravity Forms. [See how to do that here](htt
 This plugin is released under a GPL license.
 
 == Changelog ==
+
+= 3.1 (September 12, 2014) =
+* Added: use of sandbox constant
+* Fixed: whitespace consistency
+* Fixed: lots of logging updates for verbosity
+* Fixed: do not take any create action on inactive feeds
+* Fixed: ability to sort the order of feeds list
+* Fixed: feed select boxes are all sorted alphabetically now
+* Fixed: feeds primary key can now be used to update previous records properly. For example, formA two SF tables worth of data -- contact & address.
+    You can create an address feed and a contact feed. If the address feed is ordered before the contact feed in the feed list, you can use the
+    contact feeds primary key to map to the address primary key. This is helpful to map true relationships is SF.
+* Fixed: any feed can map foreign keys to primary keys, thus mapping rich relationship in SF. For example, formB has five dependent SF tables worth of data --
+    contact, opportunities, opportunity contacts, contact, tribute. Now you can create a contact, have it linked to opportunities. But also create a second contact
+    and map that as well as the opportunity to a custom tribute table. Very fancy.
 
 = 3.0.6.3 (September 12, 2014) =
 * Fixed: Removed field var_dump
