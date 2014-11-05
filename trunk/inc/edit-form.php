@@ -417,7 +417,7 @@ class GFSalesforce_FieldMapping {
 
             <label for="salesforce_map_enabled">
                 <input type="checkbox" id="salesforce_map_enabled" name="salesforce_map_enabled" value="1" /> <?php _e("Enable Salesforce Field Mapping?", "gravity-forms-salesforce"); ?>
-                <img alt="<?php _e("Enable Salesforce.com Mapping", "gravity-forms-salesforce") ?>" src="<?php echo GFSalesforce::get_base_url()?>/images/salesforce-50x50.png" style="margin:0 7px 0 0;" width="20" height="20" />
+                <img alt="<?php _e("Enable Salesforce.com Mapping", "gravity-forms-salesforce") ?>" src="<?php echo GFSalesforce::get_base_url()?>/assets/images/salesforce-50x50.png" style="margin:0 7px 0 0;" width="20" height="20" />
             </label>
 
             <div id="salesforce_map_ui">
@@ -451,7 +451,7 @@ class GFSalesforce_FieldMapping {
                 ?>
             </select></label>
             &nbsp;
-            <img src="<?php echo GFSalesforce::get_base_url() ?>/images/loading.gif" class="salesforce_wait" style="display: none;"/>
+            <img src="<?php echo GFSalesforce::get_base_url() ?>/assets/images/loading.gif" class="salesforce_wait" style="display: none;"/>
             <div id="salesforce_field_list"></div>
         </div>
             <?php
