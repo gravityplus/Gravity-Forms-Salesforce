@@ -753,13 +753,13 @@ class GFSalesforce {
 		$api = self::get_api();
 		?>
 		<style type="text/css">
-			table.sort tr {
+			.user-list tr {
 				cursor: move;
 			}
-			table.sort tr td a {
+			.user-list tr td a {
 				cursor: pointer;
 			}
-			table.sort tr:nth-child(even) {
+			.user-list tr:nth-child(even) {
 				background-color: #f5f5f5;
 			}
 		</style>
