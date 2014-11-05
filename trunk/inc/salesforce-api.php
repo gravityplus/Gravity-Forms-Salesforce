@@ -1426,7 +1426,12 @@ class GFSalesforce {
 				<?php
 
 				foreach($forms as $form){
-					$selected = absint($form->id) == $config["form_id"] ? "selected='selected'" : "";
+					if(isset($config["form_id"]) && absint($form->id) == $config["form_id"]) {
+						$selected = "selected='selected'";
+					} else {
+						$selected = "";
+					}
+
 					?>
 					<option value="<?php echo absint($form->id) ?>"  <?php echo $selected ?>><?php echo esc_html($form->title) ?></option>
 					<?php
