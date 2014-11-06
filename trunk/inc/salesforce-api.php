@@ -2328,7 +2328,8 @@ class GFSalesforce {
 			gform_update_meta( $entry['id'], 'salesforce_id', $result_id );
 			gform_update_meta( $entry['id'], 'salesforce_api_result', 'success' );
 
-			$success_note = sprintf(__('Successfully added/updated to Salesforce with ID #%s. View entry at %s', 'gravity-forms-salesforce'), $result_id, self::getTokenParam('instance_url').'/'.$result_id);
+			$success_note = sprintf(__('Successfully added/updated to Salesforce (%s) with ID #%s. View entry at %s', 'gravity-forms-salesforce'),
+										$Account->type, $result_id, self::getTokenParam('instance_url').'/'.$result_id);
 
 			self::log_debug(__METHOD__ . ': '.$success_note);
 			self::add_note($entry["id"], $success_note);
@@ -2363,7 +2364,9 @@ class GFSalesforce {
 					}
 				}
 
-				self::add_note($entry["id"], sprintf(__('Errors when adding to Salesforce: %s', 'gravity-forms-salesforce'), $errors->message.$api_exception));
+				self::add_note($entry["id"],
+						sprintf(__('Errors when adding to Salesforce (%s): %s', 'gravity-forms-salesforce'),
+									$Account->type, $errors->message.$api_exception));
 
 			}
 
