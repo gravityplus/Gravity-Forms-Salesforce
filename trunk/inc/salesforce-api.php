@@ -2012,7 +2012,6 @@ class GFSalesforce {
 		return $str;
 	}
 
-
 	/**
 	 * Called when entry is manually updated in the Single Entry view of Gravity Forms.
 	 *
@@ -2047,8 +2046,27 @@ class GFSalesforce {
 
 		// For admin_init hook, get the entry ID from the URL
 		if(empty($entry_id)) {
-			$form = RGFormsModel::get_form_meta(rgget('id'));
 			$entry_id = rgget('lid');
+			$form_id = rgget('id');
+
+			// fetch alternative entry id: look for gf list details when using pagination
+			if(empty($entry_id)) {
+				$position = rgget('pos');
+				$paging = array('offset' => $position, 'page_size' => 1);
+
+				$entries = GFAPI::get_entries($form_id, array(), null, $paging);
+
+				if(!empty($entries)) {
+					// pluck first entry to use id from, should always only be one
+					$entry = array_shift($entries);
+					$entry_id = $entry['id'];
+				} else {
+					self::log_error(__METHOD__ . ': Could not locate GF entry.');
+					return;
+				}
+			}
+
+			$form = RGFormsModel::get_form_meta($form_id);
 		}
 
 		// Fetch entry (use new GF API from version 1.8)
@@ -2069,9 +2087,7 @@ class GFSalesforce {
 		unset($_POST['send_to_salesforce']);
 	}
 
-
 	public static function export($entry, $form, $manual_export = false){
-
 		//Login to Salesforce
 		$api = self::get_api();
 
@@ -2081,7 +2097,7 @@ class GFSalesforce {
 			return;
 		}
 
-		//getting all active feeds
+		// getting all active feeds
 		$feeds = GFSalesforceData::get_feed_by_form($form["id"], true);
 
 		foreach($feeds as $feed){
@@ -2096,7 +2112,7 @@ class GFSalesforce {
 			$manual_opt_in = ( $manual_export && self::is_optin_ok( $entry, $feed ) );
 			$auto_opt_in = ( !$manual_export && self::is_optin($form, $feed) );
 
-			//only export if user has opted in
+			// only export if user has opted in
 			if( $auto_opt_in || $manual_opt_in ) {
 				self::export_feed($entry, $form, $feed);
 			}
@@ -2104,7 +2120,6 @@ class GFSalesforce {
 	}
 
 	public static function export_feed($entry, $form, $feed){
-
 		if(empty($feed['meta']['contact_object_name'])) {
 			self::log_error(__METHOD__ . ': There was no Object type defined in the feed (like Contact or Lead)');
 			return false;

@@ -31,6 +31,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * Load the loader...we need to do this to make sure that the Gravity Forms addon is supported.
  *
  */
+require_once('lib/gf-utility-functions.php');
+
 class KWS_GF_Salesforce {
 
     const version = '3.1';
