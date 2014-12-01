@@ -139,7 +139,7 @@ class GFSalesforce_FieldMapping {
         $str = '<ul class="ul-square">';
         foreach($field['picklistValues'] as $value) {
             if(empty($value->active)) { continue; }
-            $default = !empty($value->defaultValue) ?  __(' <strong class="default">(Default)</strong>', "gravity-forms-salesforce") : '';
+            $default = !empty($value->defaultValue) ?  '<strong class="default"> '.esc_html__('(Default)', "gravity-forms-salesforce").'</strong>' : '';
             $str .= '<li style="margin:0; padding:0;" data-default="'.floatval(!empty($value->defaultValue)).'" data-value="'.htmlentities($value->value).'" data-label="'.htmlentities($value->label).'">'.htmlentities($value->label).$default.'</li>';
         }
         $str .= '</ul>';
@@ -345,7 +345,9 @@ class GFSalesforce_FieldMapping {
                 return;
             }
 
-            jQuery(".salesforce_wait").show();
+            jQuery(".salesforce_wait").css({
+                'display': 'inline-block'
+            });
             jQuery("#salesforce_field_group").slideUp();
 
             var mysack = new sack("<?php bloginfo( 'wpurl' ); ?>/wp-admin/admin-ajax.php" );
@@ -417,7 +419,7 @@ class GFSalesforce_FieldMapping {
 
             <label for="salesforce_map_enabled">
                 <input type="checkbox" id="salesforce_map_enabled" name="salesforce_map_enabled" value="1" /> <?php _e("Enable Salesforce Field Mapping?", "gravity-forms-salesforce"); ?>
-                <img alt="<?php _e("Enable Salesforce.com Mapping", "gravity-forms-salesforce") ?>" src="<?php echo GFSalesforce::get_base_url()?>/assets/images/salesforce-50x50.png" style="margin:0 7px 0 0;" width="20" height="20" />
+                <img alt="<?php esc_attr_e("Enable Salesforce.com Mapping", "gravity-forms-salesforce") ?>" src="<?php echo GFSalesforce::get_base_url()?>/assets/images/salesforce-50x50.png" style="margin:0 7px 0 0;" width="20" height="20" />
             </label>
 
             <div id="salesforce_map_ui">
@@ -437,7 +439,7 @@ class GFSalesforce_FieldMapping {
             $lists = GFSalesforce::getObjectTypes();
 
             if(!$lists) {
-                echo __("Could not load Salesforce objects. <br/>Error: ", "gravity-forms-salesforce");
+                echo wpautop(__("Could not load Salesforce objects.\nError: ", "gravity-forms-salesforce"));
                 echo isset($api->errorMessage) ? $api->errorMessage : '';
             } else { ?>
                 <select id="salesforce_object_list" name="salesforce_object_type" onchange="SelectList(jQuery(this).val()); SelectForm(jQuery(this).val(), <?php echo $form_id; ?>);">
@@ -449,9 +451,7 @@ class GFSalesforce_FieldMapping {
                     <?php
                 }
                 ?>
-            </select></label>
-            &nbsp;
-            <img src="<?php echo GFSalesforce::get_base_url() ?>/assets/images/loading.gif" class="salesforce_wait" style="display: none;"/>
+            </select></label><span class="spinner salesforce_wait" style="display: none; position: absolute;"></span>
             <div id="salesforce_field_list"></div>
         </div>
             <?php
@@ -469,4 +469,4 @@ class GFSalesforce_FieldMapping {
 
 }
 
-$GFSalesforce_FieldMapping = new GFSalesforce_FieldMapping();
+new GFSalesforce_FieldMapping;

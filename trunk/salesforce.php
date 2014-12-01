@@ -6,6 +6,10 @@ Version: 3.1
 Requires at least: 3.3
 Author: Katz Web Services, Inc.
 Author URI: https://katz.co
+License:              GPLv2 or later
+License URI:      http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:          gravity-forms-salesforce
+Domain Path:          /languages
 
 ------------------------------------------------------------------------
 Copyright 2014 Katz Web Services, Inc.
@@ -62,7 +66,7 @@ class KWS_GF_Salesforce {
     function init() {
 
         //loading translations
-        load_plugin_textdomain('gravity-forms-salesforce', FALSE, '/gravity-forms-salesforce/languages' );
+        load_plugin_textdomain('gravity-forms-salesforce', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
     }
 
@@ -77,7 +81,22 @@ class KWS_GF_Salesforce {
         }
     }
 
+    /**
+     * Loads `jquery-ui-sortable` on the Salesforce page
+     * @since 3.1
+     * @return
+     */
     function load_admin_scripts() {
+        global $pagenow,$plugin_page;
+
+        if( empty( $plugin_page ) || $plugin_page !== 'gf_salesforce' ) {
+            return;
+        }
+
+        // Don't load on single feeds, only on main feeds page
+        if( !empty( $_GET['view'] ) ) {
+            return;
+        }
 
         wp_enqueue_script( 'jquery-ui-sortable');
 

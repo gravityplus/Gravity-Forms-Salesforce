@@ -1,22 +1,22 @@
+# 
+# Translators:
 msgid ""
 msgstr ""
 "Project-Id-Version: Gravity Forms Salesforce Add-On\n"
 "POT-Creation-Date: 2014-12-01 13:23-0700\n"
-"PO-Revision-Date: 2014-12-01 13:23-0700\n"
-"Last-Translator: Katz Web Services, Inc. <support@katz.co>\n"
-"Language-Team: Katz Web Services, Inc. <support@katz.co>\n"
-"Language: en_US\n"
+"PO-Revision-Date: 2014-12-01 20:24+0000\n"
+"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"Language-Team: French (http://www.transifex.com/projects/p/gravity-forms-salesforce-add-on/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 1.7beta2\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: inc/daddy_analytics.addon.php:169
 #, php-format
@@ -85,8 +85,8 @@ msgid ""
 "Daddy Analytics allows you to track your leads from their original source, "
 "such as Adwords, Google Organic, Social Media, or other blogs. With that "
 "information you can get your true marketing ROI, as each Opportunity is "
-"attributed to the marketing activity that brought in the Lead. %sSign up for "
-"a free trial of Daddy Analytics%s"
+"attributed to the marketing activity that brought in the Lead. %sSign up for"
+" a free trial of Daddy Analytics%s"
 msgstr ""
 
 #: inc/daddy_analytics.addon.php:357
@@ -98,8 +98,8 @@ msgstr ""
 #, php-format
 msgid ""
 "%sLeave the Lead Source field blank%s for Daddy Analytics. Daddy Analytics "
-"will populate the Lead Source field with the web source of the Lead (such as "
-"Organic - Google, Paid - Bing, or Google Adwords)."
+"will populate the Lead Source field with the web source of the Lead (such as"
+" Organic - Google, Paid - Bing, or Google Adwords)."
 msgstr ""
 
 #: inc/daddy_analytics.addon.php:390
@@ -229,9 +229,9 @@ msgstr ""
 #: inc/kwsaddon.php:340 inc/web-to-lead.php:189
 #, php-format
 msgid ""
-"When the opt-in condition is enabled, form submissions will only be exported "
-"to %s when the condition is met. When disabled all form submissions will be "
-"exported."
+"When the opt-in condition is enabled, form submissions will only be exported"
+" to %s when the condition is met. When disabled all form submissions will be"
+" exported."
 msgstr ""
 
 #: inc/kwsaddon.php:366
@@ -285,8 +285,8 @@ msgstr ""
 #: inc/loader.php:89
 #, php-format
 msgid ""
-"If this is not possible, you may %sdownload the last version of the plugin%s "
-"that did not require PHP 5.3."
+"If this is not possible, you may %sdownload the last version of the plugin%s"
+" that did not require PHP 5.3."
 msgstr ""
 
 #: inc/loader.php:95
@@ -339,12 +339,9 @@ msgstr ""
 
 #: inc/loader.php:351
 msgid ""
-"The Gravity Form Salesforce: API Add-On requires that your server support "
-"SOAP. Please contact your hosting provider and ask them to enable SOAP on "
-"your server.\n"
+"The Gravity Form Salesforce: API Add-On requires that your server support SOAP. Please contact your hosting provider and ask them to enable SOAP on your server.\n"
 "\n"
-"\t\t\t\tYou can also use the Salesforce Web-to-Lead Add-on; this doesn&#8217;"
-"t require SOAP."
+"\t\t\t\tYou can also use the Salesforce Web-to-Lead Add-on; this doesn&#8217;t require SOAP."
 msgstr ""
 
 #: inc/salesforce-api.php:491 inc/salesforce-api.php:526
@@ -386,15 +383,16 @@ msgstr ""
 #: inc/salesforce-api.php:527
 msgid ""
 "Associate your Salesforce fields to the appropriate Gravity Form fields by "
-"selecting. <a href='http://www.salesforce.com/us/developer/docs/api/Content/"
-"field_types.htm'>Learn about the Field Types</a> in Salesforce."
+"selecting. <a "
+"href='http://www.salesforce.com/us/developer/docs/api/Content/field_types.htm'>Learn"
+" about the Field Types</a> in Salesforce."
 msgstr ""
 
 #: inc/salesforce-api.php:528
 msgid ""
-"When the opt-in condition is enabled, form submissions will only be exported "
-"to Salesforce when the condition is met. When disabled all form submissions "
-"will be exported."
+"When the opt-in condition is enabled, form submissions will only be exported"
+" to Salesforce when the condition is met. When disabled all form submissions"
+" will be exported."
 msgstr ""
 
 #: inc/salesforce-api.php:529
@@ -416,8 +414,8 @@ msgstr ""
 #: inc/salesforce-api.php:566
 #, php-format
 msgid ""
-"Gravity Forms Salesforce Add-On has been successfully uninstalled. It can be "
-"re-activated from the %splugins page%s."
+"Gravity Forms Salesforce Add-On has been successfully uninstalled. It can be"
+" re-activated from the %splugins page%s."
 msgstr ""
 
 #: inc/salesforce-api.php:603
@@ -511,8 +509,8 @@ msgstr ""
 
 #: inc/salesforce-api.php:691
 msgid ""
-"How long should form and field data be stored? This affects how often remote "
-"picklists will be checked for the Live Remote Field Mapping feature."
+"How long should form and field data be stored? This affects how often remote"
+" picklists will be checked for the Live Remote Field Mapping feature."
 msgstr ""
 
 #: inc/salesforce-api.php:692
@@ -534,8 +532,8 @@ msgstr ""
 
 #: inc/salesforce-api.php:712
 msgid ""
-"Warning! ALL Salesforce Feeds will be deleted. This cannot be undone. \\'OK"
-"\\' to delete, \\'Cancel\\' to stop"
+"Warning! ALL Salesforce Feeds will be deleted. This cannot be undone. "
+"\\'OK\\' to delete, \\'Cancel\\' to stop"
 msgstr ""
 
 #: inc/salesforce-api.php:743
@@ -633,8 +631,8 @@ msgstr ""
 #: inc/salesforce-api.php:1310
 #, php-format
 msgid ""
-"We are unable to login to Salesforce with the provided username and API key. "
-"Please make sure they are valid in the %sSettings Page%s"
+"We are unable to login to Salesforce with the provided username and API key."
+" Please make sure they are valid in the %sSettings Page%s"
 msgstr ""
 
 #: inc/salesforce-api.php:1363
@@ -643,7 +641,8 @@ msgid "Feed Updated. %sback to list%s"
 msgstr ""
 
 #: inc/salesforce-api.php:1370
-msgid "Feed could not be updated. Please enter all required information below."
+msgid ""
+"Feed could not be updated. Please enter all required information below."
 msgstr ""
 
 #: inc/salesforce-api.php:1378
@@ -799,8 +798,7 @@ msgstr ""
 
 #: inc/salesforce-api.php:2375
 #, php-format
-msgid ""
-"There was an error when attempting to add %sEntry #%s from the form \"%s\""
+msgid "There was an error when attempting to add %sEntry #%s from the form \"%s\""
 msgstr ""
 
 #: inc/salesforce-api.php:2389
@@ -861,17 +859,17 @@ msgstr ""
 #: inc/web-to-lead.php:92
 #, php-format
 msgid ""
-"To find your Salesforce.com Organization ID, in your Salesforce.com account, "
-"go to [Your Name] &raquo; Setup &raquo; Company Profile (near the bottom of "
-"the left sidebar) &raquo; Company Information. It will look like %s"
+"To find your Salesforce.com Organization ID, in your Salesforce.com account,"
+" go to [Your Name] &raquo; Setup &raquo; Company Profile (near the bottom of"
+" the left sidebar) &raquo; Company Information. It will look like %s"
 msgstr ""
 
 #: inc/web-to-lead.php:96
 msgid ""
 "Receive Salesforce Debugging Emails <p class='howto'><span>For full plugin "
-"logs, install the <a href='http://gravityhelp.com/downloads/"
-"#Gravity_Forms_Logging_Tool' target='_blank'>Gravity Forms Logging Tool</a>."
-"</span></p>"
+"logs, install the <a "
+"href='http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool' "
+"target='_blank'>Gravity Forms Logging Tool</a>.</span></p>"
 msgstr ""
 
 #: inc/web-to-lead.php:102
@@ -888,8 +886,8 @@ msgstr ""
 #: inc/web-to-lead.php:128
 #, php-format
 msgid ""
-"To find your Salesforce.com Organization ID, in your Salesforce.com account, "
-"go to:%1$s %2$s[Your Name] &raquo; Setup &raquo; Company Profile%3$s (near "
+"To find your Salesforce.com Organization ID, in your Salesforce.com account,"
+" go to:%1$s %2$s[Your Name] &raquo; Setup &raquo; Company Profile%3$s (near "
 "the bottom of the left sidebar) %2$s&raquo; Company Information%3$s (it is "
 "buried in the table of information). It will look like %4$s."
 msgstr ""
@@ -1046,8 +1044,8 @@ msgstr ""
 #: inc/web-to-lead.php:329
 #, php-format
 msgid ""
-"To associate an entry with a Campaign, you must also set the \"Member Status"
-"\". %sRead the Salesforce help article.%s"
+"To associate an entry with a Campaign, you must also set the \"Member "
+"Status\". %sRead the Salesforce help article.%s"
 msgstr ""
 
 #: inc/web-to-lead.php:334
@@ -1088,7 +1086,8 @@ msgstr ""
 msgid ""
 "Make sure that the profile assigned to the owner of the leads has the "
 "particular record type you're trying to assign visible to that profile. You "
-"can add it as follows: Setup -> manage users -> profiles -> edit profileName."
+"can add it as follows: Setup -> manage users -> profiles -> edit "
+"profileName."
 msgstr ""
 
 #: inc/web-to-lead.php:564

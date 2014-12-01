@@ -49,8 +49,10 @@ class GFSalesforce {
 
 	}
 
-	/*
+	/**
 	 * Singleton instance of our class
+	 *
+	 * @since  3.1
 	 * @return GFSalesforce
 	 */
 	public static function Instance()
@@ -66,7 +68,10 @@ class GFSalesforce {
 		return self::$instance;
 	}
 
-	//Plugin starting point. Will load appropriate files
+	/**
+	 * Plugin starting point. Will load appropriate files
+	 * @return void
+	 */
 	public function init(){
 		global $pagenow;
 
@@ -91,7 +96,7 @@ class GFSalesforce {
 
 			//creates a new Settings page on Gravity Forms' settings screen
 			if(self::has_access("gravityforms_salesforce")){
-				RGForms::add_settings_page("Salesforce: API", array("GFSalesforce", "settings_page"), self::get_base_url() . "/assets/images/salesforce-50x50.png");
+				RGForms::add_settings_page("Salesforce: API", array("GFSalesforce", "settings_page"), self::get_base_url() . "/assets/images/salesforce-128.png");
 			}
 
 			self::refresh_transients();
@@ -472,6 +477,12 @@ class GFSalesforce {
 		GFSalesforceData::update_feed($id, $feed["form_id"], $_POST["is_active"], $feed["meta"]);
 	}
 
+	/**
+	 * Update the feed sort order
+	 *
+	 * @since  3.1
+	 * @return void
+	 */
 	public static function update_feed_sort(){
 		if( empty( $_POST['sort'] ) || !isset( $_POST['nonce'] ))
 				// ! wp_verify_nonce( $_POST['nonce'], 'rg_update_feed_sort' ) )
@@ -563,7 +574,7 @@ class GFSalesforce {
 			check_admin_referer("uninstall", "gf_salesforce_uninstall");
 			self::uninstall();
 			?>
-			<div class="updated fade" style="padding:20px;"><?php _e(sprintf("Gravity Forms Salesforce Add-On has been successfully uninstalled. It can be re-activated from the %splugins page%s.", "<a href='plugins.php'>","</a>"), "gravity-forms-salesforce")?></div>
+			<div class="updated fade" style="padding:20px;"><?php esc_attr( sprintf( __("Gravity Forms Salesforce Add-On has been successfully uninstalled. It can be re-activated from the %splugins page%s.", "gravity-forms-salesforce"), "<a href='plugins.php'>","</a>") ); ?></div>
 			<?php
 			return;
 		}
@@ -620,11 +631,11 @@ class GFSalesforce {
 		?>
 		<form method="post" action="<?php echo remove_query_arg('refresh'); ?>">
 			<?php wp_nonce_field("update", "gf_salesforce_update") ?>
-			<h3><span><img class="alignleft" style="margin:0 10px 10px 0" alt="" src="<?php echo self::get_base_url() . "/assets/images/salesforce-50x50.png"; ?>" /> <?php _e("Salesforce Account Information", "gravity-forms-salesforce") ?></span></h3>
-			<h4 class="gf_settings_subgroup_title"><?php _e('Salesforce API', 'gravity-forms-salesforce'); ?></h4>
+			<h3><span><img class="alignleft" style="margin:0 10px 10px 0" alt="" src="<?php echo self::get_base_url() . "/assets/images/salesforce-256x256.png"; ?>" width="84" /> <?php esc_html_e("Salesforce Account Information", "gravity-forms-salesforce") ?></span></h3>
+			<h4 class="gf_settings_subgroup_title"><?php esc_html_e('Salesforce API', 'gravity-forms-salesforce'); ?></h4>
 			<table class="form-table">
 				<tr>
-					<th scope="row"><label><?php _e("Salesforce Account", "gravity-forms-salesforce"); ?></label> </th>
+					<th scope="row"><label><?php esc_html_e("Salesforce Account", "gravity-forms-salesforce"); ?></label> </th>
 					<td>
 					<?php
 
@@ -667,33 +678,33 @@ class GFSalesforce {
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><label for="gf_salesforce_notifyemail"><?php _e("Notify by Email on Errors", "gravity-forms-salesforce"); ?></label></th>
+					<th scope="row"><label for="gf_salesforce_notifyemail"><?php esc_html_e("Notify by Email on Errors", "gravity-forms-salesforce"); ?></label></th>
 					<td>
 						<input type="text" id="gf_salesforce_notifyemail" name="gf_salesforce_notifyemail" size="30" value="<?php echo empty($settings["notifyemail"]) ? '' : esc_attr($settings["notifyemail"]); ?>"/>
-						<span class="howto"><?php _e('An email will be sent to this email address if an entry is not properly added to Salesforce. Leave blank to disable.', 'gravity-forms-salesforce'); ?></span>
+						<span class="howto"><?php esc_html_e('An email will be sent to this email address if an entry is not properly added to Salesforce. Leave blank to disable.', 'gravity-forms-salesforce'); ?></span>
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><label for="gf_salesforce_cache_time"><?php _e("Remote Cache Time", "gravity-forms-salesforce"); ?></label><span class="howto"><?php _e("This is an advanced setting. You likely won't need to change this.", "gravity-forms-salesforce"); ?></span></th>
+					<th scope="row"><label for="gf_salesforce_cache_time"><?php esc_html_e("Remote Cache Time", "gravity-forms-salesforce"); ?></label><span class="howto"><?php esc_html_e("This is an advanced setting. You likely won't need to change this.", "gravity-forms-salesforce"); ?></span></th>
 					<td>
 
 						<select name="gf_salesforce_cache_time" id="gf_salesforce_cache_time">
-							<option value="60" <?php selected($settings["cache_time"] == '60', true); ?>><?php _e('One Minute (for testing only!)', 'gravity-forms-salesforce'); ?></option>
-							<option value="3600" <?php selected($settings["cache_time"] == '3600', true); ?>><?php _e('One Hour', 'gravity-forms-salesforce'); ?></option>
-							<option value="21600" <?php selected($settings["cache_time"] == '21600', true); ?>><?php _e('Six Hours', 'gravity-forms-salesforce'); ?></option>
-							<option value="43200" <?php selected($settings["cache_time"] == '43200', true); ?>><?php _e('12 Hours', 'gravity-forms-salesforce'); ?></option>
-							<option value="86400" <?php selected($settings["cache_time"] == '86400', true); ?>><?php _e('1 Day', 'gravity-forms-salesforce'); ?></option>
-							<option value="172800" <?php selected($settings["cache_time"] == '172800', true); ?>><?php _e('2 Days', 'gravity-forms-salesforce'); ?></option>
-							<option value="259200" <?php selected($settings["cache_time"] == '259200', true); ?>><?php _e('3 Days', 'gravity-forms-salesforce'); ?></option>
-							<option value="432000" <?php selected($settings["cache_time"] == '432000', true); ?>><?php _e('5 Days', 'gravity-forms-salesforce'); ?></option>
-							<option value="604800" <?php selected(empty($settings["cache_time"]) || $settings["cache_time"] == '604800', true); ?>><?php _e('1 Week', 'gravity-forms-salesforce'); ?></option>
+							<option value="60" <?php selected($settings["cache_time"] == '60', true); ?>><?php esc_html_e('One Minute (for testing only!)', 'gravity-forms-salesforce'); ?></option>
+							<option value="3600" <?php selected($settings["cache_time"] == '3600', true); ?>><?php esc_html_e('One Hour', 'gravity-forms-salesforce'); ?></option>
+							<option value="21600" <?php selected($settings["cache_time"] == '21600', true); ?>><?php esc_html_e('Six Hours', 'gravity-forms-salesforce'); ?></option>
+							<option value="43200" <?php selected($settings["cache_time"] == '43200', true); ?>><?php esc_html_e('12 Hours', 'gravity-forms-salesforce'); ?></option>
+							<option value="86400" <?php selected($settings["cache_time"] == '86400', true); ?>><?php esc_html_e('1 Day', 'gravity-forms-salesforce'); ?></option>
+							<option value="172800" <?php selected($settings["cache_time"] == '172800', true); ?>><?php esc_html_e('2 Days', 'gravity-forms-salesforce'); ?></option>
+							<option value="259200" <?php selected($settings["cache_time"] == '259200', true); ?>><?php esc_html_e('3 Days', 'gravity-forms-salesforce'); ?></option>
+							<option value="432000" <?php selected($settings["cache_time"] == '432000', true); ?>><?php esc_html_e('5 Days', 'gravity-forms-salesforce'); ?></option>
+							<option value="604800" <?php selected(empty($settings["cache_time"]) || $settings["cache_time"] == '604800', true); ?>><?php esc_html_e('1 Week', 'gravity-forms-salesforce'); ?></option>
 						</select>
-						<span class="howto"><?php _e('How long should form and field data be stored? This affects how often remote picklists will be checked for the Live Remote Field Mapping feature.', 'gravity-forms-salesforce'); ?></span>
-						<span class="howto"><?php _e(sprintf("%sRefresh now%s.", '<a href="'.add_query_arg('refresh', 'transients').'">','</a>'), "gravity-forms-salesforce"); ?></span>
+						<span class="howto"><?php esc_html_e('How long should form and field data be stored? This affects how often remote picklists will be checked for the Live Remote Field Mapping feature.', 'gravity-forms-salesforce'); ?></span>
+						<span class="howto"><?php printf( esc_html__("%sRefresh now%s.", "gravity-forms-salesforce"), '<a href="'.add_query_arg('refresh', 'transients').'">','</a>'); ?></span>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" ><input type="submit" name="gf_salesforce_submit" class="button-primary" value="<?php _e("Save Settings", "gravity-forms-salesforce") ?>" /></td>
+					<td colspan="2" ><input type="submit" name="gf_salesforce_submit" class="button-primary" value="<?php esc_attr_e("Save Settings", "gravity-forms-salesforce") ?>" /></td>
 				</tr>
 			</table>
 			<div>
@@ -706,8 +717,8 @@ class GFSalesforce {
 			<?php if(GFCommon::current_user_can_any("gravityforms_salesforce_uninstall")){ ?>
 				<div class="hr-divider"></div>
 
-				<h3><?php _e("Uninstall Salesforce Add-On", "gravity-forms-salesforce") ?></h3>
-				<div class="delete-alert"><?php _e("Warning! This operation deletes ALL Salesforce Feeds.", "gravity-forms-salesforce") ?>
+				<h3><?php esc_html_e("Uninstall Salesforce Add-On", "gravity-forms-salesforce") ?></h3>
+				<div class="delete-alert"><?php esc_html_e("Warning! This operation deletes ALL Salesforce Feeds.", "gravity-forms-salesforce") ?>
 					<?php
 					$uninstall_button = '<input type="submit" name="uninstall" value="' . __("Uninstall Salesforce Add-On", "gravity-forms-salesforce") . '" class="button" onclick="return confirm(\'' . __("Warning! ALL Salesforce Feeds will be deleted. This cannot be undone. \'OK\' to delete, \'Cancel\' to stop", "gravity-forms-salesforce") . '\');"/>';
 					echo apply_filters("gform_salesforce_uninstall_button", $uninstall_button);
@@ -718,12 +729,17 @@ class GFSalesforce {
 		<?php
 	}
 
+	/**
+	 * Display the list or edit page based on the current view
+	 * @return void
+	 */
 	public static function salesforce_page(){
 		$view = isset($_GET["view"]) ? $_GET["view"] : '';
-		if($view == "edit")
+		if($view == "edit") {
 			self::edit_page($_GET["id"]);
-		else
+		} else {
 			self::list_page();
+		}
 	}
 
 	//Displays the Salesforce feeds list page
@@ -735,7 +751,7 @@ class GFSalesforce {
 			$id = absint($_POST["action_argument"]);
 			GFSalesforceData::delete_feed($id);
 			?>
-			<div class="updated fade" style="padding:6px"><?php _e("Feed deleted.", "gravity-forms-salesforce") ?></div>
+			<div class="updated fade" style="margin:10px 0;"><p><?php esc_html_e("Feed deleted.", "gravity-forms-salesforce") ?></p></div>
 			<?php
 		}
 		else if (!empty($_POST["bulk_action"])){
@@ -746,7 +762,7 @@ class GFSalesforce {
 					GFSalesforceData::delete_feed($feed_id);
 			}
 			?>
-			<div class="updated fade" style="padding:6px"><?php _e("Feeds deleted.", "gravity-forms-salesforce") ?></div>
+			<div class="updated fade" style="margin:10px 0;"><p><?php esc_html_e("Feeds deleted.", "gravity-forms-salesforce") ?></p></div>
 			<?php
 		}
 
@@ -764,23 +780,23 @@ class GFSalesforce {
 			}
 		</style>
 		<div class="wrap">
-			<img alt="<?php _e("Salesforce.com Feeds", "gravity-forms-salesforce") ?>" src="<?php echo self::get_base_url()?>/assets/images/salesforce-50x50.png" style="float:left; margin:0 7px 0 0;" width="50" height="50" />
-			<h2><?php _e("Salesforce.com Feeds", "gravity-forms-salesforce"); ?>
-			<a class="button add-new-h2" href="admin.php?page=gf_salesforce&amp;view=edit&amp;id=0"><?php _e("Add New", "gravity-forms-salesforce") ?></a>
+			<img alt="<?php esc_attr_e("Salesforce.com Feeds", "gravity-forms-salesforce") ?>" src="<?php echo self::get_base_url()?>/assets/images/salesforce-256x256.png" style="float:left; margin:0 7px 10px 0;" width="64" />
+			<h2><?php esc_html_e("Salesforce.com Feeds", "gravity-forms-salesforce"); ?>
+			<a class="button add-new-h2" href="admin.php?page=gf_salesforce&amp;view=edit&amp;id=0"><?php esc_html_e("Add New", "gravity-forms-salesforce") ?></a>
 			</h2>
 
 			<?php
 				if(!self::api_is_valid($api)){
 			?>
 			<div class="error" id="message" style="margin-top:20px;">
-				<h3><?php _e('Salesforce Error', "gravity-forms-salesforce");?></h3>
-				<p><?php echo empty($api) ? __(sprintf("To get started, please configure your %sSalesforce Settings%s.", '<a href="'.self::link_to_settings().'">', "</a>"), "gravity-forms-salesforce") : $api; ?></p>
+				<h3><?php esc_html_e('Salesforce Error', "gravity-forms-salesforce");?></h3>
+				<p><?php echo empty($api) ? sprintf( __("To get started, please configure your %sSalesforce Settings%s.", "gravity-forms-salesforce"), '<a href="'.self::link_to_settings().'">', "</a>") : $api; ?></p>
 			</div>
 			<?php
 				} else {
 			?>
 			<div class="updated" id="message" style="margin-top:20px;">
-				<p><?php _e('Do you like this free plugin? <a href="http://katz.si/gfsfrate">Please review it on WordPress.org</a>! <small class="description alignright">Note: You must be logged in to WordPress.org to leave a review!</small>', 'gravity-forms-salesforce'); ?></p>
+				<p><?php printf( esc_html__('Do you like this free plugin? %sPlease review it on WordPress.org%s!', 'gravity-forms-salesforce'), '<a href="http://katz.si/gfsfrate">', '</a>') ; ?></p>
 			</div>
 			<?php } ?>
 			<div class="clear"></div>
@@ -796,10 +812,10 @@ class GFSalesforce {
 
 				<div class="tablenav">
 					<div class="alignleft actions" style="padding:8px 0 7px; 0">
-						<label class="hidden" for="bulk_action"><?php _e("Bulk action", "gravity-forms-salesforce") ?></label>
+						<label class="hidden" for="bulk_action"><?php esc_html_e("Bulk action", "gravity-forms-salesforce") ?></label>
 						<select name="bulk_action" id="bulk_action">
-							<option value=''> <?php _e("Bulk action", "gravity-forms-salesforce") ?> </option>
-							<option value='delete'><?php _e("Delete", "gravity-forms-salesforce") ?></option>
+							<option value=''> <?php esc_html_e("Bulk action", "gravity-forms-salesforce") ?> </option>
+							<option value='delete'><?php esc_html_e("Delete", "gravity-forms-salesforce") ?></option>
 						</select>
 						<?php
 						echo '<input type="submit" class="button" value="' . __("Apply", "gravity-forms-salesforce") . '" onclick="if( jQuery(\'#bulk_action\').val() == \'delete\' && !confirm(\'' . __("Delete selected feeds? ", "gravity-forms-salesforce") . __("\'Cancel\' to stop, \'OK\' to delete.", "gravity-forms-salesforce") .'\')) { return false; } return true;"/>';
@@ -811,8 +827,8 @@ class GFSalesforce {
 						<tr>
 							<th scope="col" id="cb" class="manage-column column-cb check-column" style=""><input type="checkbox" /></th>
 							<th scope="col" id="active" class="manage-column check-column"></th>
-							<th scope="col" class="manage-column"><?php _e("Form", "gravity-forms-salesforce") ?></th>
-							<th scope="col" class="manage-column"><?php _e("Salesforce Object", "gravity-forms-salesforce") ?></th>
+							<th scope="col" class="manage-column"><?php esc_html_e("Form", "gravity-forms-salesforce") ?></th>
+							<th scope="col" class="manage-column"><?php esc_html_e("Salesforce Object", "gravity-forms-salesforce") ?></th>
 						</tr>
 					</thead>
 
@@ -820,8 +836,8 @@ class GFSalesforce {
 						<tr>
 							<th scope="col" id="cb" class="manage-column column-cb check-column" style=""><input type="checkbox" /></th>
 							<th scope="col" id="active" class="manage-column check-column"></th>
-							<th scope="col" class="manage-column"><?php _e("Form", "gravity-forms-salesforce") ?></th>
-							<th scope="col" class="manage-column"><?php _e("Salesforce Object", "gravity-forms-salesforce") ?></th>
+							<th scope="col" class="manage-column"><?php esc_html_e("Form", "gravity-forms-salesforce") ?></th>
+							<th scope="col" class="manage-column"><?php esc_html_e("Salesforce Object", "gravity-forms-salesforce") ?></th>
 						</tr>
 					</tfoot>
 
@@ -837,25 +853,25 @@ class GFSalesforce {
 									<th scope="row" class="check-column"><input type="checkbox" name="feed[]" value="<?php echo $setting["id"] ?>"/></th>
 									<td><img src="<?php echo self::get_base_url() ?>/assets/images/active<?php echo intval($setting["is_active"]) ?>.png" alt="<?php echo $setting["is_active"] ? __("Active", "gravity-forms-salesforce") : __("Inactive", "gravity-forms-salesforce");?>" title="<?php echo $setting["is_active"] ? __("Active", "gravity-forms-salesforce") : __("Inactive", "gravity-forms-salesforce");?>" onclick="ToggleActive(this); " /></td>
 									<td class="column-title">
-										<a href="admin.php?page=gf_salesforce&amp;view=edit&amp;id=<?php echo $setting["id"] ?>" title="<?php _e("Edit", "gravity-forms-salesforce") ?>"><?php echo esc_html( $setting["form_title"] ); ?></a>
+										<a href="admin.php?page=gf_salesforce&amp;view=edit&amp;id=<?php echo $setting["id"] ?>" title="<?php esc_attr_e("Edit", "gravity-forms-salesforce") ?>"><?php echo esc_html( $setting["form_title"] ); ?></a>
 										<div class="row-actions">
 											<span class="edit">
-											<a title="Edit this setting" href="admin.php?page=gf_salesforce&amp;view=edit&amp;id=<?php echo $setting["id"] ?>" title="<?php _e("Edit", "gravity-forms-salesforce") ?>"><?php _e("Edit", "gravity-forms-salesforce") ?></a>
+											<a title="Edit this setting" href="admin.php?page=gf_salesforce&amp;view=edit&amp;id=<?php echo $setting["id"] ?>" title="<?php esc_attr_e("Edit", "gravity-forms-salesforce") ?>"><?php esc_html_e("Edit", "gravity-forms-salesforce") ?></a>
 											|
 											</span>
 
 											<span class="edit">
-											<a title="<?php _e("Delete", "gravity-forms-salesforce") ?>" href="javascript: if(confirm('<?php _e("Delete this feed? ", "gravity-forms-salesforce") ?> <?php _e("\'Cancel\' to stop, \'OK\' to delete.", "gravity-forms-salesforce") ?>')){ DeleteSetting(<?php echo $setting["id"] ?>);}"><?php _e("Delete", "gravity-forms-salesforce")?></a>
+											<a title="<?php esc_html_e("Delete", "gravity-forms-salesforce") ?>" href="javascript: if(confirm('<?php echo esc_js(__("Delete this feed? 'Cancel' to stop, 'OK' to delete.", "gravity-forms-salesforce")); ?>')){ DeleteSetting(<?php echo $setting["id"] ?>);}"><?php esc_html_e("Delete", "gravity-forms-salesforce")?></a>
 											|
 											</span>
 
 											<span class="edit">
-											<a title="<?php _e("Edit Form", "gravity-forms-salesforce") ?>" href="<?php echo add_query_arg(array('page' => 'gf_edit_forms', 'id' => $setting['form_id']), admin_url('admin.php')); ?>"><?php _e("Edit Form", "gravity-forms-salesforce")?></a>
+											<a title="<?php esc_html_e("Edit Form", "gravity-forms-salesforce") ?>" href="<?php echo add_query_arg(array('page' => 'gf_edit_forms', 'id' => $setting['form_id']), admin_url('admin.php')); ?>"><?php esc_html_e("Edit Form", "gravity-forms-salesforce")?></a>
 											|
 											</span>
 
 											<span class="edit">
-											<a title="<?php _e("Preview Form", "gravity-forms-salesforce") ?>" href="<?php echo add_query_arg(array('gf_page' => 'preview', 'id' => $setting['form_id']), site_url()); ?>"><?php _e("Preview Form", "gravity-forms-salesforce")?></a>
+											<a title="<?php esc_html_e("Preview Form", "gravity-forms-salesforce") ?>" href="<?php echo add_query_arg(array('gf_page' => 'preview', 'id' => $setting['form_id']), site_url()); ?>"><?php esc_html_e("Preview Form", "gravity-forms-salesforce")?></a>
 											</span>
 										</div>
 									</td>
@@ -869,7 +885,7 @@ class GFSalesforce {
 								?>
 								<tr>
 									<td colspan="4" style="padding:20px;">
-										<?php _e(sprintf("You don't have any Salesforce feeds configured. Let's go %screate one%s!", '<a href="'.admin_url('admin.php?page=gf_salesforce&view=edit&id=0').'">', "</a>"), "gravity-forms-salesforce"); ?>
+										<?php printf( esc_html__("You don't have any Salesforce feeds configured. Let's go %screate one%s!", "gravity-forms-salesforce"), '<a href="'.admin_url('admin.php?page=gf_salesforce&view=edit&id=0').'">', "</a>"); ?>
 									</td>
 								</tr>
 								<?php
@@ -878,7 +894,7 @@ class GFSalesforce {
 								?>
 								<tr>
 									<td colspan="4" style="padding:20px;">
-										<?php _e(sprintf("To get started, please configure your %sSalesforce Settings%s.", '<a href="'.self::link_to_settings().'">', "</a>"), "gravity-forms-salesforce"); ?>
+										<?php printf( esc_html__("To get started, please configure your %sSalesforce Settings%s.", "gravity-forms-salesforce"), '<a href="'.self::link_to_settings().'">', "</a>"); ?>
 									</td>
 								</tr>
 								<?php
@@ -1133,6 +1149,9 @@ class GFSalesforce {
 	 */
 	public static function getFieldsForObject($objectType = 'account', $fieldType = null) {
 
+		// This is passed by $_POST; let's just make sure it's sanitized
+		$objectType = esc_attr( $objectType );
+
 		$lists = maybe_unserialize(get_site_transient('sfgf_lists_fields_'.$objectType));
 		if($lists && !empty($lists) && is_array($lists) && (!isset($_REQUEST['refresh']) || (isset($_REQUEST['refresh']) && $_REQUEST['refresh'] !== 'lists'))) {
 			self::log_debug('getFields: fields have been cached.');
@@ -1287,7 +1306,7 @@ class GFSalesforce {
 			var form = Array();
 		</script>
 		<div class="wrap">
-			<img alt="<?php _e("Salesforce Feeds", "gravity-forms-salesforce") ?>" src="<?php echo self::get_base_url()?>/assets/images/salesforce-50x50.png" style="float:left; margin:15px 7px 0 0;"/>
+			<img alt="<?php _e("Salesforce Feeds", "gravity-forms-salesforce") ?>" src="<?php echo self::get_base_url()?>/assets/images/salesforce-256x256.png" style="float:left; margin:15px 7px 10px 0;" width="84"/>
 			<h2><?php _e("Salesforce Feeds", "gravity-forms-salesforce"); ?></h2>
 			<ul class="subsubsub">
 				<li><a href="<?php echo self::link_to_settings(); ?>">Salesforce Settings</a> |</li>
@@ -1437,9 +1456,7 @@ class GFSalesforce {
 					<?php
 				}
 				?>
-				</select>
-				&nbsp;&nbsp;
-				<img src="<?php echo GFSalesforce::get_base_url() ?>/assets/images/loading.gif" id="salesforce_wait" style="display: none;"/>
+				</select><span class="spinner salesforce_wait" style="display: none; position: absolute;"></span>
 			</div>
 			<div class="clear"></div>
 			<div id="salesforce_field_group" <?php echo empty($config["meta"]["contact_object_name"]) || empty($config["form_id"]) ? "style='display:none;'" : "" ?>>
@@ -1552,7 +1569,7 @@ class GFSalesforce {
 									<select id="salesforce_primary_field" name="salesforce_primary_field">
 										<?php echo self::render_options_as_fields( $config['meta']['contact_object_name'], $current_primary_field ); ?>
 									</select>
-									<span class="howto"><?php _e('If you want to update a pre-existing object, define what should be used as an unique identifier ("Primary Key"). For example, this may be an email address, Lead ID, or address.', 'gravity-forms-salesforce'); ?></span>
+									<span class="howto"><?php esc_html_e('If you want to update a pre-existing object, define what should be used as an unique identifier ("Primary Key"). For example, this may be an email address, Lead ID, or address.', 'gravity-forms-salesforce'); ?></span>
 								</td>
 							</tr>
 						</table>
@@ -1621,7 +1638,9 @@ class GFSalesforce {
 					return;
 				}
 
-				jQuery("#salesforce_wait").show();
+				jQuery(".salesforce_wait").css({
+					'display': 'inline-block',
+				});
 				jQuery("#salesforce_field_group").slideUp();
 
 				var mysack = new sack("<?php bloginfo( 'wpurl' ); ?>/wp-admin/admin-ajax.php" );
@@ -1632,7 +1651,7 @@ class GFSalesforce {
 				mysack.setVar( "objectType", listId);
 				mysack.setVar( "form_id", formId);
 				mysack.encVar( "cookie", document.cookie, false );
-				mysack.onError = function() {jQuery("#salesforce_wait").hide(); alert('<?php _e("Ajax error while selecting a form", "gravity-forms-salesforce") ?>' )};
+				mysack.onError = function() {jQuery(".salesforce_wait").hide(); alert('<?php echo esc_js(__("Ajax error while selecting a form", "gravity-forms-salesforce")); ?>' )};
 				mysack.runAJAX();
 				return true;
 			}
@@ -1670,7 +1689,7 @@ class GFSalesforce {
 					jQuery("#salesforce_field_group").slideUp();
 					jQuery("#salesforce_field_list").html("");
 				}
-				jQuery("#salesforce_wait").hide();
+				jQuery(".salesforce_wait").hide();
 			}
 
 			function GetFieldValues(fieldId, selectedValue, labelMaxCharacters){
@@ -2365,14 +2384,15 @@ class GFSalesforce {
 
 				if($email = self::is_notify_on_error()) {
 
+					$error_heading = __('Error adding to Salesforce', 'gravity-forms-salesforce');
 					// Create the email message to send
-					$message = sprintf(apply_filters('gravityforms_salesforce_notify_on_error_message', __("<h3>Error Adding To Salesforce</h3><p>There was an error when attempting to add <a href='%s'>Entry #%s</a> from the form \"%s\"</p>", 'gravity-forms-salesforce'), $errors, $entry, $form), admin_url('admin.php?page=gf_entries&view=entry&id='.$entry['form_id'].'&lid='.$entry['id']), $entry['id'], $form['title']);
+					$message = sprintf(apply_filters('gravityforms_salesforce_notify_on_error_message', '<h3>'.$error_heading.'</h3>'.wpautop(__("There was an error when attempting to add %sEntry #%s from the form \"%s\"", 'gravity-forms-salesforce')), $errors, $entry, $form), '<a href="'.admin_url('admin.php?page=gf_entries&view=entry&id='.$entry['form_id'].'&lid='.$entry['id']).'">', $entry['id'].'</a>', $form['title']);
 
 					// Send as HTML
 					$headers = "Content-type: text/html; charset=" . get_option('blog_charset') . "\r\n";
 
 					// Send email
-					$sent = wp_mail($email,__('Error adding to Salesforce', 'gravity-forms-salesforce'), $message, $headers);
+					$sent = wp_mail($email, $error_heading, $message, $headers);
 
 					if(!$sent) {
 						self::log_error(__METHOD__ . ': There was an error sending the error email. This really isn\'t your day, is it?');
@@ -2666,8 +2686,9 @@ class GFSalesforce {
 		return $value;
 	}
 
-	/*
+	/**
 	 * Create primary key id
+	 * @since  3.1
 	 * @param Feed
 	 * @return String
 	 */
@@ -2678,15 +2699,16 @@ class GFSalesforce {
 		return preg_replace('/\W+/', '_', $id);
 	}
 
-	/*
+	/**
 	 * Create primary key label
+	 * @since  3.1
 	 * @param Feed
 	 * @return String
 	 */
 	public static function primary_key_label($feed)
 	{
 		if(!empty($feed['meta']['contact_object_name'])) {
-			$label = sprintf('%s (Primary Key)', $feed['meta']['contact_object_name']);
+			$label = sprintf( _x('%s (Primary Key)', 'Label for the Primary Key selector in the Edit Feed form', 'gravity-forms-salesforce'), $feed['meta']['contact_object_name']);
 
 			return $label;
 		}
@@ -2694,8 +2716,9 @@ class GFSalesforce {
 		return false;
 	}
 
-	/*
+	/**
 	 * Try and sort array based on column name
+	 * @since  3.1
 	 * @param Array
 	 * @return Void
 	 */

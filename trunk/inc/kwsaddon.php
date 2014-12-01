@@ -158,7 +158,7 @@ if (class_exists("GFForms") && !class_exists('KWSGFAddOn2_2')) {
                 if(file_exists(WP_PLUGIN_DIR.'/gravityforms/gravityforms.php')) {
                     $installed = 1;
 
-                    $message .= __(sprintf('%sGravity Forms is installed but not active. %sActivate Gravity Forms%s to use the %s plugin.%s', '<p>', '<strong><a href="'.wp_nonce_url(admin_url('plugins.php?action=activate&plugin=gravityforms/gravityforms.php'), 'activate-plugin_gravityforms/gravityforms.php').'">', '</a></strong>', $name,'</p>'), 'gravity-forms-madmimi');
+                    $message .= __(sprintf('%sGravity Forms is installed but not active. %sActivate Gravity Forms%s to use the %s plugin.%s', '<p>', '<strong><a href="'.wp_nonce_url(admin_url('plugins.php?action=activate&plugin=gravityforms/gravityforms.php'), 'activate-plugin_gravityforms/gravityforms.php').'">', '</a></strong>', $name,'</p>'), 'gravity-forms-salesforce');
 
                 } else {
                     $message .= <<<EOD
@@ -178,11 +178,11 @@ EOD;
         }
 
         protected function invalid_api_message() {
-            return __("Invalid username and/or API key. Please try another combination.", "kwsaddon");
+            return __("Invalid username and/or API key. Please try another combination.", "gravity-forms-salesforce");
         }
 
         protected function valid_api_message() {
-            return __("Your configuration is working!", "kwsaddon");
+            return __("Your configuration is working!", "gravity-forms-salesforce");
         }
 
         protected function get_service_signup_message() {
@@ -312,12 +312,12 @@ EOD;
                             'name' => 'name',
                             'type' => 'text',
                             'value' => '',
-                            'placeholder' => __('Feed Name (optional)', 'kwsaddon'),
+                            'placeholder' => __('Feed Name (optional)', 'gravity-forms-salesforce'),
                         ),
                         array(
                             'type' => 'checkbox',
                             'label' => 'Choose Your Lists',
-                            'tooltip' => sprintf("<h6>" . __("%s List", "gravity-forms-madmimi") . "</h6>" . __("Select the %s list you would like to add your contacts to.", "kwsaddon"), $this->get_service_name(), $this->get_service_name()),
+                            'tooltip' => sprintf("<h6>" . __("%s List", "gravity-forms-salesforce") . "</h6>" . __("Select the %s list you would like to add your contacts to.", "gravity-forms-salesforce"), $this->get_service_name(), $this->get_service_name()),
                             'name' => 'lists',
                             'validation_callback' => array( $this, 'validate_service_lists' ),
                             'choices' => $this->feed_settings_service_lists()
@@ -325,19 +325,19 @@ EOD;
                         array(
                             'type' => 'field_map',
                             'label' => 'Map your fields.',
-                            'tooltip' => "<h6>" . __("Map Fields", "gravity-forms-madmimi") . "</h6>" . sprintf(__("Associate your %s merge variables to the appropriate Gravity Form fields by selecting.", "kwsaddon"), $this->get_service_name()),
+                            'tooltip' => "<h6>" . __("Map Fields", "gravity-forms-salesforce") . "</h6>" . sprintf(__("Associate your %s merge variables to the appropriate Gravity Form fields by selecting.", "gravity-forms-salesforce"), $this->get_service_name()),
                             'name' => null,
                             'field_map' => $this->map_custom_fields($this->feed_settings_fields_field_map())
                         ),
                         array(
                             'type' => 'custom_fields',
-                            'label' => __("Custom Fields", 'kwsaddon'),
+                            'label' => __("Custom Fields", 'gravity-forms-salesforce'),
                             'name' => null
                         ),
                         array(
                             'label' => 'Opt-in Condition',
                             'type' => 'feed_condition',
-                            'tooltip' => sprintf("<h6>" . __("Opt-In Condition", "gravity-forms-madmimi") . "</h6>" . __("When the opt-in condition is enabled, form submissions will only be exported to %s when the condition is met. When disabled all form submissions will be exported.", "kwsaddon"), $this->get_service_name()),
+                            'tooltip' => sprintf("<h6>" . __("Opt-In Condition", "gravity-forms-salesforce") . "</h6>" . __("When the opt-in condition is enabled, form submissions will only be exported to %s when the condition is met. When disabled all form submissions will be exported.", "gravity-forms-salesforce"), $this->get_service_name()),
                         )
                     )
                 )
@@ -363,7 +363,7 @@ EOD;
                     $name = esc_html( ltrim($key, '_') );
                     $fields[] = array(
                         'name' => $name,
-                        'label' => sprintf(__('Custom Field: <span class="custom_field_name">%s</span>'), $name),
+                        'label' => sprintf(__('Custom Field: %s', 'gravity-forms-salesforce'), '<span class="custom_field_name">'.$name.'</span>'),
                         'class' => 'custom_field',
                     );
                 }
@@ -474,7 +474,7 @@ EOD;
             </script>
 
 
-            <a href="#" class="button submit button-large button-secondary" id="kws_add_custom_field"><?php _e('Add a custom field', 'kwsaddon'); ?></a>
+            <a href="#" class="button submit button-large button-secondary" id="kws_add_custom_field"><?php _e('Add a custom field', 'gravity-forms-salesforce'); ?></a>
 
             <?php
         }
@@ -533,7 +533,7 @@ EOD;
 
             var $span = $('<span />', {
                 'class': 'enabled_<?php echo $class; ?>',
-                'title': "<?php esc_attr_e(sprintf(__("%s integration is enabled for this Form", 'kwsaddon'), $this->get_service_name())); ?>"
+                'title': "<?php esc_attr_e(sprintf(__("%s integration is enabled for this Form", 'gravity-forms-salesforce'), $this->get_service_name())); ?>"
             //    , 'text': 'SF'
             });
 
@@ -564,7 +564,7 @@ EOD;
 
             // If there are still active lists, this is valid.
             if(empty($field_setting)) {
-                $this->set_field_error( $field, sprintf(__('You must choose at least one %s list to receive contacts.', 'kwsaddon'), $this->get_service_name() ));
+                $this->set_field_error( $field, sprintf(__('You must choose at least one %s list to receive contacts.', 'gravity-forms-salesforce'), $this->get_service_name() ));
             }
         }
 
@@ -628,8 +628,8 @@ EOD;
          */
         function feed_list_columns() {
             return array(
-                'feed_name' => __('Feed Name', 'kwsaddon'),
-                'lists' => __('Connected Lists', 'kwsaddon'), // if you want to show the lists that the form is connected to.
+                'feed_name' => __('Feed Name', 'gravity-forms-salesforce'),
+                'lists' => __('Connected Lists', 'gravity-forms-salesforce'), // if you want to show the lists that the form is connected to.
             );
         }
 
@@ -732,7 +732,7 @@ EOD;
         public function plugin_settings_fields() {
             return array(
                 array(
-                    "title"  => sprintf(__("%s Add-On Settings", 'kwsaddon'), $this->get_service_name()),
+                    "title"  => sprintf(__("%s Add-On Settings", 'gravity-forms-salesforce'), $this->get_service_name()),
                     array(
                         'type'    => 'html',
                         'value'    => 'Welcome! If you have any questions, please',

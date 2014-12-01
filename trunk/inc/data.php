@@ -95,7 +95,7 @@ class GFSalesforceData{
             // insert
             $wpdb->insert($table_name, array('form_id' => $form_id,
                                                 'is_active'=> $is_active,
-                                                'sort' => $results->sort,
+                                                'sort' => ( isset( $results->sort ) ? $results->sort : 0 ),
                                                 'meta' => $setting),
                                         array('%d', '%d', '%s', '%s'));
             $id = $wpdb->get_var('SELECT LAST_INSERT_ID()');
@@ -108,6 +108,11 @@ class GFSalesforceData{
         return $id;
     }
 
+    /**
+     * @since  3.1
+     * @param  [type] $data [description]
+     * @return [type]       [description]
+     */
     public static function update_feed_order($data){
         global $wpdb;
         $table_name = self::get_salesforce_table_name();
