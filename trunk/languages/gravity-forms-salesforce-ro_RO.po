@@ -1,73 +1,73 @@
+# 
+# Translators:
 msgid ""
 msgstr ""
 "Project-Id-Version: Gravity Forms Salesforce Add-On\n"
 "POT-Creation-Date: 2014-12-01 13:23-0700\n"
-"PO-Revision-Date: 2014-12-01 13:23-0700\n"
-"Last-Translator: Katz Web Services, Inc. <support@katz.co>\n"
-"Language-Team: Katz Web Services, Inc. <support@katz.co>\n"
-"Language: en_US\n"
+"PO-Revision-Date: 2014-12-01 20:24+0000\n"
+"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"Language-Team: Romanian (Romania) (http://www.transifex.com/projects/p/gravity-forms-salesforce-add-on/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ro_RO\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
 "X-Generator: Poedit 1.7beta2\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: inc/daddy_analytics.addon.php:169
 #, php-format
 msgid "%s Configuration"
-msgstr ""
+msgstr "%s Configurare"
 
 #: inc/daddy_analytics.addon.php:175
 msgid "Token"
-msgstr ""
+msgstr "Token"
 
 #: inc/daddy_analytics.addon.php:181
 msgid "Web to Lead URL ID"
-msgstr ""
+msgstr "Pagina Web către ID URL Lead"
 
 #: inc/daddy_analytics.addon.php:187
 msgid "Site ID"
-msgstr ""
+msgstr "ID Site"
 
 #: inc/daddy_analytics.addon.php:193
 #, php-format
 msgid "Add Javascript? %sDisable you want to add tracking code yourself.%s"
-msgstr ""
+msgstr "Adaugi Javascript? %sDisable vrei să adăugi codul de urmărire singur.%s"
 
 #: inc/daddy_analytics.addon.php:209 inc/daddy_analytics.addon.php:242
 #: inc/loader.php:285
 msgid "Settings updated successfully."
-msgstr ""
+msgstr "Configurări actualizate cu succes."
 
 #: inc/daddy_analytics.addon.php:210 inc/daddy_analytics.addon.php:243
 #: inc/loader.php:286
 msgid "Settings failed to update successfully."
-msgstr ""
+msgstr "Configurările au eșuat la actualizare."
 
 #: inc/daddy_analytics.addon.php:220
 msgid "Salesforce API Name Configuration"
-msgstr ""
+msgstr "Configurare Nume API Salesforce"
 
 #: inc/daddy_analytics.addon.php:221
 #, php-format
 msgid ""
 "Make sure the API names below match what is in Salesforce on your %sLead "
 "Fields%s page."
-msgstr ""
+msgstr "Asigură-te că sub numele API de mai joi, se potrivesc cu ceea ce este în Câmpurile Salesforce %sLead din pagina %s."
 
 #: inc/daddy_analytics.addon.php:226
 msgid "Web-to-Lead URL API Name"
-msgstr ""
+msgstr "Nume API URL Web-to-Lead "
 
 #: inc/daddy_analytics.addon.php:233
 msgid "Daddy Analytics Token API Name"
-msgstr ""
+msgstr "Nume API Cod Daddy Analytics"
 
 #: inc/daddy_analytics.addon.php:296
 #, php-format
@@ -77,7 +77,7 @@ msgid ""
 "information you can get your true marketing ROI, as each Opportunity is "
 "attributed to the marketing activity that brought in the Lead. %sWatch a "
 "video of Daddy Analytics%s"
-msgstr ""
+msgstr "Daddy Analytics îți permite să îți urmărești lead-urile din sursa lor originală, precum Adwords, Google Organic, Social Media, sau alte bloguri. Cu aceste informații îți poți obține cu adevărat statistici ROI de marketing, deoarece fiecare Oportunitate este atribuită activității de marketing adusă în Lead. %sWatch un clip video despre Daddy Analytics %s"
 
 #: inc/daddy_analytics.addon.php:297
 #, php-format
@@ -85,50 +85,50 @@ msgid ""
 "Daddy Analytics allows you to track your leads from their original source, "
 "such as Adwords, Google Organic, Social Media, or other blogs. With that "
 "information you can get your true marketing ROI, as each Opportunity is "
-"attributed to the marketing activity that brought in the Lead. %sSign up for "
-"a free trial of Daddy Analytics%s"
-msgstr ""
+"attributed to the marketing activity that brought in the Lead. %sSign up for"
+" a free trial of Daddy Analytics%s"
+msgstr "Daddy Analytics îți permite să îți urmărești lead-urile din sursa lor originală, precum Adwords, Google Organic, Social Media, sau alte bloguri. Cu aceste informații îți poți obține cu adevărat statistici ROI de marketing, deoarece fiecare Oportunitate este atribuită activității de marketing adusă în Lead. %sSign Înregistrează-te pentru o versiune de testare Daddy Analytics%s"
 
 #: inc/daddy_analytics.addon.php:357
 #, php-format
 msgid "Thank you for using %sDaddy Analytics%s!"
-msgstr ""
+msgstr "Îți mulțumim pentru utilizarea %sDaddy Analytics%s!"
 
 #: inc/daddy_analytics.addon.php:372
 #, php-format
 msgid ""
 "%sLeave the Lead Source field blank%s for Daddy Analytics. Daddy Analytics "
-"will populate the Lead Source field with the web source of the Lead (such as "
-"Organic - Google, Paid - Bing, or Google Adwords)."
-msgstr ""
+"will populate the Lead Source field with the web source of the Lead (such as"
+" Organic - Google, Paid - Bing, or Google Adwords)."
+msgstr "%sLeave necompletat câmpul pentru Sursa Lead%s dacă folosești Daddy Analytics. Daddy Analytics va popula câmpul Sursă Lead  cu sursa web  a Lead-ului (cum ar fi Organic - Google, Plătite - Bing, sau Google Adwords)."
 
 #: inc/daddy_analytics.addon.php:390
 msgid "Daddy Analytics"
-msgstr ""
+msgstr "Daddy Analytics"
 
 #: inc/daddy_analytics.addon.php:405
 #, php-format
 msgid "%s Active: Your Daddy Analytics configuration is valid."
-msgstr ""
+msgstr "%s Activ: Configuraţia ta Daddy Analytics este validă."
 
 #: inc/daddy_analytics.addon.php:410
 msgid ""
 "Please login to your Daddy Analytics account to obtain your account "
 "information."
-msgstr ""
+msgstr "Te rugăm să te conectezi în contul tău Daddy Analytics pentru a obține informațiile contului tău."
 
 #: inc/daddy_analytics.addon.php:412
 msgid "Please complete all fields for your Daddy Analytics account."
-msgstr ""
+msgstr "Te rugăm să completezi toate câmpurile pentru contul tău Daddy Analytics."
 
 #: inc/daddy_analytics.addon.php:414
 #, php-format
 msgid "%s Invalid field values - Please confirm your settings."
-msgstr ""
+msgstr "%s Valori invalide câmp - Te rugăm să confirmi setările."
 
 #: inc/edit-form.php:130
 msgid "Error:"
-msgstr ""
+msgstr "Eroare:"
 
 #: inc/edit-form.php:142
 msgid "(Default)"
@@ -136,43 +136,43 @@ msgstr ""
 
 #: inc/edit-form.php:161
 msgid "Pickist Field"
-msgstr ""
+msgstr "Câmp Listă de Opțiuni"
 
 #: inc/edit-form.php:162 inc/salesforce-api.php:1899
 msgid "Form Fields"
-msgstr ""
+msgstr "Câmpuri Formular"
 
 #: inc/edit-form.php:363
 msgid "Ajax error selecting the Salesforce object."
-msgstr ""
+msgstr "Eroare Ajax la selectarea obiectului Salesforce."
 
 #: inc/edit-form.php:421
 msgid "Enable Salesforce Field Mapping?"
-msgstr ""
+msgstr "Activezi Maparea Câmpului Salesforce?"
 
 #: inc/edit-form.php:422
 msgid "Enable Salesforce.com Mapping"
-msgstr ""
+msgstr "Activare Maparea Salesforce.com"
 
 #: inc/edit-form.php:428
 msgid "Live Remote Field Mapping?"
-msgstr ""
+msgstr "Mapezi Câmp Direct la Distanță"
 
 #: inc/edit-form.php:429
 msgid "Field Choices will be synced with Salesforce picklist values."
-msgstr ""
+msgstr "Câmpul de Opțiuni va fi sincronizat cu valorile listei de opțiuni Salesforce."
 
 #: inc/edit-form.php:432
 msgid "Only Populate Choices"
-msgstr ""
+msgstr "Populează Numai Opțiunile"
 
 #: inc/edit-form.php:433
 msgid "Field Choices will not be updated live and are editable."
-msgstr ""
+msgstr "Câmpul Opțiunilor nu va fi actualizat în direct şi este editabil."
 
 #: inc/edit-form.php:436
 msgid "Choose Object: "
-msgstr ""
+msgstr "Alege Obiect:"
 
 #: inc/edit-form.php:442
 msgid ""
@@ -182,57 +182,57 @@ msgstr ""
 
 #: inc/edit-form.php:446 inc/salesforce-api.php:1391
 msgid "Select a Salesforce Object"
-msgstr ""
+msgstr "Selectează un Obiect Salesforce."
 
 #: inc/kwsaddon.php:181
 msgid "Invalid username and/or API key. Please try another combination."
-msgstr ""
+msgstr "Utilizator şi/sau cheie API invalide. Te rugăm să încerci o altă combinație."
 
 #: inc/kwsaddon.php:185
 msgid "Your configuration is working!"
-msgstr ""
+msgstr "Configurația făcută funcționează!"
 
 #: inc/kwsaddon.php:315 inc/web-to-lead.php:152
 msgid "Feed Name (optional)"
-msgstr ""
+msgstr "Nume Flux (opțional)"
 
 #: inc/kwsaddon.php:320
 #, php-format
 msgid "%s List"
-msgstr ""
+msgstr "%s Listă"
 
 #: inc/kwsaddon.php:320
 #, php-format
 msgid "Select the %s list you would like to add your contacts to."
-msgstr ""
+msgstr "Selectează lista %s în care dorești să îți adaugi contactele."
 
 #: inc/kwsaddon.php:328 inc/web-to-lead.php:176
 msgid "Map Fields"
-msgstr ""
+msgstr "Câmpuri Hartă"
 
 #: inc/kwsaddon.php:328 inc/web-to-lead.php:176
 #, php-format
 msgid ""
 "Associate your %s merge variables to the appropriate Gravity Form fields by "
 "selecting."
-msgstr ""
+msgstr "Asociază-ți %s pentru a fuziona variabile cu câmpurile Gravity Form corespunzătoare prin selectarea lor."
 
 #: inc/kwsaddon.php:334 inc/web-to-lead.php:182
 msgid "Custom Fields"
-msgstr ""
+msgstr "Câmpuri Personalizate"
 
 #: inc/kwsaddon.php:340 inc/salesforce-api.php:528 inc/salesforce-api.php:1492
 #: inc/web-to-lead.php:189
 msgid "Opt-In Condition"
-msgstr ""
+msgstr "Condiție Opțiune Opt-In"
 
 #: inc/kwsaddon.php:340 inc/web-to-lead.php:189
 #, php-format
 msgid ""
-"When the opt-in condition is enabled, form submissions will only be exported "
-"to %s when the condition is met. When disabled all form submissions will be "
-"exported."
-msgstr ""
+"When the opt-in condition is enabled, form submissions will only be exported"
+" to %s when the condition is met. When disabled all form submissions will be"
+" exported."
+msgstr "Când condiția de opțiune opt-in este activata, transmiterile formularului vor fi exportate numai în %s când condiția este îndeplinită. Când se dezactivează, toate transmiterile formularului vor fi exportate."
 
 #: inc/kwsaddon.php:366
 #, php-format
@@ -241,165 +241,163 @@ msgstr ""
 
 #: inc/kwsaddon.php:477
 msgid "Add a custom field"
-msgstr ""
+msgstr "Adăugă un câmp personalizat"
 
 #: inc/kwsaddon.php:536
 #, php-format
 msgid "%s integration is enabled for this Form"
-msgstr ""
+msgstr "Integrarea %s este activată pentru acest Formular"
 
 #: inc/kwsaddon.php:567
 #, php-format
 msgid "You must choose at least one %s list to receive contacts."
-msgstr ""
+msgstr "Trebuie să alegi cel puțin o lista %s pentru a primi contactele."
 
 #: inc/kwsaddon.php:631 inc/web-to-lead.php:148
 msgid "Feed Name"
-msgstr ""
+msgstr "Nume Flux"
 
 #: inc/kwsaddon.php:632
 msgid "Connected Lists"
-msgstr ""
+msgstr "Liste Conectate"
 
 #: inc/kwsaddon.php:647
 #, php-format
 msgid "Untitled Feed (#%s)"
-msgstr ""
+msgstr "Flux Fără Titlu (# %s)"
 
 #: inc/kwsaddon.php:666
 msgid "No Lists Connected."
-msgstr ""
+msgstr "Nici o Listă Conectată."
 
 #: inc/kwsaddon.php:735
 #, php-format
 msgid "%s Add-On Settings"
-msgstr ""
+msgstr "Configurări Supliment %s"
 
 #: inc/loader.php:87
 msgid ""
 "As of version 2.7, the Gravity Forms Salesforce API Add-On requires PHP 5.3 "
 "or above. Please contact your hosting provider support and ask them to "
 "upgrade your server."
-msgstr ""
+msgstr "Ca și pentru versiunea 2.7, Suplimentul API Gravity Forms Salesforce necesită PHP 5.3 sau superior. Te rugăm să îți contactezi furnizorul găzduirii şi să îi soliciți să actualizeze server-ul."
 
 #: inc/loader.php:89
 #, php-format
 msgid ""
-"If this is not possible, you may %sdownload the last version of the plugin%s "
-"that did not require PHP 5.3."
-msgstr ""
+"If this is not possible, you may %sdownload the last version of the plugin%s"
+" that did not require PHP 5.3."
+msgstr "Dacă acest lucru nu este posibil, ai putea %sdownload ultima versiune a modului%s care nu necesită PHP 5.3."
 
 #: inc/loader.php:95
 msgid ""
 "The API Add-On requires SOAP support. Please contact your hosting provider "
 "and ask them to enable SOAP on your server."
-msgstr ""
+msgstr "Suplimentul API necesită suport SOAP. Te rugăm să îți contactezi furnizorul găzduirii şi să îi soliciți să activeze pe server SOAP."
 
 #: inc/loader.php:100
 msgid ""
 "The API Add-On requires cURL. Please contact your hosting provider and ask "
 "them to enable cURL on your server."
-msgstr ""
+msgstr "Suplimentul API necesită suport cURL. Te rugăm să îți contactezi furnizorul găzduirii şi să îi soliciți să activeze pe server cURL."
 
 #: inc/loader.php:105
 msgid "The API Add-On requires server support for the OpenSSL extension."
-msgstr ""
+msgstr "Suplimentul API necesită suport de server pentru extensia OpenSSL."
 
 #: inc/loader.php:114 inc/loader.php:351
 msgid "The Salesforce: API Add-On could not be loaded."
-msgstr ""
+msgstr "Salesforce: Suplimentul AP nu a putut fi încărcat."
 
 #: inc/loader.php:115
 msgid ""
 "Please contact your hosting provider and ask them to enable support for the "
 "following on your server:"
-msgstr ""
+msgstr "Te rugăm să îți contactezi furnizorul de găzduire şi solicită-i să activeze pe server suport  pentru următoarele:"
 
 #: inc/loader.php:121
 msgid ""
 "You can use the Salesforce Web-to-Lead Add-on; it doesn&#8217;t have the "
 "same requirements."
-msgstr ""
+msgstr "Poți utiliza Suplimentul Salesforce Web-to-Lead; nu are aceleași cerințe."
 
 #: inc/loader.php:264
 msgid "Salesforce Configuration"
-msgstr ""
+msgstr "Configurare Salesforce"
 
 #: inc/loader.php:275
 #, php-format
 msgid "%sIntegration Method%s %sChoose the type of connection to Salesforce."
-msgstr ""
+msgstr "%sIntegrationMetoda%s %sChoose tipul de conectare la Salesforce."
 
 #: inc/loader.php:291
 msgid ""
 "Note: for detailed plugin debug and error logs, please install the <a "
 "href='http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool' "
 "target='_blank'>Gravity Forms Logging Tool</a>."
-msgstr ""
+msgstr "Notă: pentru detalii despre depanare şi jurnalele de eroare ale modulului, te rugăm să instalezi <a href='http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool' target='_blank'> Instrumentul de Înregistrare Gravity Forms.</a>"
 
 #: inc/loader.php:351
 msgid ""
-"The Gravity Form Salesforce: API Add-On requires that your server support "
-"SOAP. Please contact your hosting provider and ask them to enable SOAP on "
-"your server.\n"
+"The Gravity Form Salesforce: API Add-On requires that your server support SOAP. Please contact your hosting provider and ask them to enable SOAP on your server.\n"
 "\n"
-"\t\t\t\tYou can also use the Salesforce Web-to-Lead Add-on; this doesn&#8217;"
-"t require SOAP."
-msgstr ""
+"\t\t\t\tYou can also use the Salesforce Web-to-Lead Add-on; this doesn&#8217;t require SOAP."
+msgstr "Gravity Form Salesforce: Suplimentul API necesită ca serverul tău să suporte SOAP. Te rugăm să contactezi furnizorul tău de găzduire şi să îi soliciți să activeze SOAP pe server.\n\n\t\t\t\tPoți de asemenea utiliza Suplimentul Salesforce Web-to-Lead; acesta nu necesită SOAP."
 
 #: inc/salesforce-api.php:491 inc/salesforce-api.php:526
 msgid ""
 "Select the Gravity Form you would like to integrate with Salesforce. "
 "Contacts generated by this form will be automatically added to your "
 "Salesforce account."
-msgstr ""
+msgstr "Selectează tipul de Gravity Form pentru a îl integra în Salesforce. Contactele generate de acest formular vor fi adăugate automat la contul tău Salesforce."
 
 #: inc/salesforce-api.php:491
 msgid "Feeds"
-msgstr ""
+msgstr "Fluxuri"
 
 #: inc/salesforce-api.php:493
 msgid "Configure your Salesforce settings."
-msgstr ""
+msgstr "Configurează setările tale Salesforce."
 
 #: inc/salesforce-api.php:493 salesforce.php:99
 msgid "Settings"
-msgstr ""
+msgstr "Configurări"
 
 #: inc/salesforce-api.php:525 inc/salesforce-api.php:820
 #: inc/salesforce-api.php:829 inc/salesforce-api.php:1379
 msgid "Salesforce Object"
-msgstr ""
+msgstr "Obiect Salesforce "
 
 #: inc/salesforce-api.php:525
 msgid "Select the Salesforce object you would like to add your contacts to."
-msgstr ""
+msgstr "Selectează obiectul Salesforce pe care dorești să îl adaugi contactelor tale."
 
 #: inc/salesforce-api.php:526 inc/salesforce-api.php:1427
 msgid "Gravity Form"
-msgstr ""
+msgstr "Formular Gravity"
 
 #: inc/salesforce-api.php:527
 msgid "Map Standard Fields"
-msgstr ""
+msgstr "Câmpuri Standard Hartă"
 
 #: inc/salesforce-api.php:527
 msgid ""
 "Associate your Salesforce fields to the appropriate Gravity Form fields by "
-"selecting. <a href='http://www.salesforce.com/us/developer/docs/api/Content/"
-"field_types.htm'>Learn about the Field Types</a> in Salesforce."
-msgstr ""
+"selecting. <a "
+"href='http://www.salesforce.com/us/developer/docs/api/Content/field_types.htm'>Learn"
+" about the Field Types</a> in Salesforce."
+msgstr "Asociază-ți câmpurile Salesforce cu cele  corespunzătoare Formularului Gravity selectându-le. <a href='http://www.salesforce.com/us/developer/docs/api/Content/field_types.htm'>Află mai multe despre Tipurile de Câmpuri</a> în Salesforce."
 
 #: inc/salesforce-api.php:528
 msgid ""
-"When the opt-in condition is enabled, form submissions will only be exported "
-"to Salesforce when the condition is met. When disabled all form submissions "
-"will be exported."
-msgstr ""
+"When the opt-in condition is enabled, form submissions will only be exported"
+" to Salesforce when the condition is met. When disabled all form submissions"
+" will be exported."
+msgstr "Când condiția de opțiune opt-in este activată, transmiterile formularului vor fi exportate numai când condiția este îndeplinită. Când se dezactivează, toate transmiterile formularului vor fi exportate."
 
 #: inc/salesforce-api.php:529
 msgid "Manual Export"
-msgstr ""
+msgstr "Exportare Manuală "
 
 #: inc/salesforce-api.php:529
 msgid ""
@@ -407,24 +405,24 @@ msgid ""
 "approved entries, check this box. To send an entry to Salesforce, you go to "
 "Entries, choose the entry you would like to send to Salesforce, and then "
 "click the 'Send to Salesforce' button."
-msgstr ""
+msgstr "Dacă nu dorești ca toate intrările să fie trimise la Salesforce, ci numai cele specifice, bifează această casetă. Pentru a trimite o înregistrare la Salesforce, deplasează-te la Înregistrări, alege înregistrarea pe care dorești să o trimiți la Salesforce, şi apoi apasă pe butonul 'Trimite la Salesforce'."
 
 #: inc/salesforce-api.php:540
 msgid "Salesforce"
-msgstr ""
+msgstr "Salesforce"
 
 #: inc/salesforce-api.php:566
 #, php-format
 msgid ""
-"Gravity Forms Salesforce Add-On has been successfully uninstalled. It can be "
-"re-activated from the %splugins page%s."
+"Gravity Forms Salesforce Add-On has been successfully uninstalled. It can be"
+" re-activated from the %splugins page%s."
 msgstr ""
 
 #: inc/salesforce-api.php:603
 #, php-format
 msgid ""
 "Valid configuration. Now go %sconfigure form integration with Salesforce%s!"
-msgstr ""
+msgstr "Configurare validă. Acum mergi la %sconfigure integrării formularului cu Salesforce%s!"
 
 #: inc/salesforce-api.php:607
 #, php-format
@@ -432,88 +430,88 @@ msgid ""
 "%sYour Salesforce connection isn&#8217;t working properly. Please log in "
 "again below.%s For more information, please install the %sGravity Forms "
 "Logging Tool%s and try again.%s"
-msgstr ""
+msgstr "Legătura %sYour Salesforce nu funcționează corespunzător. Teă rugăm să te autentifici din nou, mai jos. %s Pentru mai multe informații, te rugăm să instalezi Instrumentul de Inregistrare %sGravity Forms %s şi apoi reîncercă. %s"
 
 #: inc/salesforce-api.php:623
 msgid "Salesforce Account Information"
-msgstr ""
+msgstr "Informații Cont Salesforce"
 
 #: inc/salesforce-api.php:624
 msgid "Salesforce API"
-msgstr ""
+msgstr "API Salesforce"
 
 #: inc/salesforce-api.php:627
 msgid "Salesforce Account"
-msgstr ""
+msgstr "Cont Salesforce"
 
 #: inc/salesforce-api.php:638
 #, php-format
 msgid "Authorized connection to <code>%s</code> on %s"
-msgstr ""
+msgstr "Conexiune Autorizată la <code>%s</code> pe %s"
 
 #: inc/salesforce-api.php:661
 msgid "Login with Salesforce!"
-msgstr ""
+msgstr "Autentificare cu Salesforce!"
 
 #: inc/salesforce-api.php:670
 msgid "Notify by Email on Errors"
-msgstr ""
+msgstr "Notificare prin Email despre Erori"
 
 #: inc/salesforce-api.php:673
 msgid ""
 "An email will be sent to this email address if an entry is not properly "
 "added to Salesforce. Leave blank to disable."
-msgstr ""
+msgstr "Se va trimite un e-mail la această adresă dacă o înregistrare nu este corect adăugată la Salesforce. Lasă necompletat pentru a dezactiva."
 
 #: inc/salesforce-api.php:677
 msgid "Remote Cache Time"
-msgstr ""
+msgstr "Cache Timp la Distanţă"
 
 #: inc/salesforce-api.php:677
 msgid "This is an advanced setting. You likely won't need to change this."
-msgstr ""
+msgstr "Aceasta este o configurare avansată. Cel mai probabil nu vei avea nevoie să faci modificări aici."
 
 #: inc/salesforce-api.php:681
 msgid "One Minute (for testing only!)"
-msgstr ""
+msgstr "Un Minut (pentru testare numai!)"
 
 #: inc/salesforce-api.php:682
 msgid "One Hour"
-msgstr ""
+msgstr "O Oră"
 
 #: inc/salesforce-api.php:683
 msgid "Six Hours"
-msgstr ""
+msgstr "Șase Ore"
 
 #: inc/salesforce-api.php:684
 msgid "12 Hours"
-msgstr ""
+msgstr "12 Ore"
 
 #: inc/salesforce-api.php:685
 msgid "1 Day"
-msgstr ""
+msgstr "1 Zi"
 
 #: inc/salesforce-api.php:686
 msgid "2 Days"
-msgstr ""
+msgstr "2 Zile"
 
 #: inc/salesforce-api.php:687
 msgid "3 Days"
-msgstr ""
+msgstr "3 Zile"
 
 #: inc/salesforce-api.php:688
 msgid "5 Days"
-msgstr ""
+msgstr "5 Zile"
 
 #: inc/salesforce-api.php:689
 msgid "1 Week"
-msgstr ""
+msgstr "1 Săptămână"
 
 #: inc/salesforce-api.php:691
 msgid ""
-"How long should form and field data be stored? This affects how often remote "
-"picklists will be checked for the Live Remote Field Mapping feature."
-msgstr ""
+"How long should form and field data be stored? This affects how often remote"
+" picklists will be checked for the Live Remote Field Mapping feature."
+msgstr "Cât de mult timp ar trebui ca datele formularului și câmpului fi memorate? Aceasta afectează cât de des, listele de opțiuni de la distanță vor fi verificate pentru caracteristica de Mapare Câmp La Distanță în Timp Real."
 
 #: inc/salesforce-api.php:692
 #, php-format
@@ -522,41 +520,41 @@ msgstr ""
 
 #: inc/salesforce-api.php:696
 msgid "Save Settings"
-msgstr ""
+msgstr "Salvare Configurări"
 
 #: inc/salesforce-api.php:709 inc/salesforce-api.php:712
 msgid "Uninstall Salesforce Add-On"
-msgstr ""
+msgstr "Dezinstalează Suplimentul Salesforce"
 
 #: inc/salesforce-api.php:710
 msgid "Warning! This operation deletes ALL Salesforce Feeds."
-msgstr ""
+msgstr "Avertisment! Această operație șterge TOATE Fluxurile Salesforce."
 
 #: inc/salesforce-api.php:712
 msgid ""
-"Warning! ALL Salesforce Feeds will be deleted. This cannot be undone. \\'OK"
-"\\' to delete, \\'Cancel\\' to stop"
-msgstr ""
+"Warning! ALL Salesforce Feeds will be deleted. This cannot be undone. "
+"\\'OK\\' to delete, \\'Cancel\\' to stop"
+msgstr "Avertisment! TOATE Fluxurile Salesforce vor fi șterse. Aceasta nu mai poate fi anulată. \\'OK\\' pentru a șterge, \\'Anulare\\' pentru a opri"
 
 #: inc/salesforce-api.php:743
 msgid "Feed deleted."
-msgstr ""
+msgstr "Flux șters."
 
 #: inc/salesforce-api.php:754
 msgid "Feeds deleted."
-msgstr ""
+msgstr "Fluxuri șterse."
 
 #: inc/salesforce-api.php:772 inc/salesforce-api.php:773
 msgid "Salesforce.com Feeds"
-msgstr ""
+msgstr "Fluxuri Salesforce.com "
 
 #: inc/salesforce-api.php:774
 msgid "Add New"
-msgstr ""
+msgstr "Adaugă Nou"
 
 #: inc/salesforce-api.php:781
 msgid "Salesforce Error"
-msgstr ""
+msgstr "Eroare Salesforce"
 
 #: inc/salesforce-api.php:782 inc/salesforce-api.php:886
 #, php-format
@@ -570,39 +568,39 @@ msgstr ""
 
 #: inc/salesforce-api.php:804 inc/salesforce-api.php:806
 msgid "Bulk action"
-msgstr ""
+msgstr "Acțiuni în Masă"
 
 #: inc/salesforce-api.php:807 inc/salesforce-api.php:853
 msgid "Delete"
-msgstr ""
+msgstr "Șterge"
 
 #: inc/salesforce-api.php:810
 msgid "Apply"
-msgstr ""
+msgstr "Aplică"
 
 #: inc/salesforce-api.php:810
 msgid "Delete selected feeds? "
-msgstr ""
+msgstr "Ștergi fluxurile selectate?"
 
 #: inc/salesforce-api.php:810
 msgid "\\'Cancel\\' to stop, \\'OK\\' to delete."
-msgstr ""
+msgstr "\\'Anularel\\' pentru a opri, \\'OK\\' pentru a șterge."
 
 #: inc/salesforce-api.php:819 inc/salesforce-api.php:828
 msgid "Form"
-msgstr ""
+msgstr "Formular"
 
 #: inc/salesforce-api.php:843 inc/salesforce-api.php:914
 msgid "Active"
-msgstr ""
+msgstr "Activ"
 
 #: inc/salesforce-api.php:843 inc/salesforce-api.php:910
 msgid "Inactive"
-msgstr ""
+msgstr "Inactiv"
 
 #: inc/salesforce-api.php:845 inc/salesforce-api.php:848
 msgid "Edit"
-msgstr ""
+msgstr "Editare"
 
 #: inc/salesforce-api.php:853
 msgid "Delete this feed? 'Cancel' to stop, 'OK' to delete."
@@ -610,11 +608,11 @@ msgstr ""
 
 #: inc/salesforce-api.php:858
 msgid "Edit Form"
-msgstr ""
+msgstr "Editare Formular"
 
 #: inc/salesforce-api.php:863
 msgid "Preview Form"
-msgstr ""
+msgstr "Previzualizare Formular"
 
 #: inc/salesforce-api.php:877
 #, php-format
@@ -624,164 +622,165 @@ msgstr ""
 
 #: inc/salesforce-api.php:926
 msgid "Ajax error while updating feed"
-msgstr ""
+msgstr "Eroare Ajax la actualizarea feed-ului"
 
 #: inc/salesforce-api.php:1295 inc/salesforce-api.php:1296
 msgid "Salesforce Feeds"
-msgstr ""
+msgstr "Fluxuri Salesforce "
 
 #: inc/salesforce-api.php:1310
 #, php-format
 msgid ""
-"We are unable to login to Salesforce with the provided username and API key. "
-"Please make sure they are valid in the %sSettings Page%s"
-msgstr ""
+"We are unable to login to Salesforce with the provided username and API key."
+" Please make sure they are valid in the %sSettings Page%s"
+msgstr "Nu ne putem conecta la Salesforce prin utilizatorul şi cheia API pe care le-ai furnizat. Te rugăm să te asiguri că acestea sunt valide în Pagină %sSettings %s"
 
 #: inc/salesforce-api.php:1363
 #, php-format
 msgid "Feed Updated. %sback to list%s"
-msgstr ""
+msgstr "Flux Actualizat. %sback la listă%s"
 
 #: inc/salesforce-api.php:1370
-msgid "Feed could not be updated. Please enter all required information below."
-msgstr ""
+msgid ""
+"Feed could not be updated. Please enter all required information below."
+msgstr "Fluxul nu a putut fi actualizat. Te rugăm să introduci mai jos, toate informațiile necesare. "
 
 #: inc/salesforce-api.php:1378
 msgid "1. Select the Object to create when a form is submitted."
-msgstr ""
+msgstr "1. Selectează Obiectul pentru a-l crea atunci când un formular este transmis."
 
 #: inc/salesforce-api.php:1386
 msgid "Could not load Salesforce contact lists."
-msgstr ""
+msgstr "Nu s-a putut încărca lista de contacte Salesforce."
 
 #: inc/salesforce-api.php:1415
 msgid "2. Select the form to tap into."
-msgstr ""
+msgstr "2. Selectează formularul în care se va tasta."
 
 #: inc/salesforce-api.php:1422
 #, php-format
 msgid "(Currently linked with %s)"
-msgstr ""
+msgstr "(În prezent conectat cu %s)"
 
 #: inc/salesforce-api.php:1430
 msgid "Select a form"
-msgstr ""
+msgstr "Selectează un  formular"
 
 #: inc/salesforce-api.php:1450
 msgid "3. Map form fields to Salesforce fields."
-msgstr ""
+msgstr "3. Mapează câmpurile de formular în câmpurile Salesforce."
 
 #: inc/salesforce-api.php:1451
 msgid "About field mapping:"
-msgstr ""
+msgstr "Despre maparea câmpului:"
 
 #: inc/salesforce-api.php:1452
 msgid "Standard Fields"
-msgstr ""
+msgstr "Câmpuri Standard"
 
 #: inc/salesforce-api.php:1477 inc/salesforce-api.php:1480
 msgid "Disable Automatic Export"
-msgstr ""
+msgstr "Dezactivează Exportarea Automată"
 
 #: inc/salesforce-api.php:1483
 msgid "Entries will be sent to Salesforce when updated in the admin"
-msgstr ""
+msgstr "Înscrierile vor fi trimise la Salesforce când se actualizează din admin"
 
 #: inc/salesforce-api.php:1498
 msgid "Enable"
-msgstr ""
+msgstr "Activează"
 
 #: inc/salesforce-api.php:1505
 msgid "Export to Salesforce if "
-msgstr ""
+msgstr "Export în Salesforce dacă"
 
 #: inc/salesforce-api.php:1509
 msgid "is"
-msgstr ""
+msgstr "este"
 
 #: inc/salesforce-api.php:1510
 msgid "is not"
-msgstr ""
+msgstr "nu este"
 
 #: inc/salesforce-api.php:1517
 msgid ""
 "To create an Opt-In condition, your form must have a drop down, checkbox or "
 "multiple choice field."
-msgstr ""
+msgstr "Pentru a crea o condiție de opțiune Opt-In (opțiuni informare), formularul trebuie să aibă un câmp cu listă derulantă, casetă de  validare sau câmp de opțiuni multiple ."
 
 #: inc/salesforce-api.php:1548
 msgid "4. Choose a \"Primary Key\" field."
-msgstr ""
+msgstr "4. Alege un câmp pentru \"Cheia Principală\"."
 
 #: inc/salesforce-api.php:1549
 msgid "What field should be used to update existing objects?"
-msgstr ""
+msgstr "Ce câmp trebuie să fie utilizat pentru a actualiza obiectele existente?"
 
 #: inc/salesforce-api.php:1550
 msgid "Update Field"
-msgstr ""
+msgstr "Actualizează Câmpul"
 
 #: inc/salesforce-api.php:1558
 msgid ""
 "If you want to update a pre-existing object, define what should be used as "
 "an unique identifier (\"Primary Key\"). For example, this may be an email "
 "address, Lead ID, or address."
-msgstr ""
+msgstr "Dacă dorești să actualizezi un obiect preexistent, definește ce ar trebui să fie folosit ca și identificator unic (\"Cheia Primară\"). De exemplu, acesta poate fi o adresă de e-mail, ID Lead, sau adresă."
 
 #: inc/salesforce-api.php:1566
 msgid "Save Feed"
-msgstr ""
+msgstr "Salvare Flux"
 
 #: inc/salesforce-api.php:1566
 msgid "Update Feed"
-msgstr ""
+msgstr "Actualizare Flux"
 
 #: inc/salesforce-api.php:1640
 msgid "Ajax error while selecting a form"
-msgstr ""
+msgstr "Eroare Ajax  la selectarea unui formular"
 
 #: inc/salesforce-api.php:1763
 msgid "None"
-msgstr ""
+msgstr "Nimic"
 
 #: inc/salesforce-api.php:1899
 msgid "List Fields"
-msgstr ""
+msgstr "Listă Câmpuri"
 
 #: inc/salesforce-api.php:1906
 msgid "(Required)"
-msgstr ""
+msgstr "(Necesar)"
 
 #: inc/salesforce-api.php:1910
 #, php-format
 msgid "Type: %s"
-msgstr ""
+msgstr "Tip: %s"
 
 #: inc/salesforce-api.php:1912
 #, php-format
 msgid "Max Length: %s"
-msgstr ""
+msgstr "Lungimea maximă: %s"
 
 #: inc/salesforce-api.php:1935
 msgid "Entry Date"
-msgstr ""
+msgstr "Dată Înregistrare"
 
 #: inc/salesforce-api.php:1936
 msgid "User IP"
-msgstr ""
+msgstr "IP Utilizator"
 
 #: inc/salesforce-api.php:1937
 msgid "Source Url"
-msgstr ""
+msgstr "URL Sursă"
 
 #: inc/salesforce-api.php:1938
 msgid "Form Title"
-msgstr ""
+msgstr "Titlu Formular"
 
 #: inc/salesforce-api.php:1963
 msgctxt "Full field label"
 msgid "Full"
-msgstr ""
+msgstr "Complet"
 
 #: inc/salesforce-api.php:2351
 #, php-format
@@ -791,16 +790,15 @@ msgstr ""
 
 #: inc/salesforce-api.php:2357
 msgid "Entry added/updated in Salesforce."
-msgstr ""
+msgstr "Înregistrare adăugată/actualizată în Salesforce."
 
 #: inc/salesforce-api.php:2373
 msgid "Error adding to Salesforce"
-msgstr ""
+msgstr "Eroare la adăugarea în Salesforce"
 
 #: inc/salesforce-api.php:2375
 #, php-format
-msgid ""
-"There was an error when attempting to add %sEntry #%s from the form \"%s\""
+msgid "There was an error when attempting to add %sEntry #%s from the form \"%s\""
 msgstr ""
 
 #: inc/salesforce-api.php:2389
@@ -810,38 +808,38 @@ msgstr ""
 
 #: inc/salesforce-api.php:2394
 msgid "Errors when adding to Salesforce. Entry not sent!"
-msgstr ""
+msgstr "Erori la adăugarea în Salesforce. Înregistrarea nu a fost trimisă!"
 
 #: inc/salesforce-api.php:2435
 #, php-format
 msgid "Salesforce ID: %s"
-msgstr ""
+msgstr "ID Salesforce: %s"
 
 #: inc/salesforce-api.php:2484 inc/salesforce-api.php:2509
 msgid "Send to Salesforce"
-msgstr ""
+msgstr "Trimite în Salesforce"
 
 #: inc/salesforce-api.php:2484 inc/salesforce-api.php:2509
 msgid ""
 "Create or update this entry in Salesforce. The fields will be mapped "
 "according to the form feed settings."
-msgstr ""
+msgstr "Creează sau actualizează această înregistrare în Salesforce. Câmpurile vor fi mapate în funcție de configurările fluxului formularului."
 
 #: inc/salesforce-api.php:2539
 msgid "Gravity Forms Salesforce Add-on"
-msgstr ""
+msgstr "Supliment Gravity Forms Salesforce"
 
 #: inc/salesforce-api.php:2548
 msgid "You don't have adequate permission to uninstall Salesforce Add-On."
-msgstr ""
+msgstr "Nu ai permisiunea adecvată de a dezinstala Modulul Salesforce."
 
 #: inc/salesforce-api.php:2649
 msgid "Salesforce ID"
-msgstr ""
+msgstr "ID Salesforce: "
 
 #: inc/salesforce-api.php:2650
 msgid "Salesforce API result"
-msgstr ""
+msgstr "Rezultat API Salesforce"
 
 #: inc/salesforce-api.php:2695
 #, php-format
@@ -852,88 +850,88 @@ msgstr ""
 #: inc/web-to-lead.php:73
 #, php-format
 msgid "%s Account Information"
-msgstr ""
+msgstr "Informații Cont %s"
 
 #: inc/web-to-lead.php:89
 msgid "Salesforce Org. ID"
-msgstr ""
+msgstr "ID Salesforce.Org"
 
 #: inc/web-to-lead.php:92
 #, php-format
 msgid ""
-"To find your Salesforce.com Organization ID, in your Salesforce.com account, "
-"go to [Your Name] &raquo; Setup &raquo; Company Profile (near the bottom of "
-"the left sidebar) &raquo; Company Information. It will look like %s"
-msgstr ""
+"To find your Salesforce.com Organization ID, in your Salesforce.com account,"
+" go to [Your Name] &raquo; Setup &raquo; Company Profile (near the bottom of"
+" the left sidebar) &raquo; Company Information. It will look like %s"
+msgstr "Pentru a găsi ID-ul Organizației tale Salesforce.com, în contul tău Salesforce.com, mergi la [Numele tau] &raquo; Configurare &raquo; Profil Companie (aproape de partea de jos a barei laterale din stânga) &raquo; Informații Companie. Va arăta %s"
 
 #: inc/web-to-lead.php:96
 msgid ""
 "Receive Salesforce Debugging Emails <p class='howto'><span>For full plugin "
-"logs, install the <a href='http://gravityhelp.com/downloads/"
-"#Gravity_Forms_Logging_Tool' target='_blank'>Gravity Forms Logging Tool</a>."
-"</span></p>"
-msgstr ""
+"logs, install the <a "
+"href='http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool' "
+"target='_blank'>Gravity Forms Logging Tool</a>.</span></p>"
+msgstr "Primește Email-uri despre Depanarea Salesforce <p class='howto'><span>Pentru jurnalele complete de depanare ale modulului, instalează <a href='http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool' target='_blank'> Instrumentul de Depanare Gravity Forms</a>.</span></p>"
 
 #: inc/web-to-lead.php:102
 msgid ""
 "Enable Salesforce debugging emails. The site administrator will be emailed "
 "by Salesforce with import status for each form submission."
-msgstr ""
+msgstr "Activează Email-urile despre Depanarea Salesforce. Administratorul site-ului va fi informat prin email de către Salesforces despre statusuri importante ale fiecărei transmiteri de formular."
 
 #: inc/web-to-lead.php:122
 #, php-format
 msgid "%s Success: Your Org ID. is properly configured."
-msgstr ""
+msgstr "%s Cu succes: ID-ul tău .Org este configurat corespunzător."
 
 #: inc/web-to-lead.php:128
 #, php-format
 msgid ""
-"To find your Salesforce.com Organization ID, in your Salesforce.com account, "
-"go to:%1$s %2$s[Your Name] &raquo; Setup &raquo; Company Profile%3$s (near "
+"To find your Salesforce.com Organization ID, in your Salesforce.com account,"
+" go to:%1$s %2$s[Your Name] &raquo; Setup &raquo; Company Profile%3$s (near "
 "the bottom of the left sidebar) %2$s&raquo; Company Information%3$s (it is "
 "buried in the table of information). It will look like %4$s."
-msgstr ""
+msgstr "Pentru a găsi ID-ul Organizației tale Salesforce.com, în contul tău Salesforce.com, mergi la %1$s %2$s[Numele tau] &raquo; Configurare &raquo; Profil Companie%3$s (aproape de partea de jos a barei laterale din stânga) %2$s&raquo; Informații Companie%3$s (incorporate în tabelul de informații). Va arăta precum %4$s"
 
 #: inc/web-to-lead.php:130
 msgid "Please enter your Salesforce Organization ID."
-msgstr ""
+msgstr "Te rugăm să introduci ID-ul Organizației tale Salesforce."
 
 #: inc/web-to-lead.php:132
 #, php-format
 msgid ""
 "%s Invalid Org ID. - Please confirm your setting. Try re-saving the form."
-msgstr ""
+msgstr "%s ID-ul .Org este Invalid - Te rugăm să îți confirmi configurarea. Încearcă să resalvezi formularul."
 
 #: inc/web-to-lead.php:145
 #, php-format
 msgid "Map your fields for export to %s."
-msgstr ""
+msgstr "Mapează câmpurile tale pentru a le exporta în %s."
 
 #: inc/web-to-lead.php:156
 msgid "Pick an export type."
-msgstr ""
+msgstr "Alege un tip de export."
 
 #: inc/web-to-lead.php:163
 msgid "Lead"
-msgstr ""
+msgstr "Lead"
 
 #: inc/web-to-lead.php:168
 msgid "Case"
-msgstr ""
+msgstr "Caz"
 
 #: inc/web-to-lead.php:171
 msgid "Object to Create in Salesforce"
-msgstr ""
+msgstr "Obiectul de Creat în Salesforce"
 
 #: inc/web-to-lead.php:171
 msgid ""
 "When the form is exported to Salesforce, do you want to have the entry "
 "become a Lead or a Case?"
-msgstr ""
+msgstr "Când formularul este exportat în Salesforce, dorești ca înregistrarea să devină un Lead sau un Caz?"
 
 #: inc/web-to-lead.php:175
 msgid "Map your fields."
-msgstr ""
+msgstr "Mapează-ți câmpurile."
 
 #: inc/web-to-lead.php:183
 #, php-format
@@ -941,167 +939,168 @@ msgid ""
 "If you don&#8217;t see the Salesforce field you want to send data to, add a "
 "custom field. You can map any Salesforce Field using the Salesforce Field "
 "\"API Name,\" which look like %sCustom_Field_Example__c%s."
-msgstr ""
+msgstr "Dacă nu observi câmpul Salesforce către care dorești să trimiți datele, adaugă un câmp personalizat. Poți mapa orice Câmp Salesforce, folosind Câmpul Salesforce \"Nume API,\", care va arăta precum %sCustom_Field_Example__c%s."
 
 #: inc/web-to-lead.php:208
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: inc/web-to-lead.php:209
 msgid "You must set an Email Address"
-msgstr ""
+msgstr "Trebuie specificată o Adresă de Email."
 
 #: inc/web-to-lead.php:214
 msgid "Salutation"
-msgstr ""
+msgstr "Formulă de salut"
 
 #: inc/web-to-lead.php:219
 msgid "Name (First)"
-msgstr ""
+msgstr "Nume (Prenume)"
 
 #: inc/web-to-lead.php:224
 msgid "Name (Last)"
-msgstr ""
+msgstr "Numele (Nume de Familie)"
 
 #: inc/web-to-lead.php:229
 msgid "Title"
-msgstr ""
+msgstr "Titlu"
 
 #: inc/web-to-lead.php:234
 msgid "Company"
-msgstr ""
+msgstr "Companie"
 
 #: inc/web-to-lead.php:239
 msgid "Phone"
-msgstr ""
+msgstr "Telefon"
 
 #: inc/web-to-lead.php:244
 msgid "Mobile"
-msgstr ""
+msgstr "Mobil"
 
 #: inc/web-to-lead.php:249
 msgid "Fax"
-msgstr ""
+msgstr "Fax"
 
 #: inc/web-to-lead.php:254
 msgid "Address (Street Address)"
-msgstr ""
+msgstr "Adresa (Adresă Stradă)"
 
 #: inc/web-to-lead.php:259
 msgid "Address (Address Line 2)"
-msgstr ""
+msgstr "Adresa (Linia de Adresă 2)"
 
 #: inc/web-to-lead.php:264
 msgid "Address (City)"
-msgstr ""
+msgstr "Adresa (Oraș)"
 
 #: inc/web-to-lead.php:269
 msgid "Address (State / Province)"
-msgstr ""
+msgstr "Adresa (Statul/Provincia)"
 
 #: inc/web-to-lead.php:274
 msgid "Address (Country)"
-msgstr ""
+msgstr "Adresa (Țara)"
 
 #: inc/web-to-lead.php:279
 msgid "Address (Zip / Postal Code)"
-msgstr ""
+msgstr "Adresa (Cod poștal)"
 
 #: inc/web-to-lead.php:284
 msgid "Website"
-msgstr ""
+msgstr "Site Web"
 
 #: inc/web-to-lead.php:289
 msgid "Twitter Username"
-msgstr ""
+msgstr "Utilizator Twitter"
 
 #: inc/web-to-lead.php:294 inc/web-to-lead.php:304
 msgid "Message"
-msgstr ""
+msgstr "Mesaj"
 
 #: inc/web-to-lead.php:299
 msgid "Lead Source"
-msgstr ""
+msgstr "Sursă Lead"
 
 #: inc/web-to-lead.php:309
 msgid "Industry"
-msgstr ""
+msgstr "Domeniu de Activitate"
 
 #: inc/web-to-lead.php:314
 msgid "Rating"
-msgstr ""
+msgstr "Evaluare"
 
 #: inc/web-to-lead.php:319
 msgid "Annual Revenue"
-msgstr ""
+msgstr "Veniturile Anuale"
 
 #: inc/web-to-lead.php:324
 msgid "# of Employees"
-msgstr ""
+msgstr "# Angajați"
 
 #: inc/web-to-lead.php:329
 msgid "Campaign ID"
-msgstr ""
+msgstr "ID Campanie"
 
 #: inc/web-to-lead.php:329
 #, php-format
 msgid ""
-"To associate an entry with a Campaign, you must also set the \"Member Status"
-"\". %sRead the Salesforce help article.%s"
-msgstr ""
+"To associate an entry with a Campaign, you must also set the \"Member "
+"Status\". %sRead the Salesforce help article.%s"
+msgstr "Pentru a asocia o înregistrare cu o Campanie, trebuie de asemenea să stabilești \"Statutul de Membru\".  %sRead articolul de asistență Salesforce. %s"
 
 #: inc/web-to-lead.php:334
 msgid "Member Status"
-msgstr ""
+msgstr "Statutul de Membru"
 
 #: inc/web-to-lead.php:339
 msgid "Opt Out of Emails"
-msgstr ""
+msgstr "Dezabonare Emailuri"
 
 #: inc/web-to-lead.php:344
 msgid "Opt Out of Faxes"
-msgstr ""
+msgstr "Dezabonare Faxuri"
 
 #: inc/web-to-lead.php:349
 msgid "Do Not Call"
-msgstr ""
+msgstr "Nu Suna"
 
 #: inc/web-to-lead.php:354
 msgid "Return URL"
-msgstr ""
+msgstr "URL Retur"
 
 #: inc/web-to-lead.php:359
 msgid "Priority"
-msgstr ""
+msgstr "Prioritate"
 
 #: inc/web-to-lead.php:364
 msgid "Lead Record Type ID"
-msgstr ""
+msgstr "ID Tip Înregistrare Lead"
 
 #: inc/web-to-lead.php:365
 msgid ""
 "The ID of the record type that should be created. You can get the ID by "
 "going to setup->customize -> lead -> record types"
-msgstr ""
+msgstr "ID-ul tipului de înregistrare care ar trebui creat. Poți obține ID-ul accesând  configurare->personalizare-> lead -> tipuri înregistrare "
 
 #: inc/web-to-lead.php:366
 msgid ""
 "Make sure that the profile assigned to the owner of the leads has the "
 "particular record type you're trying to assign visible to that profile. You "
-"can add it as follows: Setup -> manage users -> profiles -> edit profileName."
-msgstr ""
+"can add it as follows: Setup -> manage users -> profiles -> edit "
+"profileName."
+msgstr "Asiguraţi-vă că profilul atribuit la proprietarul conductoare are special tipul de înregistrare încerci să atribuiţi vizibile la acel profil. Puteţi adăuga după cum urmează: Setup -> administrare utilizatori -> profiles -> edit profileName."
 
 #: inc/web-to-lead.php:564
 msgid "No Salesforce Org. ID was specified."
-msgstr ""
+msgstr "Nici un ID Salesforce nu a fost specificat"
 
 #: inc/web-to-lead.php:651
 #, php-format
 msgid ""
 "The `is-processed` header shows an Exception: %s. This means there was an "
 "error adding the entry."
-msgstr ""
+msgstr "Antetul `este-procesat` afișează o Excepție: %s. Aceasta înseamnă că există o eroare la adăugarea înregistrării."
 
 #: salesforce.php:98
 msgid "Support"
-msgstr ""
+msgstr "Asistență"

@@ -288,19 +288,19 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
-= 3.1 (September 12, 2014) =
-* Added: use of sandbox constant
-* Fixed: whitespace consistency
-* Fixed: lots of logging updates for verbosity
-* Fixed: do not take any create action on inactive feeds
-* Fixed: ability to sort the order of feeds list
-* Fixed: feed select boxes are all sorted alphabetically now
-* Fixed: feeds primary key can now be used to update previous records properly. For example, formA two SF tables worth of data -- contact & address.
-    You can create an address feed and a contact feed. If the address feed is ordered before the contact feed in the feed list, you can use the
-    contact feeds primary key to map to the address primary key. This is helpful to map true relationships is SF.
-* Fixed: any feed can map foreign keys to primary keys, thus mapping rich relationship in SF. For example, formB has five dependent SF tables worth of data --
-    contact, opportunities, opportunity contacts, contact, tribute. Now you can create a contact, have it linked to opportunities. But also create a second contact
-    and map that as well as the opportunity to a custom tribute table. Very fancy.
+= 3.1 (December 1, 2014) =
+* Added: Use of Sandbox constant
+* Fixed: Whitespace consistency
+* Fixed: Lots of logging updates for verbosity
+* Fixed: Do not process inactive feeds
+* Fixed: Ability to sort the order of feeds list
+* Fixed: Feed select boxes are all sorted alphabetically now
+* Fixed: Localization functionality - added Text Domain information
+* Added: Romanian translation - thanks [@ArianServ](https://www.transifex.com/accounts/profile/ArianServ/)!
+* Added: Feeds primary key can now be used to update previous records properly. 
+    * For example, "Form A" has two SF tables worth of data -- Contact & Address. You can create an Address feed and a Contact feed. If the Address feed is ordered before the Contact feed in the feed list, you can use the Contact feed's Primary Key to map to the Address Primary Key. This is helpful to map true relationships in Salesforce.
+* Added: Any feed can map foreign keys to primary keys, thus mapping rich relationship in SF. 
+    *  For example, Form B has five dependent Salesforce tables worth of data -- Contact, Opportunities, Opportunity Contacts, Contact, Tribute. Now you can create a Contact, have it linked to Opportunities. But also create a second Contact and map that as well as the Opportunity to a custom Tribute table. It's very fancy - see the Frequently Asked Questions for more information.
 
 = 3.0.6.3 (September 12, 2014) =
 * Fixed: Removed field var_dump
