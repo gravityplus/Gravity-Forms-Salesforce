@@ -202,7 +202,7 @@ if (class_exists("GFForms")) {
 		 * @return string IMG HTML tag
 		 */
 		public function plugin_settings_icon() {
-		    return '<img src="'.plugins_url( 'assets/images/salesforce-50x50.png', KWS_GF_Salesforce::$file ).'" class="alignleft" style="margin:0 10px 10px 0" />';
+		    return '<img src="'.plugins_url( 'assets/images/salesforce-256x256.png', KWS_GF_Salesforce::$file ).'" width="84" class="alignleft" style="margin:0 10px 10px 0" />';
 		}
 
 		/**
@@ -247,7 +247,7 @@ if (class_exists("GFForms")) {
 		 * @return string IMG HTML tag
 		 */
 		public function get_service_icon() {
-			return '<img src="'.plugins_url( 'assets/images/salesforce-50x50.png', KWS_GF_Salesforce::$file ).'" class="alignleft" style="margin:0 10px 10px 0" />';
+			return '<img src="'.plugins_url( 'assets/images/salesforce-256x256.png', KWS_GF_Salesforce::$file ).'" width="84" class="alignleft" style="margin:0 10px 10px 0" />';
 		}
 
 		/**
