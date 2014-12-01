@@ -87,6 +87,16 @@ class KWS_GF_Salesforce {
      * @return
      */
     function load_admin_scripts() {
+        global $pagenow,$plugin_page;
+
+        if( empty( $plugin_page ) || $plugin_page !== 'gf_salesforce' ) {
+            return;
+        }
+
+        // Don't load on single feeds, only on main feeds page
+        if( !empty( $_GET['view'] ) ) {
+            return;
+        }
 
         wp_enqueue_script( 'jquery-ui-sortable');
 
