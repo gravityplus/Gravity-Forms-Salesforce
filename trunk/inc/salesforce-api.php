@@ -1437,9 +1437,7 @@ class GFSalesforce {
 					<?php
 				}
 				?>
-				</select>
-				&nbsp;&nbsp;
-				<img src="<?php echo GFSalesforce::get_base_url() ?>/assets/images/loading.gif" id="salesforce_wait" style="display: none;"/>
+				</select><span class="spinner salesforce_wait" style="display: none; position: absolute;"></span>
 			</div>
 			<div class="clear"></div>
 			<div id="salesforce_field_group" <?php echo empty($config["meta"]["contact_object_name"]) || empty($config["form_id"]) ? "style='display:none;'" : "" ?>>
@@ -1621,7 +1619,9 @@ class GFSalesforce {
 					return;
 				}
 
-				jQuery("#salesforce_wait").show();
+				jQuery(".salesforce_wait").css({
+					'display': 'inline-block',
+				});
 				jQuery("#salesforce_field_group").slideUp();
 
 				var mysack = new sack("<?php bloginfo( 'wpurl' ); ?>/wp-admin/admin-ajax.php" );
@@ -1632,7 +1632,7 @@ class GFSalesforce {
 				mysack.setVar( "objectType", listId);
 				mysack.setVar( "form_id", formId);
 				mysack.encVar( "cookie", document.cookie, false );
-				mysack.onError = function() {jQuery("#salesforce_wait").hide(); alert('<?php _e("Ajax error while selecting a form", "gravity-forms-salesforce") ?>' )};
+				mysack.onError = function() {jQuery(".salesforce_wait").hide(); alert('<?php _e("Ajax error while selecting a form", "gravity-forms-salesforce") ?>' )};
 				mysack.runAJAX();
 				return true;
 			}
@@ -1670,7 +1670,7 @@ class GFSalesforce {
 					jQuery("#salesforce_field_group").slideUp();
 					jQuery("#salesforce_field_list").html("");
 				}
-				jQuery("#salesforce_wait").hide();
+				jQuery(".salesforce_wait").hide();
 			}
 
 			function GetFieldValues(fieldId, selectedValue, labelMaxCharacters){

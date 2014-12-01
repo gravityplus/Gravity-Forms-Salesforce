@@ -345,7 +345,9 @@ class GFSalesforce_FieldMapping {
                 return;
             }
 
-            jQuery(".salesforce_wait").show();
+            jQuery(".salesforce_wait").css({
+                'display': 'inline-block'
+            });
             jQuery("#salesforce_field_group").slideUp();
 
             var mysack = new sack("<?php bloginfo( 'wpurl' ); ?>/wp-admin/admin-ajax.php" );
@@ -449,9 +451,7 @@ class GFSalesforce_FieldMapping {
                     <?php
                 }
                 ?>
-            </select></label>
-            &nbsp;
-            <img src="<?php echo GFSalesforce::get_base_url() ?>/assets/images/loading.gif" class="salesforce_wait" style="display: none;"/>
+            </select></label><span class="spinner salesforce_wait" style="display: none; position: absolute;"></span>
             <div id="salesforce_field_list"></div>
         </div>
             <?php
@@ -469,4 +469,4 @@ class GFSalesforce_FieldMapping {
 
 }
 
-$GFSalesforce_FieldMapping = new GFSalesforce_FieldMapping();
+new GFSalesforce_FieldMapping;
