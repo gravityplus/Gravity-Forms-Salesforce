@@ -95,7 +95,7 @@ class GFSalesforceData{
             // insert
             $wpdb->insert($table_name, array('form_id' => $form_id,
                                                 'is_active'=> $is_active,
-                                                'sort' => $results->sort,
+                                                'sort' => ( isset( $results->sort ) ? $results->sort : 0 ),
                                                 'meta' => $setting),
                                         array('%d', '%d', '%s', '%s'));
             $id = $wpdb->get_var('SELECT LAST_INSERT_ID()');
