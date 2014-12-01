@@ -60,6 +60,8 @@ The plugin fully supports multiple languages! [Please help translate the plugin!
 8. Web-To-Lead: Specify custom fields and use the Salesforce API ID to send additional data to Salesforce.
 9. Daddy Analytics Integration: The plugin integrates with Daddy Analytics
 10. The Add-on loader added in version 3.0: Choose between API or Web-to-Lead Add-Ons.
+11. Form Feeds can have rich mapping relationships: An Entry can create a Contact, which is then assigned to an Opportunity and is also assigned an Opportunity Contact Role.
+12. The mapping of the Opportunity Contact Role shows the rich object mapping in action.
 
 == Installation ==
 
@@ -297,9 +299,9 @@ This plugin is released under a GPL license.
 * Fixed: Feed select boxes are all sorted alphabetically now
 * Fixed: Localization functionality - added Text Domain information
 * Added: Romanian translation - thanks [@ArianServ](https://www.transifex.com/accounts/profile/ArianServ/)!
-* Added: Feeds primary key can now be used to update previous records properly. 
+* Added: Feed Primary Keys can now be used to update previous records properly. 
     * For example, "Form A" has two SF tables worth of data -- Contact & Address. You can create an Address feed and a Contact feed. If the Address feed is ordered before the Contact feed in the feed list, you can use the Contact feed's Primary Key to map to the Address Primary Key. This is helpful to map true relationships in Salesforce.
-* Added: Any feed can map foreign keys to primary keys, thus mapping rich relationship in SF. 
+* Added: Any feed can map foreign keys to Primary Keys, thus mapping rich relationship in SF. 
     *  For example, Form B has five dependent Salesforce tables worth of data -- Contact, Opportunities, Opportunity Contacts, Contact, Tribute. Now you can create a Contact, have it linked to Opportunities. But also create a second Contact and map that as well as the Opportunity to a custom Tribute table. It's very fancy - see the Frequently Asked Questions for more information.
 
 = 3.0.6.3 (September 12, 2014) =
