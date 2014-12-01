@@ -6,6 +6,10 @@ Version: 3.1
 Requires at least: 3.3
 Author: Katz Web Services, Inc.
 Author URI: https://katz.co
+License:              GPLv2 or later
+License URI:      http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:          gravity-forms-salesforce
+Domain Path:          /languages
 
 ------------------------------------------------------------------------
 Copyright 2014 Katz Web Services, Inc.
@@ -62,7 +66,7 @@ class KWS_GF_Salesforce {
     function init() {
 
         //loading translations
-        load_plugin_textdomain('gravity-forms-salesforce', FALSE, '/gravity-forms-salesforce/languages' );
+        load_plugin_textdomain('gravity-forms-salesforce', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
     }
 
