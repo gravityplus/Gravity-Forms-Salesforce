@@ -1138,6 +1138,9 @@ class GFSalesforce {
 	 */
 	public static function getFieldsForObject($objectType = 'account', $fieldType = null) {
 
+		// This is passed by $_POST; let's just make sure it's sanitized
+		$objectType = esc_attr( $objectType );
+
 		$lists = maybe_unserialize(get_site_transient('sfgf_lists_fields_'.$objectType));
 		if($lists && !empty($lists) && is_array($lists) && (!isset($_REQUEST['refresh']) || (isset($_REQUEST['refresh']) && $_REQUEST['refresh'] !== 'lists'))) {
 			self::log_debug('getFields: fields have been cached.');
