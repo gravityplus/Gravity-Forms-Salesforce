@@ -2,7 +2,7 @@
 /*
 Plugin Name: Gravity Forms Salesforce Add-On
 Description: Integrates <a href="http://katz.si/gf">Gravity Forms</a> with Salesforce, allowing form submissions to be automatically sent to your Salesforce account.
-Version: 3.0.6.3
+Version: 3.1
 Requires at least: 3.3
 Author: Katz Web Services, Inc.
 Author URI: https://katz.co
@@ -31,9 +31,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * Load the loader...we need to do this to make sure that the Gravity Forms addon is supported.
  *
  */
+require_once('lib/gf-utility-functions.php');
+
 class KWS_GF_Salesforce {
 
-    const version = '3.0.6.3';
+    const version = '3.1';
     static $file;
     static $plugin_dir_path;
 
@@ -47,6 +49,8 @@ class KWS_GF_Salesforce {
         add_action('init', array(&$this, 'init') );
 
         add_action('admin_notices', array(&$this, 'addon_compatibility'));
+
+        add_action('admin_enqueue_scripts', array(&$this, 'load_admin_scripts'));
 
         add_filter('plugin_action_links', array(&$this, 'plugin_action_links'), 10, 2);
     }
@@ -71,6 +75,12 @@ class KWS_GF_Salesforce {
         if(!class_exists('KWS_GF_Salesforce_Loader')) {
             require_once(self::$plugin_dir_path.'inc/loader.php');
         }
+    }
+
+    function load_admin_scripts() {
+
+        wp_enqueue_script( 'jquery-ui-sortable');
+
     }
 
     /**

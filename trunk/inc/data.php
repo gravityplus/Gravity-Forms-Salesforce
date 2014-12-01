@@ -14,6 +14,7 @@ class GFSalesforceData{
               id mediumint(8) unsigned not null auto_increment,
               form_id mediumint(8) unsigned not null,
               is_active tinyint(1) not null default 1,
+              sort tinyint(1) null default 0,
               meta longtext,
               PRIMARY KEY  (id),
               KEY form_id (form_id)
@@ -34,7 +35,8 @@ class GFSalesforceData{
         $form_table_name = RGFormsModel::get_form_table_name();
         $sql = "SELECT s.id, s.is_active, s.form_id, s.meta, f.title as form_title
                 FROM $table_name s
-                INNER JOIN $form_table_name f ON s.form_id = f.id";
+                INNER JOIN $form_table_name f ON s.form_id = f.id
+                ORDER BY s.sort";
 
         $results = $wpdb->get_results($sql, ARRAY_A);
 
@@ -56,7 +58,7 @@ class GFSalesforceData{
         global $wpdb;
         $table_name = self::get_salesforce_table_name();
         $active_clause = $only_active ? " AND is_active=1" : "";
-        $sql = $wpdb->prepare("SELECT id, form_id, is_active, meta FROM $table_name WHERE form_id=%d $active_clause", $form_id);
+        $sql = $wpdb->prepare("SELECT id, form_id, is_active, meta FROM $table_name WHERE form_id=%d $active_clause ORDER BY sort", $form_id);
         $results = $wpdb->get_results($sql, ARRAY_A);
         if(empty($results))
             return array();
@@ -72,7 +74,7 @@ class GFSalesforceData{
     public static function get_feed($id){
         global $wpdb;
         $table_name = self::get_salesforce_table_name();
-        $sql = $wpdb->prepare("SELECT id, form_id, is_active, meta FROM $table_name WHERE id=%d", $id);
+        $sql = $wpdb->prepare("SELECT id, form_id, is_active, meta FROM $table_name WHERE id=%d ORDER BY sort", $id);
         $results = $wpdb->get_results($sql, ARRAY_A);
         if(empty($results))
             return array();
@@ -87,16 +89,41 @@ class GFSalesforceData{
         $table_name = self::get_salesforce_table_name();
         $setting = maybe_serialize($setting);
         if($id == 0){
-            //insert
-            $wpdb->insert($table_name, array("form_id" => $form_id, "is_active"=> $is_active, "meta" => $setting), array("%d", "%d", "%s"));
-            $id = $wpdb->get_var("SELECT LAST_INSERT_ID()");
+            $sql = "SELECT sort+1 as sort FROM {$table_name} ORDER BY sort DESC LIMIT 1";
+            $results = $wpdb->get_row($sql, OBJECT);
+
+            // insert
+            $wpdb->insert($table_name, array('form_id' => $form_id,
+                                                'is_active'=> $is_active,
+                                                'sort' => $results->sort,
+                                                'meta' => $setting),
+                                        array('%d', '%d', '%s', '%s'));
+            $id = $wpdb->get_var('SELECT LAST_INSERT_ID()');
         }
         else{
-            //update
-            $wpdb->update($table_name, array("form_id" => $form_id, "is_active"=> $is_active, "meta" => $setting), array("id" => $id), array("%d", "%d", "%s"), array("%d"));
+            // update
+            $wpdb->update($table_name, array('form_id' => $form_id, 'is_active'=> $is_active, 'meta' => $setting), array('id' => $id), array('%d', '%d', '%s'), array('%d'));
         }
 
         return $id;
+    }
+
+    public static function update_feed_order($data){
+        global $wpdb;
+        $table_name = self::get_salesforce_table_name();
+
+        if(!empty($data)) {
+            foreach($data as $order=>$id) {
+                $wpdb->update($table_name,
+                    array('sort' => $order),
+                    array('id' => $id),
+                    array('%d'),
+                    array('%d')
+                );
+            }
+        }
+
+        return true;
     }
 
     public static function drop_tables(){

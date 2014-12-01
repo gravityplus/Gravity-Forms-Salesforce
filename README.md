@@ -51,7 +51,39 @@ If you have questions, comments, or issues with this plugin, <strong>please leav
 1. If the settings are correct, it will say so.
 1. Follow on-screen instructions for integrating with Salesforce.
 
-== Frequently Asked Questions ==
+== Frequently Asked Questions (FAQ) ==
+
+= How do I use the "Primary Key" field in each feed =
+
+First, think of the "Primary Key" field more as a foreign key. The point of this field
+is to auto update the foreign key in the current form with the primary key from the previous
+feed. There are two ways to take advantage of this, let's use these examples:
+
+Salesforce Feeds
+*Form 1: Contact - no "Primary Key" field selected
+*Form 1: Opportunity - "Primary Key" field selected "Contact". Will use the previously returned key from salesforce "contact id"
+*Form 1: Tribute - "Primary Key" field selected "Opportunity". Will use the previously returned key from salesforce "opportunity id"
+
+In order to pull this off, you still need to do a few things. First, take advantage of the sorting
+feature in the Salesforce Feeds list. This allows you the flexibility to add feeds in any order and
+sort them into the proper order. This is important because if you're using the "Primary Key" feature,
+you will need your feeds in the right order. Meaning, your dependent foreign key MUST follow your primary
+key. So, in the example above, Opportunity must be sorted immediately after Contact because once it is
+inserted it relies on the Contact primary key.
+
+Alernative method:
+
+Salesforce Feeds
+*Form 1: Contact - "Primary Key" field not selected
+*Form 1: Opportunity - "Primary Key" field selected "Contact". Will use the previously returned key from salesforce "Contact id"
+*Form 1: Opportunity Contact Role - "Primary Key" field not selected. Instead select your Primary Keys from the form fields
+                    dropdowns. This will use the previously returned keys from your previous Salesforce feeds:
+                    "opportunity id" & "contact id"
+
+Now let's say that Opportunity Contact Role has two required foriegn keys -- Opportunity ID & Contact ID. As before, you will
+still need your Feeds in the right order. Meaning, Opportunity Contact Role can not be first because it needs it depends on
+the Primary Keys from Contact & Opportunity. In order to pull this off, select the corresponding
+Primary Keys from the Form Fields on your Feed. Match them up with "Contact ID" List Feed and "Oppotunity ID" List Feed.
 
 = Web to Lead: My input values are being cut off in Salesforce =
 If you are submitting to a "Multi PickList" field in Salesforce, the values need to be separated with ';' instead of ','. Add a filter to your `functions.php` file:
@@ -67,16 +99,16 @@ add_filter('gf_salesforce_implode_glue', 'change_salesforce_implode_glue');
  */
 function change_salesforce_implode_glue($glue, $field) {
 
-	// Change this to the Salesforce API Name of the field that's not being passed properly.
-	$name_of_sf_field = 'ExampleMultiSelectPicklist__c';
+    // Change this to the Salesforce API Name of the field that's not being passed properly.
+    $name_of_sf_field = 'ExampleMultiSelectPicklist__c';
 
-	// If the field being checked is the Salesforce field that is being truncated, return ';'
-	if($field['inputName'] === $name_of_sf_field || $field['adminLabel'] === $name_of_sf_field) {
-		return ';';
-	}
+    // If the field being checked is the Salesforce field that is being truncated, return ';'
+    if($field['inputName'] === $name_of_sf_field || $field['adminLabel'] === $name_of_sf_field) {
+        return ';';
+    }
 
-	// Otherwise, return default.
-	return $glue;
+    // Otherwise, return default.
+    return $glue;
 }
 ```
 
@@ -93,7 +125,7 @@ Your server must support the following:
 * cURL Enabled
 * OpenSSL Enabled
 
-= My Assignment Rule is not triggered.  How do I fix this? = 
+= My Assignment Rule is not triggered.  How do I fix this? =
 
 ```php
 add_action('gf_salesforce_connection', 'gf_salesforce_set_default_assignement_rule');
@@ -147,6 +179,23 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 3.1 =
+* Fixed: do not take any create action on inactive feeds
+* Fixed: ability to sort the order of feeds list
+* Fixed: feed select boxes are all sorted alphabetically now
+* Fixed: feeds primary key can now be used to update previous records
+properly. For example, formA two SF tables worth of data -- contact &
+address. You can create an address feed and a contact feed. If the address
+feed is ordered before the contact feed in the feed list, you can use
+the contact feeds primary key to map to the address primary key. This
+is helpful to map true relationships is SF.
+* Fixed: any feed can map foreign keys to primary keys, thus mapping
+rich relationship in SF. For example, formB has five dependent SF
+tables worth of data -- contact, opportunities, opportunity contacts,
+contact, tribute. Now you can create a contact, have it linked to
+opportunities. But also create a second contact and map that as well
+as the opportunity to a custom tribute table. Very fancy.
+
 = 2.3 =
 * API: __Now fully supports custom objects!__
 * API: Fixed error with endless spinning when choosing "Select the form to tap into"
@@ -154,8 +203,8 @@ This plugin is released under a GPL license.
 
 = 2.2.7 =
 * Updated Web to Lead
-	- Fixed Lists input type
-	- Fixed issue where checkboxes and multiselects were being added as Array
+    - Fixed Lists input type
+    - Fixed issue where checkboxes and multiselects were being added as Array
 
 = 2.2.6 =
 * Updated Web to Lead to work with Gravity Forms 1.7+ form settings screens
@@ -248,8 +297,8 @@ This plugin is released under a GPL license.
 
 = 2.2.7 =
 * Updated Web to Lead
-	- Fixed Lists input type
-	- Fixed issue where checkboxes and multiselects were being added as Array
+    - Fixed Lists input type
+    - Fixed issue where checkboxes and multiselects were being added as Array
 
 = 2.2.6 =
 * Updated Web to Lead to work with Gravity Forms 1.7+ form settings screens

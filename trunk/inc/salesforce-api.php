@@ -17,6 +17,11 @@ register_activation_hook( KWS_GF_Salesforce::$file, array("GFSalesforce", "force
 register_deactivation_hook( KWS_GF_Salesforce::$file, array("GFSalesforce", "force_refresh_transients"));
 
 class GFSalesforce {
+	const GF_SF_SANDBOX = false;
+
+	public static $instance;
+	public static $foreign_keys = array();
+	public $result = array();
 
 	private static $name = "Salesforce: API";
 	private static $api = '';
@@ -36,12 +41,29 @@ class GFSalesforce {
 
 		self::$version = KWS_GF_Salesforce::version;
 
-		add_action('init',  array(&$this, 'init'));
+		add_action('init', array(&$this, 'init'));
 
 		// New fields at entries export
 		add_filter( 'gform_export_fields', array( 'GFSalesforce', 'export_entries_add_fields' ), 10, 1 );
 		add_filter( 'gform_export_field_value', array( 'GFSalesforce', 'export_entries_add_values' ), 999, 4);
 
+	}
+
+	/*
+	 * Singleton instance of our class
+	 * @return GFSalesforce
+	 */
+	public static function Instance()
+	{
+		if (self::$instance === null) {
+			self::$instance = new GFSalesforce();
+
+			self::log_debug(__METHOD__ . ': init singleton instance');
+		} else {
+			self::log_debug(__METHOD__ . ': refresh singleton instance');
+		}
+
+		return self::$instance;
 	}
 
 	//Plugin starting point. Will load appropriate files
@@ -110,10 +132,12 @@ class GFSalesforce {
 			add_action('wp_ajax_rg_update_feed_active', array('GFSalesforce', 'update_feed_active'));
 			add_action('wp_ajax_gf_select_salesforce_form', array('GFSalesforce', 'select_salesforce_form'));
 			//since 2.5.2
-			add_action( 'wp_ajax_get_options_as_fields', array( 'GFSalesforce', 'get_options_as_fields') );
+			add_action('wp_ajax_get_options_as_fields', array( 'GFSalesforce', 'get_options_as_fields'));
 
-		}
-		else{
+			add_action('wp_ajax_rg_update_feed_sort', array('GFSalesforce', 'update_feed_sort'));
+			add_action('wp_ajax_nopriv_rg_update_feed_sort', array('GFSalesforce', 'update_feed_sort'));
+
+		} else{
 			 //handling post submission.
 			add_action("gform_after_submission", array('GFSalesforce', 'export'), 10, 2);
 		}
@@ -122,7 +146,6 @@ class GFSalesforce {
 
 		add_action( 'gform_entry_info', array('GFSalesforce', 'entry_info_send_to_salesforce_checkbox'), 99, 2);
 		add_filter( 'gform_entrydetail_update_button', array('GFSalesforce', 'entry_info_send_to_salesforce_button'), 999, 1);
-
 
 	}
 
@@ -137,9 +160,9 @@ class GFSalesforce {
 
 		if(self::has_feed($form['id'])) {
 			$form['feed-'.self::$slug] = true;
-	    }
+		}
 
-	    return $form;
+		return $form;
 	}
 
 	static function set_logging_supported($plugins) {
@@ -156,7 +179,7 @@ class GFSalesforce {
 		global $wpdb;
 
 		if($force || (isset($_GET['refresh']) && current_user_can('manage_options') && $_GET['refresh'] === 'transients')) {
-			$wpdb->query("DELETE FROM {$wpdb->options} WHERE `option_name` LIKE '%_transient_sfgf_%' OR`option_name` LIKE '%_transient_timeout_sfgf_%'");
+			$wpdb->query("DELETE FROM {$wpdb->options} WHERE `option_name` LIKE '%_transient_sfgf_%' OR `option_name` LIKE '%_transient_timeout_sfgf_%'");
 		}
 	}
 
@@ -295,7 +318,7 @@ class GFSalesforce {
 		$salesforceService = new Salesforce($credentials, $client, $storage, $scopes);
 
 		// Is this a sandbox connection?
-		$salesforceService->setSandbox( (bool) apply_filters( 'gf_salesforce_service_is_sandbox', false ) );
+		$salesforceService->setSandbox( (bool) apply_filters( 'gf_salesforce_service_is_sandbox', self::GF_SF_SANDBOX ) );
 
 		return $salesforceService;
 	}
@@ -341,9 +364,9 @@ class GFSalesforce {
 				return $output;
 			}
 		} else if(is_wp_error( $request )) {
-			self::log_debug( sprintf( "Could not get the endpoint. Here is the error data: %s\nand the request was made to:%s",  print_r($request->get_error_messages(), true), $url ) );
+			self::log_debug( sprintf( "Could not get the endpoint. Here is the error data: %s\nand the request was made to:%s", print_r($request->get_error_messages(), true), $url ) );
 		} else {
-			self::log_debug( sprintf( "Could not get the endpoint. Here is the response: %s\nand the request was made to %s",  print_r($request, true), $url) );
+			self::log_debug( sprintf( "Could not get the endpoint. Here is the response: %s\nand the request was made to %s", print_r($request, true), $url) );
 		}
 
 		return false;
@@ -447,6 +470,16 @@ class GFSalesforce {
 		$id = $_POST["feed_id"];
 		$feed = GFSalesforceData::get_feed($id);
 		GFSalesforceData::update_feed($id, $feed["form_id"], $_POST["is_active"], $feed["meta"]);
+	}
+
+	public static function update_feed_sort(){
+		if( empty( $_POST['sort'] ) || !isset( $_POST['nonce'] ))
+				// ! wp_verify_nonce( $_POST['nonce'], 'rg_update_feed_sort' ) )
+		{
+			exit(false);
+		}
+
+		GFSalesforceData::update_feed_order($_POST['sort']);
 	}
 
 	//--------------   Automatic upgrade ---------------------------------------------------
@@ -554,10 +587,10 @@ class GFSalesforce {
 		// If user revoked access manually, clear the token.
 		if(wp_verify_nonce(@$_GET['cleartoken'], 'cleartoken')) {
 			self::clearToken();
-		    $token = false;
-		    unset($_GET['cleartoken']);
+			$token = false;
+			unset($_GET['cleartoken']);
 		} else {
-		    $token = self::getAccessToken();
+			$token = self::getAccessToken();
 		}
 
 		$settings = wp_parse_args( $settings, self::$settings );
@@ -591,48 +624,48 @@ class GFSalesforce {
 			<h4 class="gf_settings_subgroup_title"><?php _e('Salesforce API', 'gravity-forms-salesforce'); ?></h4>
 			<table class="form-table">
 				<tr>
-	                <th scope="row"><label><?php _e("Salesforce Account", "gravity-forms-salesforce"); ?></label> </th>
-	                <td>
-	                <?php
+					<th scope="row"><label><?php _e("Salesforce Account", "gravity-forms-salesforce"); ?></label> </th>
+					<td>
+					<?php
 
-	                $auth_button_output = '';
+					$auth_button_output = '';
 
-	                // Is there an OAuth token stored?
-	                if(!empty($valid)) {
-	                    $params = self::getTokenParams();
-	                    $auth_button_output .= '<span class="gf_keystatus_valid_text">';
-	                    $auth_button_output .= '<i class="fa fa-check gf_keystatus_valid"></i> ';
-	                    $auth_button_output .= sprintf(__('Authorized connection to <code>%s</code> on %s'), str_replace('https://', '', $params['instance_url']), date_i18n('F d, Y H:i:m \G\M\T', substr($params['issued_at'], 0, 10)));
-	                    $auth_button_output .= '</span>';
-	                    $url = wp_nonce_url(add_query_arg(array('cleartoken' => true)), 'cleartoken', 'cleartoken');
-	                    $auth_button_output .= "<p><a href='{$url}' class='button button-secondary'>Revoke Access</a></p>";
-	                }
-	                // Was there an error?
-	                else {
+					// Is there an OAuth token stored?
+					if(!empty($valid)) {
+						$params = self::getTokenParams();
+						$auth_button_output .= '<span class="gf_keystatus_valid_text">';
+						$auth_button_output .= '<i class="fa fa-check gf_keystatus_valid"></i> ';
+						$auth_button_output .= sprintf(__('Authorized connection to <code>%s</code> on %s'), str_replace('https://', '', $params['instance_url']), date_i18n('F d, Y H:i:m \G\M\T', substr($params['issued_at'], 0, 10)));
+						$auth_button_output .= '</span>';
+						$url = wp_nonce_url(add_query_arg(array('cleartoken' => true)), 'cleartoken', 'cleartoken');
+						$auth_button_output .= "<p><a href='{$url}' class='button button-secondary'>Revoke Access</a></p>";
+					}
+					// Was there an error?
+					else {
 
-	                    if(!empty($settings['error'])) {
-	                        $auth_button_output .= '<div class="error inline clear">'.wpautop( $settings['error'] ).'</div>';
-	                    }
+						if(!empty($settings['error'])) {
+							$auth_button_output .= '<div class="error inline clear">'.wpautop( $settings['error'] ).'</div>';
+						}
 
-	                    // If not, we need to authorize.
-	                    $salesforceService = self::getSalesforceService();
+						// If not, we need to authorize.
+						$salesforceService = self::getSalesforceService();
 
-	                    $url = $salesforceService->getAuthorizationUri(array(
-	                        'grant_type' => 'authorization_code',
-	                        'response_type' => 'code',
-	                        'display' => 'page',
-	                        'scope' => 'api refresh_token',
-	                        'state' => self::link_to_settings( false )
-	                    ));
+						$url = $salesforceService->getAuthorizationUri(array(
+							'grant_type' => 'authorization_code',
+							'response_type' => 'code',
+							'display' => 'page',
+							'scope' => 'api refresh_token',
+							'state' => self::link_to_settings( false )
+						));
 
-	                    $auth_button_output .= sprintf("<p><a href='%s' class='button button-primary button-hero'>%s</a></p>", $url, __('Login with Salesforce!', 'gravity-forms-salesforce'));
-	                }
+						$auth_button_output .= sprintf("<p><a href='%s' class='button button-primary button-hero'>%s</a></p>", $url, __('Login with Salesforce!', 'gravity-forms-salesforce'));
+					}
 
 					echo $auth_button_output;
 
-	                ?>
-	                </td>
-	            </tr>
+					?>
+					</td>
+				</tr>
 				<tr>
 					<th scope="row"><label for="gf_salesforce_notifyemail"><?php _e("Notify by Email on Errors", "gravity-forms-salesforce"); ?></label></th>
 					<td>
@@ -719,6 +752,17 @@ class GFSalesforce {
 
 		$api = self::get_api();
 		?>
+		<style type="text/css">
+			.user-list tr {
+				cursor: move;
+			}
+			.user-list tr td a {
+				cursor: pointer;
+			}
+			.user-list tr:nth-child(even) {
+				background-color: #f5f5f5;
+			}
+		</style>
 		<div class="wrap">
 			<img alt="<?php _e("Salesforce.com Feeds", "gravity-forms-salesforce") ?>" src="<?php echo self::get_base_url()?>/assets/images/salesforce-50x50.png" style="float:left; margin:0 7px 0 0;" width="50" height="50" />
 			<h2><?php _e("Salesforce.com Feeds", "gravity-forms-salesforce"); ?>
@@ -762,7 +806,7 @@ class GFSalesforce {
 						?>
 					</div>
 				</div>
-				<table class="widefat fixed" cellspacing="0">
+				<table class="widefat fixed sort" cellspacing="0">
 					<thead>
 						<tr>
 							<th scope="col" id="cb" class="manage-column column-cb check-column" style=""><input type="checkbox" /></th>
@@ -789,9 +833,9 @@ class GFSalesforce {
 
 							foreach($settings as $setting){
 								?>
-								<tr class='author-self status-inherit'>
+								<tr class='author-self status-inherit' data-id="<?php echo $setting['id'] ?>">
 									<th scope="row" class="check-column"><input type="checkbox" name="feed[]" value="<?php echo $setting["id"] ?>"/></th>
-									<td><img src="<?php echo self::get_base_url() ?>/assets/images/active<?php echo intval($setting["is_active"]) ?>.png" alt="<?php echo $setting["is_active"] ? __("Active", "gravity-forms-salesforce") : __("Inactive", "gravity-forms-salesforce");?>" title="<?php echo $setting["is_active"] ? __("Active", "gravity-forms-salesforce") : __("Inactive", "gravity-forms-salesforce");?>" onclick="ToggleActive(this, <?php echo $setting['id'] ?>); " /></td>
+									<td><img src="<?php echo self::get_base_url() ?>/assets/images/active<?php echo intval($setting["is_active"]) ?>.png" alt="<?php echo $setting["is_active"] ? __("Active", "gravity-forms-salesforce") : __("Inactive", "gravity-forms-salesforce");?>" title="<?php echo $setting["is_active"] ? __("Active", "gravity-forms-salesforce") : __("Inactive", "gravity-forms-salesforce");?>" onclick="ToggleActive(this); " /></td>
 									<td class="column-title">
 										<a href="admin.php?page=gf_salesforce&amp;view=edit&amp;id=<?php echo $setting["id"] ?>" title="<?php _e("Edit", "gravity-forms-salesforce") ?>"><?php echo esc_html( $setting["form_title"] ); ?></a>
 										<div class="row-actions">
@@ -851,29 +895,35 @@ class GFSalesforce {
 				jQuery("#action").val("delete");
 				jQuery("#feed_form")[0].submit();
 			}
-			function ToggleActive(img, feed_id){
+			function ToggleActive(img) {
+				var feed_id;
 				var is_active = img.src.indexOf("active1.png") >=0
+				var $img = jQuery(img);
+
 				if(is_active){
 					img.src = img.src.replace("active1.png", "active0.png");
-					jQuery(img).attr('title','<?php _e("Inactive", "gravity-forms-salesforce") ?>').attr('alt', '<?php _e("Inactive", "gravity-forms-salesforce") ?>');
+					$img.attr('title','<?php _e("Inactive", "gravity-forms-salesforce") ?>').attr('alt', '<?php _e("Inactive", "gravity-forms-salesforce") ?>');
 				}
 				else{
 					img.src = img.src.replace("active0.png", "active1.png");
-					jQuery(img).attr('title','<?php _e("Active", "gravity-forms-salesforce") ?>').attr('alt', '<?php _e("Active", "gravity-forms-salesforce") ?>');
+					$img.attr('title','<?php _e("Active", "gravity-forms-salesforce") ?>').attr('alt', '<?php _e("Active", "gravity-forms-salesforce") ?>');
 				}
 
-				var mysack = new sack("<?php echo admin_url("admin-ajax.php")?>" );
-				mysack.execute = 1;
-				mysack.method = 'POST';
-				mysack.setVar( "action", "rg_update_feed_active" );
-				mysack.setVar( "rg_update_feed_active", "<?php echo wp_create_nonce("rg_update_feed_active") ?>" );
-				mysack.setVar( "feed_id", feed_id );
-				mysack.setVar( "is_active", is_active ? 0 : 1 );
-				mysack.encVar( "cookie", document.cookie, false );
-				mysack.onError = function() { alert('<?php _e("Ajax error while updating feed", "gravity-forms-salesforce" ) ?>' )};
-				mysack.runAJAX();
+				if(feed_id = $img.closest('tr').attr('data-id')) {
+					var mysack = new sack("<?php echo admin_url("admin-ajax.php")?>" );
+					mysack.execute = 1;
+					mysack.method = 'POST';
+					mysack.setVar( "action", "rg_update_feed_active" );
+					mysack.setVar( "rg_update_feed_active", "<?php echo wp_create_nonce("rg_update_feed_active") ?>" );
+					mysack.setVar( "feed_id", feed_id );
+					mysack.setVar( "is_active", is_active ? 0 : 1 );
+					mysack.encVar( "cookie", document.cookie, false );
+					mysack.onError = function() { alert('<?php _e("Ajax error while updating feed", "gravity-forms-salesforce" ) ?>' )};
+					mysack.runAJAX();
+					return true;
+				}
 
-				return true;
+				return false;
 			}
 		</script>
 		<?php
@@ -930,6 +980,7 @@ class GFSalesforce {
 				}
 
 				$mySforceConnection = new SforceEnterpriseClient();
+				$_wsdl = 'enterprise.wsdl.xml';
 			}
 			else {
 				if(!class_exists("SforcePartnerClient")) {
@@ -937,8 +988,12 @@ class GFSalesforce {
 				}
 
 				$mySforceConnection = new SforcePartnerClient();
+				$_wsdl = 'partner.wsdl.xml';
 			}
 
+			if(self::GF_SF_SANDBOX && file_exists($libpath . 'sandbox.wsdl.xml')) {
+				$_wsdl = 'sandbox.wsdl.xml';
+			}
 
 			/**
 			* Create a connection using SforceBaseClient::createConnection().
@@ -951,7 +1006,7 @@ class GFSalesforce {
 			*                       http://php.net/manual/en/soapclient.soapclient.php
 			*/
 			$mySforceConnection->createConnection(
-				apply_filters('gf_salesforce_wsdl', $libpath.'partner.wsdl.xml'),
+				apply_filters('gf_salesforce_wsdl', $libpath.$_wsdl),
 				apply_filters('gf_salesforce_proxy', NULL),
 				apply_filters('gf_salesforce_soap_options', array())
 			);
@@ -1028,8 +1083,8 @@ class GFSalesforce {
 	 */
 	static public function log_error($message){
 		if (class_exists("GFLogging")) {
-		    GFLogging::include_logger();
-		    GFLogging::log_message(self::$slug, $message, KLogger::ERROR);
+			GFLogging::include_logger();
+			GFLogging::log_message(self::$slug, $message, KLogger::ERROR);
 		}
 	}
 
@@ -1037,10 +1092,12 @@ class GFSalesforce {
 	 * Writes an error message to the Gravity Forms log. Requires the Gravity Forms logging Add-On.
 	 */
 	static public function log_debug($message){
-	    if (class_exists("GFLogging")) {
-	        GFLogging::include_logger();
-	        GFLogging::log_message(self::$slug, $message, KLogger::DEBUG);
-	    }
+		if (class_exists("GFLogging")) {
+			GFLogging::include_logger();
+			GFLogging::log_message(self::$slug, $message, KLogger::DEBUG);
+		} else {
+			error_log ( $message );
+		}
 	}
 
 	public static function r($content, $die = false) {
@@ -1369,7 +1426,12 @@ class GFSalesforce {
 				<?php
 
 				foreach($forms as $form){
-					$selected = absint($form->id) == $config["form_id"] ? "selected='selected'" : "";
+					if(isset($config["form_id"]) && absint($form->id) == $config["form_id"]) {
+						$selected = "selected='selected'";
+					} else {
+						$selected = "";
+					}
+
 					?>
 					<option value="<?php echo absint($form->id) ?>"  <?php echo $selected ?>><?php echo esc_html($form->title) ?></option>
 					<?php
@@ -1394,7 +1456,7 @@ class GFSalesforce {
 							$merge_vars = self::getFieldsForObject($config['meta']['contact_object_name']);
 
 						//getting field map UI
-						echo self::get_field_mapping($config, $config["form_id"], $merge_vars);
+						echo self::get_field_mapping($config, $config["form_id"], $merge_vars );
 
 						//getting list of selection fields to be used by the optin
 						$form_meta = RGFormsModel::get_form_meta($config["form_id"]);
@@ -1689,7 +1751,9 @@ class GFSalesforce {
 		if( empty( $object ) ) {
 			return '';
 		}
+
 		$fields = self::getFieldsForObject( $object );
+		self::sorter($fields, 'name');
 
 		$output = '<option value="" '. selected( $current, '', false ) .'>'. esc_html__( 'None', 'gravity-forms-salesforce' ) .'</option>';
 		if( !empty( $fields ) ) {
@@ -1713,7 +1777,9 @@ class GFSalesforce {
 	 */
 	public static function get_options_as_fields() {
 
-		if( empty( $_POST['sf_object'] ) || ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gf_salesforce_edit_feed' ) ) {
+		if( empty( $_POST['sf_object'] ) || ! isset( $_POST['nonce'] ) ||
+			! wp_verify_nonce( $_POST['nonce'], 'gf_salesforce_edit_feed' ) )
+		{
 			exit(false);
 		}
 
@@ -1861,14 +1927,30 @@ class GFSalesforce {
 		$fields = array();
 
 		//Adding default fields
-		array_push($form["fields"],array("id" => "date_created" , "label" => __("Entry Date", "gravity-forms-salesforce")));
-		array_push($form["fields"],array("id" => "ip" , "label" => __("User IP", "gravity-forms-salesforce")));
-		array_push($form["fields"],array("id" => "source_url" , "label" => __("Source Url", "gravity-forms-salesforce")));
-		array_push($form["fields"],array("id" => "form_title" , "label" => __("Form Title", "gravity-forms-salesforce")));
+		array_push($form['fields'],array("id" => "date_created" , "label" => __("Entry Date", "gravity-forms-salesforce")));
+		array_push($form['fields'],array("id" => "ip" , "label" => __("User IP", "gravity-forms-salesforce")));
+		array_push($form['fields'],array("id" => "source_url" , "label" => __("Source Url", "gravity-forms-salesforce")));
+		array_push($form['fields'],array("id" => "form_title" , "label" => __("Form Title", "gravity-forms-salesforce")));
 
+		if(is_array($form['fields'])){
+			self::sorter($form['fields'], 'label');
 
-		if(is_array($form["fields"])){
-			foreach($form["fields"] as $field){
+			// push other form field options onto stack as "Primary Keys"
+			if($form_id) {
+				if($feeds = GFSalesforceData::get_feed_by_form($form_id, true)) {
+					foreach($feeds as $feed) {
+						$label = self::primary_key_label($feed);
+						$options = array(
+							"id" => self::primary_key_id($feed),
+							"label" => __($label, "gravity-forms-salesforce")
+						);
+
+						array_unshift($form['fields'], $options);
+					}
+				}
+			}
+
+			foreach($form['fields'] as $field){
 				if(isset($field["inputs"]) && is_array($field["inputs"]) && $field['type'] !== 'checkbox' && $field['type'] !== 'select'){
 
 					//If this is an address field, add full name to the list
@@ -1930,7 +2012,6 @@ class GFSalesforce {
 		return $str;
 	}
 
-
 	/**
 	 * Called when entry is manually updated in the Single Entry view of Gravity Forms.
 	 *
@@ -1965,8 +2046,27 @@ class GFSalesforce {
 
 		// For admin_init hook, get the entry ID from the URL
 		if(empty($entry_id)) {
-			$form = RGFormsModel::get_form_meta(rgget('id'));
 			$entry_id = rgget('lid');
+			$form_id = rgget('id');
+
+			// fetch alternative entry id: look for gf list details when using pagination
+			if(empty($entry_id)) {
+				$position = rgget('pos');
+				$paging = array('offset' => $position, 'page_size' => 1);
+
+				$entries = GFAPI::get_entries($form_id, array(), null, $paging);
+
+				if(!empty($entries)) {
+					// pluck first entry to use id from, should always only be one
+					$entry = array_shift($entries);
+					$entry_id = $entry['id'];
+				} else {
+					self::log_error(__METHOD__ . ': Could not locate GF entry.');
+					return;
+				}
+			}
+
+			$form = RGFormsModel::get_form_meta($form_id);
 		}
 
 		// Fetch entry (use new GF API from version 1.8)
@@ -1987,9 +2087,7 @@ class GFSalesforce {
 		unset($_POST['send_to_salesforce']);
 	}
 
-
 	public static function export($entry, $form, $manual_export = false){
-
 		//Login to Salesforce
 		$api = self::get_api();
 
@@ -1999,7 +2097,7 @@ class GFSalesforce {
 			return;
 		}
 
-		//getting all active feeds
+		// getting all active feeds
 		$feeds = GFSalesforceData::get_feed_by_form($form["id"], true);
 
 		foreach($feeds as $feed){
@@ -2014,7 +2112,7 @@ class GFSalesforce {
 			$manual_opt_in = ( $manual_export && self::is_optin_ok( $entry, $feed ) );
 			$auto_opt_in = ( !$manual_export && self::is_optin($form, $feed) );
 
-			//only export if user has opted in
+			// only export if user has opted in
 			if( $auto_opt_in || $manual_opt_in ) {
 				self::export_feed($entry, $form, $feed);
 			}
@@ -2022,20 +2120,21 @@ class GFSalesforce {
 	}
 
 	public static function export_feed($entry, $form, $feed){
-
-		if(empty($feed["meta"]["contact_object_name"])) {
-			self::log_error('export_feed(): There was no Object type defined in the feed (like Contact or Lead)');
+		if(empty($feed['meta']['contact_object_name'])) {
+			self::log_error(__METHOD__ . ': There was no Object type defined in the feed (like Contact or Lead)');
 			return false;
 		}
 
-		self::log_debug(sprintf('export_feed(): Starting export for entry #%s to Salesforce...', $entry['id']));
+		self::log_debug(sprintf('%s: Starting export for entry #%s to Salesforce...', __METHOD__, $entry['id']));
 
 		$contactId = self::create($entry, $form, $feed);
 
 		if(!empty($contactId)) {
-			self::log_debug('export_feed(): Contact created/updated. Salesforce Contact ID: '.$contactId);
+			self::log_debug(sprintf('%1$s: %2$s created/updated. Salesforce %2$s: %3$s',
+										__METHOD__, $feed['meta']['contact_object_name'], $contactId));
 		} else {
-			self::log_error('export_feed(): Contact failed to be created/updated.');
+			self::log_debug(sprintf('%s: %s failed to be created/updated',
+										__METHOD__, $feed['meta']['contact_object_name']));
 		}
 
 		return $contactId;
@@ -2104,6 +2203,8 @@ class GFSalesforce {
 
 					$merge_vars[$var_tag] = GFCommon::replace_variables($value, $form, $entry, false, false, false );
 
+			} else if(array_key_exists($field_id, self::$foreign_keys)) {
+				$merge_vars[$var_tag] = self::$foreign_keys[$field_id];
 			} else {
 
 					// This is for checkboxes
@@ -2133,7 +2234,7 @@ class GFSalesforce {
 
 	private static function create($entry, $form, $feed) {
 
-		self::log_debug('create(): Starting the create process...');
+		self::log_debug(__METHOD__ . ': Starting the create process...');
 
 		$api = self::get_api();
 
@@ -2141,7 +2242,12 @@ class GFSalesforce {
 
 		// There was no token. This is all wrong.
 		if(empty($token)) {
-			self::log_error('create(): There was no OAuth token. It was likely revoked. Aborting create().');
+			self::log_error(__METHOD__ . ': There was no OAuth token. It was likely revoked. Aborting.');
+			return false;
+		}
+
+		if(!isset($feed['is_active']) || $feed['is_active'] == 0) {
+			self::log_error(sprintf('%s: Feed `%s` is not active.', __METHOD__, $feed['meta']['contact_object_name']));
 			return false;
 		}
 
@@ -2167,43 +2273,80 @@ class GFSalesforce {
 		// Set the type of object
 		$Account->type = $feed['meta']['contact_object_name'];
 
-		self::log_debug('create(): $Account object: '.print_r($Account, true));
+		$foreign_key_label = self::primary_key_id($feed);
 
 		try {
+			if( !(self::$instance instanceof GFSalesforce) ) {
+
+				self::$instance = self::Instance();
+
+			}
+
 			// If the primary field has been set, use that to upsert instead of create.
 			// @since 2.5.2, to avoid duplicates at Salesforce
 			if( !empty( $feed['meta']['primary_field'] ) ) {
-				self::log_debug(sprintf('create(): Upserting using primary field of %s', $feed['meta']['primary_field']));
-				$result = $api->upsert( $feed['meta']['primary_field'] , array($Account) );
+
+				self::log_debug(sprintf('%s: Upserting using primary field of `%s`',
+											__METHOD__, $feed['meta']['primary_field']));
+
+				if(empty(self::$instance->result->id)) {
+
+					// old upsert
+					// https://www.salesforce.com/us/developer/docs/api/Content/sforce_api_calls_upsert.htm
+					self::log_debug(__METHOD__ . ': Upserting');
+					$result = $api->upsert( $feed['meta']['primary_field'], array($Account) );
+
+				} else {
+
+					self::log_debug(sprintf('%s: Creating with previous id %s', __METHOD__, self::$instance->result->id));
+					$Account->fields[$feed['meta']['primary_field']] = self::$instance->result->id;
+					$result = $api->create( array($Account) );
+
+				}
+
 			} else {
-				self::log_debug('create(): Creating, not upserting');
+
+				self::log_debug(__METHOD__ . ': Creating, not upserting');
 				$result = $api->create( array($Account) );
+
 			}
+
 			$api_exception = '';
+
+			self::log_debug(sprintf('%s: $Account object: %s', __METHOD__, print_r($Account, true)));
+
 		} catch (Exception $e) {
 
-			self::log_error(sprintf("create():\n\nException While Exporting Entry\nThere was an error exporting Entry #%s for Form #%s. Here's the error:\n%s", $entry['id'], $form['id'], $e->getMessage()));
+			self::log_error(sprintf("%s:\n\nException While Exporting Entry\nThere was an error exporting Entry #%s for Form #%s. Here's the error:\n%s",
+										__METHOD__ , $entry['id'], $form['id'], $e->getMessage()));
 
 			$api_exception = "
 				Exception Message: "  . $e->getMessage() .
 				"\nFaultstring: " . $e->faultstring .
 				"\nFile: " . $e->getFile() .
 				"\nLine: " . $e->getLine() .
-				"\nArgs: ". serialize($merge_vars);
+				"\nArgs: " . serialize($merge_vars) .
+				"\nTrace: " . serialize($e->getTrace());
 
 			gform_update_meta( $entry['id'], 'salesforce_api_result', 'Error: ' . $e->getMessage() );
 		}
 
-		if  (isset($result[0]) && !empty($result[0]->success)) {
+		if (isset($result) && count($result) == 1 && !empty($result[0])) {
+			self::$instance->result = $result = $result[0];
+		}
 
-			$result_id = $result[0]->id;
+		if (isset($result->success) && !empty($result->success)) {
+
+			$result_id = $result->id;
+			self::$foreign_keys[$foreign_key_label] = $result_id;
 
 			gform_update_meta( $entry['id'], 'salesforce_id', $result_id );
 			gform_update_meta( $entry['id'], 'salesforce_api_result', 'success' );
 
-			$success_note = sprintf(__('Successfully added/updated to Salesforce with ID #%s . View entry at %s', 'gravity-forms-salesforce'), $result_id, self::getTokenParam('instance_url').'/'.$result_id);
+			$success_note = sprintf(__('Successfully added/updated to Salesforce (%s) with ID #%s. View entry at %s', 'gravity-forms-salesforce'),
+										$Account->type, $result_id, self::getTokenParam('instance_url').'/'.$result_id);
 
-			self::log_debug('create(): '.$success_note);
+			self::log_debug(__METHOD__ . ': '.$success_note);
 			self::add_note($entry["id"], $success_note);
 
 			self::admin_screen_message( __( 'Entry added/updated in Salesforce.', 'gravity-forms-salesforce' ), 'updated');
@@ -2211,28 +2354,36 @@ class GFSalesforce {
 			return $result_id;
 
 		} else {
-
-			$errors = $result[0]->errors[0];
-
-			self::log_error(sprintf('create(): There was an error exporting Entry #%s for Form #%s. Salesforce responded with:', $entry['id'], $form['id']) ."\n".print_r($errors, true));
-
-			if($email = self::is_notify_on_error()) {
-
-				// Create the email message to send
-				$message = sprintf(apply_filters('gravityforms_salesforce_notify_on_error_message', __("<h3>Error Adding To Salesforce</h3><p>There was an error when attempting to add <a href='%s'>Entry #%s</a> from the form \"%s\"</p>", 'gravity-forms-salesforce'), $errors, $entry, $form), admin_url('admin.php?page=gf_entries&view=entry&id='.$entry['form_id'].'&lid='.$entry['id']), $entry['id'], $form['title']);
-
-				// Send as HTML
-				$headers = "Content-type: text/html; charset=" . get_option('blog_charset') . "\r\n";
-
-				// Send email
-				$sent = wp_mail($email,__('Error adding to Salesforce', 'gravity-forms-salesforce'), $message, $headers);
-
-				if(!$sent) {
-					self::log_error('create(): There was an error sending the error email. This really isn\'t your day, is it?');
-				}
+			if(isset($result->errors[0])) {
+				$errors = $result->errors[0];
 			}
 
-			self::add_note($entry["id"], sprintf(__('Errors when adding to Salesforce: %s', 'gravity-forms-salesforce'), $errors->message.$api_exception));
+			if(isset($errors)) {
+
+				self::log_error(sprintf('%s: There was an error exporting Entry #%s for Form #%s. Salesforce responded with:',
+											__METHOD__, $entry['id'], $form['id']) ."\n".print_r($errors, true));
+
+				if($email = self::is_notify_on_error()) {
+
+					// Create the email message to send
+					$message = sprintf(apply_filters('gravityforms_salesforce_notify_on_error_message', __("<h3>Error Adding To Salesforce</h3><p>There was an error when attempting to add <a href='%s'>Entry #%s</a> from the form \"%s\"</p>", 'gravity-forms-salesforce'), $errors, $entry, $form), admin_url('admin.php?page=gf_entries&view=entry&id='.$entry['form_id'].'&lid='.$entry['id']), $entry['id'], $form['title']);
+
+					// Send as HTML
+					$headers = "Content-type: text/html; charset=" . get_option('blog_charset') . "\r\n";
+
+					// Send email
+					$sent = wp_mail($email,__('Error adding to Salesforce', 'gravity-forms-salesforce'), $message, $headers);
+
+					if(!$sent) {
+						self::log_error(__METHOD__ . ': There was an error sending the error email. This really isn\'t your day, is it?');
+					}
+				}
+
+				self::add_note($entry["id"],
+						sprintf(__('Errors when adding to Salesforce (%s): %s', 'gravity-forms-salesforce'),
+									$Account->type, $errors->message.$api_exception));
+
+			}
 
 			self::admin_screen_message( __( 'Errors when adding to Salesforce. Entry not sent!', 'gravity-forms-salesforce' ), 'error');
 
@@ -2489,8 +2640,8 @@ class GFSalesforce {
 	 * @return object
 	 */
 	public static function export_entries_add_fields( $form ) {
-		$form["fields"][] = array('id' => 'salesforce_id' , 'label' => __( 'Salesforce ID', 'gravity-forms-salesforce' ) );
-		$form["fields"][] = array('id' => 'salesforce_api_result' , 'label' => __( 'Salesforce API result', 'gravity-forms-salesforce' ) );
+		$form['fields'][] = array('id' => 'salesforce_id' , 'label' => __( 'Salesforce ID', 'gravity-forms-salesforce' ) );
+		$form['fields'][] = array('id' => 'salesforce_api_result' , 'label' => __( 'Salesforce API result', 'gravity-forms-salesforce' ) );
 		return $form;
 	}
 
@@ -2515,6 +2666,61 @@ class GFSalesforce {
 		return $value;
 	}
 
+	/*
+	 * Create primary key id
+	 * @param Feed
+	 * @return String
+	 */
+	public static function primary_key_id($feed)
+	{
+		$id = strtolower(self::primary_key_label($feed));
+
+		return preg_replace('/\W+/', '_', $id);
+	}
+
+	/*
+	 * Create primary key label
+	 * @param Feed
+	 * @return String
+	 */
+	public static function primary_key_label($feed)
+	{
+		if(!empty($feed['meta']['contact_object_name'])) {
+			$label = sprintf('%s (Primary Key)', $feed['meta']['contact_object_name']);
+
+			return $label;
+		}
+
+		return false;
+	}
+
+	/*
+	 * Try and sort array based on column name
+	 * @param Array
+	 * @return Void
+	 */
+	public static function sorter(&$array, $column = null)
+	{
+		if(!is_array($column)) {
+			$props = array($column => true);
+		} else {
+			$props = $column;
+		}
+
+		usort($array, function($a, $b) use ($props) {
+			foreach($props as $prop => $ascending)
+			{
+				if($a[$prop] != $b[$prop])
+				{
+					if($ascending)
+						return $a[$prop] > $b[$prop] ? 1 : -1;
+					else
+						return $b[$prop] > $a[$prop] ? 1 : -1;
+				}
+			}
+			return -1; //if all props equal
+		});
+	}
 }
 
 new GFSalesforce;
