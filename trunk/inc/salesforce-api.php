@@ -49,8 +49,10 @@ class GFSalesforce {
 
 	}
 
-	/*
+	/**
 	 * Singleton instance of our class
+	 *
+	 * @since  3.1
 	 * @return GFSalesforce
 	 */
 	public static function Instance()
@@ -66,7 +68,10 @@ class GFSalesforce {
 		return self::$instance;
 	}
 
-	//Plugin starting point. Will load appropriate files
+	/**
+	 * Plugin starting point. Will load appropriate files
+	 * @return void
+	 */
 	public function init(){
 		global $pagenow;
 
@@ -472,6 +477,12 @@ class GFSalesforce {
 		GFSalesforceData::update_feed($id, $feed["form_id"], $_POST["is_active"], $feed["meta"]);
 	}
 
+	/**
+	 * Update the feed sort order
+	 *
+	 * @since  3.1
+	 * @return void
+	 */
 	public static function update_feed_sort(){
 		if( empty( $_POST['sort'] ) || !isset( $_POST['nonce'] ))
 				// ! wp_verify_nonce( $_POST['nonce'], 'rg_update_feed_sort' ) )
@@ -2675,8 +2686,9 @@ class GFSalesforce {
 		return $value;
 	}
 
-	/*
+	/**
 	 * Create primary key id
+	 * @since  3.1
 	 * @param Feed
 	 * @return String
 	 */
@@ -2687,8 +2699,9 @@ class GFSalesforce {
 		return preg_replace('/\W+/', '_', $id);
 	}
 
-	/*
+	/**
 	 * Create primary key label
+	 * @since  3.1
 	 * @param Feed
 	 * @return String
 	 */
@@ -2703,8 +2716,9 @@ class GFSalesforce {
 		return false;
 	}
 
-	/*
+	/**
 	 * Try and sort array based on column name
+	 * @since  3.1
 	 * @param Array
 	 * @return Void
 	 */

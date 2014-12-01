@@ -108,6 +108,11 @@ class GFSalesforceData{
         return $id;
     }
 
+    /**
+     * @since  3.1
+     * @param  [type] $data [description]
+     * @return [type]       [description]
+     */
     public static function update_feed_order($data){
         global $wpdb;
         $table_name = self::get_salesforce_table_name();

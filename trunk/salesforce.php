@@ -81,6 +81,11 @@ class KWS_GF_Salesforce {
         }
     }
 
+    /**
+     * Loads `jquery-ui-sortable` on the Salesforce page
+     * @since 3.1
+     * @return
+     */
     function load_admin_scripts() {
 
         wp_enqueue_script( 'jquery-ui-sortable');
