@@ -290,6 +290,7 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+* Fixed: Loading order of settings tabs
 = 3.1 (December 1, 2014) =
 * Added: Use of Sandbox constant
 * Fixed: Whitespace consistency
@@ -509,6 +510,7 @@ This plugin is released under a GPL license.
 
 == Upgrade Notice ==
 
+* Fixed: Loading order of settings tabs
 = 3.0.6.3 (September 12, 2014) =
 * Fixed: Removed field var_dump
 
