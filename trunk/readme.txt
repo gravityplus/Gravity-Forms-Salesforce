@@ -290,6 +290,7 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+* Fixed: Warning in Gravity Forms 1.9 about Add-on requiring an update
 * Fixed: Loading order of settings tabs
 = 3.1 (December 1, 2014) =
 * Added: Use of Sandbox constant
@@ -510,6 +511,7 @@ This plugin is released under a GPL license.
 
 == Upgrade Notice ==
 
+* Fixed: Warning in Gravity Forms 1.9 about the add-on requiring an update
 * Fixed: Loading order of settings tabs
 = 3.0.6.3 (September 12, 2014) =
 * Fixed: Removed field var_dump

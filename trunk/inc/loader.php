@@ -300,7 +300,7 @@ if (class_exists("GFForms")) {
 		 * @return string      HTML of description
 		 */
 		function plugin_description() {
-			return '';
+			return '<style>.gform_tab_content .push-alert-red { display:none!important; }</style>';;
 		}
 
 		function get_plugin_choices($type = 'radio') {
