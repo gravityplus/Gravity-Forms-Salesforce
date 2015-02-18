@@ -1,10 +1,10 @@
 === Gravity Forms Salesforce Add-on ===
 Tags: gravity forms, forms, gravity, form, crm, gravity form, salesforce, salesforce plugin, form, forms, gravity, gravity form, gravity forms, secure form, simplemodal contact form, wp contact form, widget, sales force, customer, contact, contacts, address, addresses, address book, web to lead, web to case, web-to-lead, web-to-case, cases, leads, lead
 Requires at least: 3.3
-Tested up to: 4.0
-Stable tag: 3.1
+Tested up to: 4.1
+Stable tag: 3.1.1
 Contributors: katzwebdesign,katzwebservices
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Gravity%20Forms%20Salesforce%20Addon&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
+Donate link: https://gravityview.co
 License: GPLv2 or later
 
 This is the most powerful Salesforce integration available for WordPress.
@@ -290,7 +290,12 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 3.1.1 (February 17, 2015) =
+* Fixed: Warning in Gravity Forms 1.9 about Add-on requiring an update
+* Fixed: Loading order of settings tabs
+
 = 3.1 (December 1, 2014) =
+* Thank you to [@zmonteca](https://github.com/zmonteca) for this update. The great new functionality was added by him!
 * Added: Use of Sandbox constant
 * Fixed: Whitespace consistency
 * Fixed: Lots of logging updates for verbosity
@@ -508,6 +513,25 @@ This plugin is released under a GPL license.
 * Launch!
 
 == Upgrade Notice ==
+
+= 3.1.1 (February 17, 2015) =
+* Fixed: Warning in Gravity Forms 1.9 about the add-on requiring an update
+* Fixed: Loading order of settings tabs
+
+= 3.1 (December 1, 2014) =
+* Thank you to [@zmonteca](https://github.com/zmonteca) for this update. The great new functionality was added by him!
+* Added: Use of Sandbox constant
+* Fixed: Whitespace consistency
+* Fixed: Lots of logging updates for verbosity
+* Fixed: Do not process inactive feeds
+* Fixed: Ability to sort the order of feeds list
+* Fixed: Feed select boxes are all sorted alphabetically now
+* Fixed: Localization functionality - added Text Domain information
+* Added: Romanian translation - thanks [@ArianServ](https://www.transifex.com/accounts/profile/ArianServ/)!
+* Added: Feed Primary Keys can now be used to update previous records properly. 
+    * For example, "Form A" has two SF tables worth of data -- Contact & Address. You can create an Address feed and a Contact feed. If the Address feed is ordered before the Contact feed in the feed list, you can use the Contact feed's Primary Key to map to the Address Primary Key. This is helpful to map true relationships in Salesforce.
+* Added: Any feed can map foreign keys to Primary Keys, thus mapping rich relationship in SF. 
+    *  For example, Form B has five dependent Salesforce tables worth of data -- Contact, Opportunities, Opportunity Contacts, Contact, Tribute. Now you can create a Contact, have it linked to Opportunities. But also create a second Contact and map that as well as the Opportunity to a custom Tribute table. It's very fancy - see the Frequently Asked Questions for more information.
 
 = 3.0.6.3 (September 12, 2014) =
 * Fixed: Removed field var_dump

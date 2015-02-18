@@ -96,7 +96,12 @@ class GFSalesforce {
 
 			//creates a new Settings page on Gravity Forms' settings screen
 			if(self::has_access("gravityforms_salesforce")){
-				RGForms::add_settings_page("Salesforce: API", array("GFSalesforce", "settings_page"), self::get_base_url() . "/assets/images/salesforce-128.png");
+				RGForms::add_settings_page( array(
+					'name' => "sf-loader-api",
+					'tab_label' => 'Salesforce: API',
+					'handler' => array("GFSalesforce", "settings_page"),
+					'icon_path' => self::get_base_url() . "/assets/images/salesforce-128.png",
+				), array("GFSalesforce", "settings_page"), self::get_base_url() . "/assets/images/salesforce-128.png");
 			}
 
 			self::refresh_transients();

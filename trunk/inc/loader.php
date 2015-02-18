@@ -24,7 +24,7 @@ if (class_exists("GFForms")) {
 
 		protected $_version;
 		protected $_min_gravityforms_version = "1.7";
-		protected $_slug = "sf-loader";
+		protected $_slug = "sf-a-loader";
 		protected $_path = "gravity-forms-salesforce/inc/loader.php";
 		protected $_full_path = __FILE__;
 		protected $_title = "Gravity Forms: Salesforce";
@@ -300,7 +300,7 @@ if (class_exists("GFForms")) {
 		 * @return string      HTML of description
 		 */
 		function plugin_description() {
-			return '';
+			return '<style>.gform_tab_content .push-alert-red { display:none!important; }</style>';;
 		}
 
 		function get_plugin_choices($type = 'radio') {

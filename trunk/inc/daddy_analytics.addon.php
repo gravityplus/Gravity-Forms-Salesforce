@@ -23,7 +23,7 @@ if (class_exists("GFForms")) {
 	class KWSGFDaddyAnalyticsAddon extends KWSGFAddOn2_2 {
 		protected $_version;
 		protected $_min_gravityforms_version = "1.7";
-		protected $_slug = "sf-daddy-analytics";
+		protected $_slug = "sf-loader-daddy-analytics";
 		protected $_path = "gravity-forms-salesforce/inc/daddy_analytics.addon.php";
 		protected $_full_path = __FILE__;
 		protected $_title = "Gravity Forms: Salesforce Daddy Analytics Add-On";
