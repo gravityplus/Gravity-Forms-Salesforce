@@ -2375,6 +2375,8 @@ class GFSalesforce {
 
 			self::admin_screen_message( __( 'Entry added/updated in Salesforce.', 'gravity-forms-salesforce' ), 'updated');
 
+			do_action( 'gravityforms_salesforce_object_added_updated', $Account, $feed, $result_id );
+
 			return $result_id;
 
 		} else {
