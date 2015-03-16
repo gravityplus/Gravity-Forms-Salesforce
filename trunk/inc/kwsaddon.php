@@ -296,7 +296,7 @@ EOD;
          * @param  string $key Name of setting to return
          * @return mixed|null      Value of setting at key {$key}. If not set, returns null.
          */
-        protected function get_plugin_setting($key) {
+        public function get_plugin_setting($key) {
 
             return $this->get_addon_setting($key, false);
         }
@@ -830,7 +830,7 @@ EOD;
         * Gravity Forms would only check if the `gform-settings-save` field has been saved.
         * We need to be more vigilant than that, so we check if the current `subview` parameter matches the short title.
         */
-        protected function is_save_postback(){
+        public function is_save_postback(){
             return !rgempty("gform-settings-save") && ( rgget("subview") === $this->get_short_title() || rgget("subview") === $this->get_slug() );
         }
 
