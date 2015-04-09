@@ -31,11 +31,16 @@ class GFSalesforce {
 	private static $version;
 	private static $min_gravityforms_version = "1.3.9";
 	private static $cache_time = 86400; // 24 hours
+
+	/**
+	 * Default settings
+	 * @var array
+	 */
 	private static $settings = array(
-				'notify' => false,
-				"notifyemail" => '',
-				'cache_time' => 86400,
-			);
+		'notify' => false,
+		"notifyemail" => '',
+		'cache_time' => 86400,
+	);
 
 	function __construct() {
 
@@ -1279,7 +1284,7 @@ class GFSalesforce {
 
 	public static function link_to_settings( $escaped = true ) {
 
-		$url = admin_url('admin.php?page=gf_settings&addon=Salesforce&subview=Salesforce%3A+API');
+		$url = admin_url('admin.php?page=gf_settings&subview=sf-loader-api');
 
 		return $escaped ? esc_attr( $url ) : $url;
 	}
@@ -2375,6 +2380,11 @@ class GFSalesforce {
 
 			self::admin_screen_message( __( 'Entry added/updated in Salesforce.', 'gravity-forms-salesforce' ), 'updated');
 
+			/**
+			 * @since 3.1.2
+			 */
+			do_action( 'gravityforms_salesforce_object_added_updated', $Account, $feed, $result_id );
+
 			return $result_id;
 
 		} else {
@@ -2410,7 +2420,7 @@ class GFSalesforce {
 
 			}
 
-			self::admin_screen_message( __( 'Errors when adding to Salesforce. Entry not sent!', 'gravity-forms-salesforce' ), 'error');
+			self::admin_screen_message( __( 'Errors when adding to Salesforce. Entry not sent! Check the Entry Notes below for more details.', 'gravity-forms-salesforce' ), 'error');
 
 			return false;
 		}
@@ -2489,7 +2499,7 @@ class GFSalesforce {
 	 * @static
 	 * @param int $form_id
 	 * @param array $lead
-	 * @return void
+	 * @return string
 	 */
 	public static function entry_info_send_to_salesforce_button( $button = '' ) {
 
@@ -2500,7 +2510,11 @@ class GFSalesforce {
 		$mode = empty($_POST["screen_mode"]) ? "view" : $_POST["screen_mode"];
 
 		if($mode === 'view') {
-			$button .= sprintf('<input type="hidden" name="send_to_salesforce" id="send_to_salesforce" value="" /><input type="submit" class="button button-large button-secondary alignright" value="%s" title="%s" onclick="jQuery(\'#send_to_salesforce\').val(\'1\'); jQuery(\'#action\').val(\'send_to_salesforce\')" />', esc_html__('Send to Salesforce', 'gravity-forms-salesforce'), esc_html__('Create or update this entry in Salesforce. The fields will be mapped according to the form feed settings.', 'gravity-forms-salesforce'));
+			$button_html = '
+				<input type="hidden" name="send_to_salesforce" id="send_to_salesforce" value="" />
+				<input type="submit" class="button button-large button-secondary alignright" style="margin-left:5px;" value="%s" title="%s" onclick="jQuery(\'#send_to_salesforce\').val(\'1\'); jQuery(\'#action\').val(\'send_to_salesforce\')" />
+			';
+			$button .= sprintf( $button_html, esc_html__('Send to Salesforce', 'gravity-forms-salesforce'), esc_html__('Create or update this entry in Salesforce. The fields will be mapped according to the form feed settings.', 'gravity-forms-salesforce'));
 		}
 
 		return $button;

@@ -1,8 +1,8 @@
 === Gravity Forms Salesforce Add-on ===
 Tags: gravity forms, forms, gravity, form, crm, gravity form, salesforce, salesforce plugin, form, forms, gravity, gravity form, gravity forms, secure form, simplemodal contact form, wp contact form, widget, sales force, customer, contact, contacts, address, addresses, address book, web to lead, web to case, web-to-lead, web-to-case, cases, leads, lead
 Requires at least: 3.3
-Tested up to: 4.1
-Stable tag: 3.1.1
+Tested up to: 4.2
+Stable tag: 3.1.2
 Contributors: katzwebdesign,katzwebservices
 Donate link: https://gravityview.co
 License: GPLv2 or later
@@ -90,6 +90,11 @@ The plugin fully supports multiple languages! [Please help translate the plugin!
 __If you are using the Web-To-Lead Add-on__ you must have Web-To-Lead enabled. [Read how to enable Web-to-Lead on Salesforce.com](https://help.salesforce.com/apex/HTViewHelpDoc?id=setting_up_web-to-lead.htm).
 
 == Frequently Asked Questions ==
+
+= Web-to-Lead: DateTime fields don't process =
+This is a known issue. We've tried everything to get this working, but Salesforce won't accept any submitted DateTime formats.
+
+[Here's how to enable the functionality](https://gist.github.com/zackkatz/ae3924779157261b80e3). If you find a solution, let us know on that page.
 
 = Web-to-Lead: I'm not seeing any errors, but the entry didn't get added to Salesforce! =
 Please check the box "Enable Salesforce debugging emails" in the Web-to-Lead settings page. Salesforce will send you an email with a reason the lead or case wasn't added.
@@ -289,6 +294,12 @@ Make the value of checkboxes `1` in Gravity Forms. [See how to do that here](htt
 This plugin is released under a GPL license.
 
 == Changelog ==
+
+= 3.1.2 =
+* Added: Web-to-Lead setting to choose date formats for date fields (`mm/dd/YYYY` or `dd/mm/YYYY`)
+* Added: `gravityforms_salesforce_object_added_updated` action after entry is added or updated in Salesforce using the API
+* Fixed: Gravity Forms warnings in admin
+* Fixed: Link to API settings when in API Feed configuration
 
 = 3.1.1 (February 17, 2015) =
 * Fixed: Warning in Gravity Forms 1.9 about Add-on requiring an update
