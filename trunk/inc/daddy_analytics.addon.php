@@ -50,6 +50,16 @@ if (class_exists("GFForms")) {
 			$this->url_api_name = $this->get_plugin_setting('daddy_analytics_webtolead_url_api_name');
 			$this->site_id = $this->get_plugin_setting('daddy_analytics_site_id');
 
+			$this->initialize();
+		}
+
+		/**
+		 * Add hooks
+		 *
+		 * @since 3.1.2
+		 */
+		function initialize() {
+
 			add_filter('gf_salesforce_loader_fields', array(&$this, 'add_field_to_salesforce_loader'));
 			add_filter( 'gf_salesforce_lead_source_label', array(&$this, 'modify_lead_source_label'));
 
@@ -68,6 +78,15 @@ if (class_exists("GFForms")) {
 			add_action('wp_footer', array(&$this, 'daddy_analytics_javascript'));
 		}
 
+		/**
+		 * Add the Daddy Analytics URL and token to the Web-to-Lead data
+		 *
+		 * @param array $merge_vars
+		 * @param array $form GF Form
+		 * @param array $entry GF Entry
+		 *
+		 * @return array Modified $merge_vars
+		 */
 		function filter_web_to_lead_merge_vars($merge_vars, $form, $entry) {
 
 			do_action('kwsgfwebtoleadaddon_log_debug', 'DA::filter_web_to_lead_merge_vars() - Starting adding DA data to merge vars.');
@@ -85,6 +104,17 @@ if (class_exists("GFForms")) {
 			return $merge_vars;
 		}
 
+		/**
+		 * Add the Daddy Analytics URL and token to the Salesforce API data
+		 *
+		 * @param array $merge_vars
+		 * @param array $form GF Form
+		 * @param array $entry GF Entry
+		 * @param array $feed Gravity Forms GFFeedAddon array
+		 * @param SforcePartnerClient|SforceEnterpriseClient $api API object, as fetched from GFSalesforce::get_api()
+		 *
+		 * @return array Modified $merge_vars
+		 */
 		function filter_api_merge_vars($merge_vars, $form, $entry, $feed, $api ) {
 
 			if(class_exists('GFSalesforce')) {
@@ -250,7 +280,10 @@ if (class_exists("GFForms")) {
 			return $fields;
 		}
 
-		function get_ad_term(){
+		/**
+		 * @return string
+		 */
+		private function get_ad_term(){
 			global $plugin_page;
 
 			if($plugin_page === 'gf_settings'){
@@ -262,10 +295,11 @@ if (class_exists("GFForms")) {
 			return $term;
 		}
 
-		function get_ad_link( $content, $medium, $url = 'http://daddyanalytics.com/', $term='', $source = 'ThoughtRefinery', $campaign = 'KWS_GF_Salesforce' ){
+		private function get_ad_link( $content, $medium, $url = 'http://daddyanalytics.com/', $term = '', $source = 'G_forms', $campaign = 'KWS_GF_Salesforce' ){
 
-			if( !$term )
+			if( !$term ) {
 				$term = $this->get_ad_term();
+			}
 
 			$link = $url . '?utm_source=%s&utm_medium=%s&utm_campaign=%s&utm_term=%s&utm_content=%s';
 
@@ -284,29 +318,46 @@ if (class_exists("GFForms")) {
 					return; // hide ads as they've signed up
 			}
 
+			$assets_path = 'assets/images/daddy_analytics/';
+
 			$ads = array(
 
 				'banner-main' => array(
-					array( 'id' => 'da04', 'url' => 'http://try.daddyanalytics.com/marketing-roi-wp2l/', 'content' => 'assets/images/daddy_analytics/Prove-Marketing-ROI_banner.png' ),
-					array( 'id' => 'da1_5', 'url' => 'http://try.daddyanalytics.com/integrate-salesforce-and-adwords-wp2l/', 'content' => 'assets/images/daddy_analytics/Track-Google-Adwords_banner.png' ),
-					array( 'id' => 'da1_6', 'url' => 'http://try.daddyanalytics.com/track-lead-source-wp2l/', 'content' => 'assets/images/daddy_analytics/Track-Lead-Source_banner.png' ),
+					array(
+						'url'      => 'https://breadwinnerhq.com?utm_campaign=GF_BW_2&utm_source=G_forms&utm_medium=banner&utm_term=connect+salesforce+xero',
+						'content'  => $assets_path . 'Breadwinner-connect-salesforce-xero.png'
+					),
+					array(
+						'url'      => 'https://breadwinnerhq.com?utm_campaign=GF_BW_2&utm_source=G_forms&utm_medium=banner&utm_term=create+invoices+in+xero',
+						'content'  => $assets_path . 'Breadwinner-create-invoices-in-xero.png'
+					),
+					array(
+						'url'      => 'https://breadwinnerhq.com?utm_campaign=GF_BW_2&utm_source=G_forms&utm_medium=banner&utm_term=never+miss+again',
+						'content'  => $assets_path . 'Breadwinner-never-miss-again.png'
+					),
+					array(
+						'url'     => 'https://daddydanalytics.com?utm_campaign=GF_DA_2&utm_source=G_forms&utm_medium=banner&utm_term=track+google+adwords',
+					    'content' => $assets_path . 'Track-Google-Adwords_banner.png'
+					),
+					array(
+						'url'     => 'https://daddydanalytics.com?utm_campaign=GF_DA_2&utm_source=G_forms&utm_medium=banner&utm_term=track+lead+source',
+					    'content' => $assets_path . 'Track-Lead-Source_banner.png'
+					),
 				),
-
 				'text' => array(
-					array( 'id' => 'da1_7', 'content' => sprintf(__('Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. %sWatch a video of Daddy Analytics%s', 'gravity-forms-salesforce'), '<p class="submit"><a class="button button-secondary" href="%link1%" target="_blank">', '</a></p>')),
-					array( 'id' => 'da1_8', 'cta' => 'Sign up Now', 'content' => sprintf(__('Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. %sSign up for a free trial of Daddy Analytics%s', 'gravity-forms-salesforce'), '<p class="submit"><a class="button button-secondary" href="%link2%" target="_blank">', '</a></p>')),
+					array(
+						'id'      => 'da1_7',
+						'content' => sprintf( __( 'Daddy Analytics allows you to track your leads from their original source, such as AdWords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. %sWatch a video of Daddy Analytics%s', 'gravity-forms-salesforce' ), '<p class="submit"><a class="button button-secondary" href="%link1%" target="_blank">', '</a></p>' )
+					),
+					array(
+						'id'      => 'da1_8',
+						'cta'     => 'Sign up Now',
+					    'content' => sprintf( __( 'Daddy Analytics allows you to track your leads from their original source, such as AdWords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. %sSign up for a free trial of Daddy Analytics%s', 'gravity-forms-salesforce' ), '<p class="submit"><a class="button button-secondary" href="%link2%" target="_blank">', '</a></p>' )
+					),
 				),
 
 			);
 
-			if( $id ){
-
-				foreach( $ads[ $type ] as $ad ){
-					if( $ad['id'] == $id )
-						return $ad;
-				}
-
-			}
 
 			$num = mt_rand( 1, count( $ads[ $type ] ) ) - 1;
 
@@ -324,7 +375,7 @@ if (class_exists("GFForms")) {
 
 			if( $ad = $this->get_ad_code('banner-main', $force) ){
 
-				$link = $this->get_ad_link( $ad['id'], 'banner-main', $ad['url'] );
+				$link = $ad['url'];
 
 				// Margin-top is to make the transparency look better
 				$banner = '<div style="margin-top:-10px;">';
@@ -343,16 +394,13 @@ if (class_exists("GFForms")) {
 		 */
 		function get_ad_text($force = false) {
 
-			$content = '';
-
 			if( $ad = $this->get_ad_code('text', $force) ){
-				$link1 = $this->get_ad_link( $ad['id'], 'text', 'http://try.daddyanalytics.com/watch-a-video-wp2l/?utm_source=ThoughtRefinery&utm_medium=text&utm_campaign=WP2L_Plugin_01&utm_content=da1_7' );
-				$link2 = $this->get_ad_link( $ad['id'], 'text', 'http://try.daddyanalytics.com/start-free-trial-wp2l/?utm_source=ThoughtRefinery&utm_medium=text&utm_campaign=WP2L_Plugin_01&utm_content=da1_8' );
 
-				$ad['content'] = str_replace( array('%link1%','%link2%'), array($link1,$link2), $ad['content'] );
+				$link1 = $this->get_ad_link( $ad['id'], 'text', 'https://daddydanalytics.com' );
+				$link2 = $this->get_ad_link( $ad['id'], 'text', 'https://daddyanalytics.com' );
 
-				$content = $ad['content'];
-				$class = '';
+				$content = str_replace( array('%link1%','%link2%'), array($link1,$link2), $ad['content'] );
+
 			}else{
 				$content = '<div class="updated inline widefat">'.wpautop(sprintf(__('Thank you for using %sDaddy Analytics%s!', 'gravity-forms-salesforce'), '<a href="http://daddyanalytics.com/" target="_blank">', '</a>' )).'</div>';
 			}

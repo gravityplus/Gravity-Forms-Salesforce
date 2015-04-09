@@ -92,6 +92,28 @@ if (class_exists("GFForms")) {
 							"tooltip" => sprintf(__("To find your Salesforce.com Organization ID, in your Salesforce.com account, go to [Your Name] &raquo; Setup &raquo; Company Profile (near the bottom of the left sidebar) &raquo; Company Information. It will look like %s", 'gravity-forms-salesforce'), '<code>00AB0000000Z9kR</code>')
 						),
 						array(
+							"name"    => "date_format",
+							"label"   => __("Date Format", "gravity-forms-salesforce"),
+							"type"    => "radio",
+							"horizontal"    => true,
+							"default_value" => $this->get_default_date_format(),
+							/**
+							 * Modify the options for date formats available in the settings
+							 * @since 3.1.2
+							 */
+							'choices' => apply_filters('gravityforms/salesforce/date_format_choices', array(
+								array(
+									'value' => 'm/d/Y',
+									'label' => 'mm/dd/yyyy',
+								),
+								array(
+									'value' => 'd/m/Y',
+									'label' => 'dd/mm/yyyy',
+								),
+							)),
+							'tooltip' => "<h6>" . __("Date Format", "gravity-forms-salesforce") . "</h6>" . __("The format dates are stored for your Salesforce Organization. If you are in the United States of America, the date format will be mm/dd/yyyy. Most of the rest of the world disagrees.", 'gravity-forms-salesforce'),
+						),
+						array(
 							"name"    => "debug",
 							"label"   => __("Receive Salesforce Debugging Emails <p class='howto'><span>For full plugin logs, install the <a href='http://gravityhelp.com/downloads/#Gravity_Forms_Logging_Tool' target='_blank'>Gravity Forms Logging Tool</a>.</span></p>", "gravity-forms-salesforce"),
 							"type"    => "checkbox",
@@ -185,6 +207,7 @@ if (class_exists("GFForms")) {
 						),
 						array(
 							'label' => 'Opt-in Condition',
+							'name' => 'feed_condition',
 							'type' => 'feed_condition',
 							'tooltip' => sprintf("<h6>" . __("Opt-In Condition", "gravity-forms-salesforce") . "</h6>" . __("When the opt-in condition is enabled, form submissions will only be exported to %s when the condition is met. When disabled all form submissions will be exported.", 'gravity-forms-salesforce'), $this->get_service_name()),
 						)
@@ -372,6 +395,82 @@ if (class_exists("GFForms")) {
 		}
 
 		/**
+		 * Get the default date format by guessing where you are.
+		 * @since 3.1.2
+		 * @return string d/m/Y or m/d/Y
+		 */
+		private function get_default_date_format() {
+
+			switch( get_locale() ) {
+
+				case 'en_US':
+				case 'en_CA':
+					$format = 'm/d/Y';
+					break;
+
+				default:
+					$format = 'd/m/Y';
+			}
+
+			return $format;
+		}
+
+		/**
+		 * Get the formatted date based on locale.
+		 *
+		 * @since 3.1.2
+		 *
+		 * @param string $value
+		 * @param string $key
+		 * @param array $additional_info Associative array with form, entry, field, feed data
+		 *
+		 */
+		private function get_date_format( $value = '', $key = '', $additional_info = array() ) {
+
+			/**
+			 * Add a datetime instead of date.
+			 * @link https://gist.github.com/zackkatz/ae3924779157261b80e3 See example
+			 * @param boolean $use_datetime Whether to use DateTime instead of Date (default: false, except for KWS testing)
+			 * @param string $key The Field Name (or API Name if a custom field) used in Salesforce
+			 * @param array $additional_info Associative array with form, entry, field, feed data
+			 */
+			$use_datetime = apply_filters( 'gf_salesforce_use_datetime', ($key === 'KWS__Date_and_Time__c'), $key, $additional_info );
+
+			$date_format = $this->get_addon_setting( 'date_format' );
+
+			if( ! $date_format ) {
+				$date_format = $this->get_default_date_format();
+			}
+
+			/**
+			 * Modify how date formats are added
+			 * @since 3.1.2
+			 */
+			$date_format = apply_filters('gravityforms/salesforce/date_format', $date_format );
+
+			/**
+			 * Modify how datetime formats are added
+			 * @since 3.1.2
+			 */
+			$datetime_format = apply_filters('gravityforms/salesforce/datetime_format', 'Y-m-d H:i:s');
+
+			/**
+			 * Format the date in Salesforce-recognized format.
+			 * These formats are US-style, even though Salesforce recommends `Y-m-d\'\T\'H:i:s`
+			 * For some reason, that didn't work.
+			 *
+			 * @link https://success.salesforce.com/answers?id=90630000000gl7rAAA
+			 */
+			if( $use_datetime ) {
+				$value = apply_filters( 'gf_salesforce_format_datetime', date( $datetime_format, strtotime( $value ) ), $key, $value, $additional_info );
+			} else {
+				$value = apply_filters( 'gf_salesforce_format_date', date( $date_format, strtotime( $value ) ), $key, $value, $additional_info );
+			}
+
+			return $value;
+		}
+
+		/**
 		 * Export the entry on submit.
 		 *
 		 * @filter gf_salesforce_implode_glue Change how array values are passed to Salesforce. By default they're sent using `;` (semicolons) to separate the items. You may want to convert that to using `,` (commas) instead. The filter passes the existing "glue" and the name of the input (for example, `Multiple_Picklist__c`)
@@ -416,14 +515,9 @@ if (class_exists("GFForms")) {
 						// Right now, we only have special cases for dates.
 						switch ($field_type) {
 							case 'date':
-								// Format the date in Salesforce-recognized format.
-								// These formats are US-style, even though Salesforce recommends `Y-m-d\'\T\'H:i:s`
-								// For some reason, that didn't work.
-								if(apply_filters( 'gf_salesforce_use_datetime', false, $key, compact('form', 'entry', 'field', 'feed'))) {
-									$value = get_gmt_from_date($value, 'm/d/Y h:i A');
-								} else {
-									$value = apply_filters( 'gf_salesforce_format_date', date( 'm/d/Y', strtotime( $value ) ), $key, $value, compact( 'form', 'entry', 'field', 'feed') );
-								}
+
+								$value = $this->get_date_format( $value, $key, compact('form', 'entry', 'field', 'feed') );
+
 								break;
 						}
 					}
@@ -473,6 +567,9 @@ if (class_exists("GFForms")) {
 
 				// You can tap into the data and filter it.
 				$merge_vars = apply_filters( 'gf_salesforce_push_data', $merge_vars, $form, $entry );
+
+				// Remove any empty items
+				$merge_vars = array_filter( $merge_vars );
 
 				$return = $this->send_request($merge_vars);
 
@@ -621,6 +718,17 @@ if (class_exists("GFForms")) {
 			// POST the data to Salesforce
 			$result = wp_remote_post($url, $args);
 
+			return $this->handle_response( $result );
+		}
+
+		/**
+		 * Determine whether the response was valid or not.
+		 * @param $result
+		 *
+		 * @return array|null NULL if there's an error. Array if
+		 */
+		private function handle_response( $result ) {
+
 			// There was an error
 			if(is_wp_error( $result )) {
 				self::log_error( sprintf("There was an error adding the entry to Salesforce: %s", $result->get_error_message()));
@@ -628,11 +736,11 @@ if (class_exists("GFForms")) {
 			}
 
 			// Find out what the response code is
-			$code = wp_remote_retrieve_response_code($result);
+			$code = wp_remote_retrieve_response_code( $result );
 
 			// Salesforce should ALWAYS return 200, even if there's an error.
 			// Otherwise, their server may be down.
-			if((int)$code !== 200) {
+			if( intval( $code ) !== 200) {
 				self::log_error( sprintf("The Salesforce server may be down, since it should always return '200'. The code it returned was: %s", $code));
 				return array();
 			}
@@ -653,7 +761,7 @@ if (class_exists("GFForms")) {
 			}
 
 			// Don't know how you get here, but if you do, here's an array
-			return $result;
+			return array();
 		}
 
 	}

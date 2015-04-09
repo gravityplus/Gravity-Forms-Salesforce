@@ -209,7 +209,7 @@ if (class_exists("GFForms")) {
 		* Gravity Forms would only check if the `gform-settings-save` field has been saved.
 		* We need to be more vigilant than that.
 		*/
-		protected function is_save_postback(){
+		public function is_save_postback(){
 			return !rgempty("gform-settings-save") && !rgempty('_gaddon_setting_salesforce_integration');
 		}
 
