@@ -318,6 +318,9 @@ class GFSalesforce {
 		);
 
 		$client = new CurlClient;
+		// Salesforce doesn't support IP6, so force IP4
+		$client->setCurlParameters( array( CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4 ));
+		
 		$storage = new WordPressMemory;
 
 		// We want API access for the plugin, also the ability to refresh the token.
