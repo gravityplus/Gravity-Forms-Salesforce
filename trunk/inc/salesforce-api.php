@@ -318,10 +318,10 @@ class GFSalesforce {
 		);
 
 		$client = new CurlClient;
-    // Salesforce doesn't support IP6, so if libcurl supports IP6 and IP4, force IP4
-    if (defined(CURLOPT_IPRESOLVE) && defined(CURL_IPRESOLVE_V4)) {
-      $client->setCurlParameters( array( CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4 ));
-    }
+		// Salesforce doesn't support IP6, so if libcurl supports IP6 and IP4, force IP4
+		if (defined('CURLOPT_IPRESOLVE') && defined('CURL_IPRESOLVE_V4')) {
+			$client->setCurlParameters( array( CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4 ));
+		}
 		
 		$storage = new WordPressMemory;
 
