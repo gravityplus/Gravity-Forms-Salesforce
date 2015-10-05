@@ -2321,7 +2321,7 @@ class GFSalesforce {
 				self::log_debug(sprintf('%s: Upserting using primary field of `%s`',
 											__METHOD__, $feed['meta']['primary_field']));
 
-				if(empty(self::$instance->result->id)) {
+				if(empty(self::$instance->result->id) || (isset($Account->fields['Id']) && $Account->fields['Id'] != "")) {
 
 					// old upsert
 					// https://www.salesforce.com/us/developer/docs/api/Content/sforce_api_calls_upsert.htm
