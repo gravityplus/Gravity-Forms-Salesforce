@@ -74,6 +74,27 @@ class GFSalesforce {
 	}
 
 	/**
+	 * @param $entry
+	 * @param $form
+	 * @param $errors
+	 */
+	private static function send_error_email($error_heading, $message)
+	{
+		if ($email = self::is_notify_on_error()) {
+			// Send as HTML
+			$headers = "Content-type: text/html; charset=" . get_option('blog_charset') . "\r\n";
+      //echo "Trying to send email";
+      //die();
+			// Send email
+			$sent = wp_mail($email, $error_heading, $message, $headers);
+
+			if (!$sent) {
+				self::log_error(__METHOD__ . ': There was an error sending the error email. This really isn\'t your day, is it?');
+			}
+		}
+	}
+
+	/**
 	 * Plugin starting point. Will load appropriate files
 	 * @return void
 	 */
@@ -2127,6 +2148,16 @@ class GFSalesforce {
 
 		if(!self::api_is_valid($api)) {
 			self::log_error('export(): Invalid API. '.print_r($api, true));
+			$error_heading = __('Error adding to Salesforce', 'gravity-forms-salesforce');
+			$errors = "Error sending to salesforce at the API level.  Use Gravity Forms Logging tool to get more information";
+			$message = sprintf(apply_filters('gravityforms_salesforce_notify_on_error_message',
+				'<h3>' . $error_heading . '</h3>' .
+				wpautop(__("There was an error when attempting to add %sEntry #%s from the form \"%s\"", 'gravity-forms-salesforce')),
+				$errors, $entry, $form),
+				'<a href="' . admin_url('admin.php?page=gf_entries&view=entry&id=' . $entry['form_id'] . '&lid=' . $entry['id']) . '">',
+				$entry['id'] . '</a>', $form['title']);
+			self::send_error_email($error_heading, $message);
+			self::add_note($entry["id"], 'Errors when adding to Salesforce: ' . $errors);
 			do_action('gf_salesforce_error', 'export', $api);
 			return;
 		}
@@ -2402,22 +2433,16 @@ class GFSalesforce {
 				self::log_error(sprintf('%s: There was an error exporting Entry #%s for Form #%s. Salesforce responded with:',
 											__METHOD__, $entry['id'], $form['id']) ."\n".print_r($errors, true));
 
-				if($email = self::is_notify_on_error()) {
+				// Create the email message to send
+				$error_heading = __('Error adding to Salesforce', 'gravity-forms-salesforce');
+				$message = sprintf(apply_filters('gravityforms_salesforce_notify_on_error_message',
+					'<h3>' . $error_heading . '</h3>' .
+					wpautop(__("There was an error when attempting to add %sEntry #%s from the form \"%s\"", 'gravity-forms-salesforce')),
+					$errors, $entry, $form),
+					'<a href="' . admin_url('admin.php?page=gf_entries&view=entry&id=' . $entry['form_id'] . '&lid=' . $entry['id']) . '">',
+					$entry['id'] . '</a>', $form['title']);
+				self::send_error_email($error_heading, $message);
 
-					$error_heading = __('Error adding to Salesforce', 'gravity-forms-salesforce');
-					// Create the email message to send
-					$message = sprintf(apply_filters('gravityforms_salesforce_notify_on_error_message', '<h3>'.$error_heading.'</h3>'.wpautop(__("There was an error when attempting to add %sEntry #%s from the form \"%s\"", 'gravity-forms-salesforce')), $errors, $entry, $form), '<a href="'.admin_url('admin.php?page=gf_entries&view=entry&id='.$entry['form_id'].'&lid='.$entry['id']).'">', $entry['id'].'</a>', $form['title']);
-
-					// Send as HTML
-					$headers = "Content-type: text/html; charset=" . get_option('blog_charset') . "\r\n";
-
-					// Send email
-					$sent = wp_mail($email, $error_heading, $message, $headers);
-
-					if(!$sent) {
-						self::log_error(__METHOD__ . ': There was an error sending the error email. This really isn\'t your day, is it?');
-					}
-				}
 
 				self::add_note($entry["id"],
 						sprintf(__('Errors when adding to Salesforce (%s): %s', 'gravity-forms-salesforce'),
