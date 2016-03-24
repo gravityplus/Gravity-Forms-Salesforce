@@ -318,9 +318,6 @@ class GFSalesforce {
 		);
 
 		$client = new CurlClient;
-		// Salesforce doesn't support IP6, so force IP4
-		$client->setCurlParameters( array( CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4 ));
-		
 		$storage = new WordPressMemory;
 
 		// We want API access for the plugin, also the ability to refresh the token.
@@ -1269,7 +1266,7 @@ class GFSalesforce {
 			$lists = array();
 			foreach ($objects->sobjects as $object) {
 				if(!is_object($object) || empty($object->createable)) { continue; }
-				$lists[$object->name] = esc_html( $object->label );
+								$SFObj = esc_html( $object->name );
 			}
 
 			asort($lists);
@@ -2321,7 +2318,7 @@ class GFSalesforce {
 				self::log_debug(sprintf('%s: Upserting using primary field of `%s`',
 											__METHOD__, $feed['meta']['primary_field']));
 
-				if(empty(self::$instance->result->id)) {
+				if(empty(self::$instance->result->id) || (isset($Account->fields['Id']) && $Account->fields['Id'] != "")) {
 
 					// old upsert
 					// https://www.salesforce.com/us/developer/docs/api/Content/sforce_api_calls_upsert.htm
