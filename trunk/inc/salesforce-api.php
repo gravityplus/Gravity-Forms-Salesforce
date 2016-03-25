@@ -1269,7 +1269,7 @@ class GFSalesforce {
 			$lists = array();
 			foreach ($objects->sobjects as $object) {
 				if(!is_object($object) || empty($object->createable)) { continue; }
-								$SFObj = esc_html( $object->name );
+					$lists[$object->name] = esc_html( $object->name );
 			}
 
 			asort($lists);
