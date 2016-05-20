@@ -92,6 +92,20 @@ if (class_exists("GFForms")) {
 							"tooltip" => sprintf(__("To find your Salesforce.com Organization ID, in your Salesforce.com account, go to [Your Name] &raquo; Setup &raquo; Company Profile (near the bottom of the left sidebar) &raquo; Company Information. It will look like %s", 'gravity-forms-salesforce'), '<code>00AB0000000Z9kR</code>')
 						),
 						array(
+							"name"    => "sandbox",
+							"label"   => __("Sandbox Instance", "gravity-forms-salesforce"),
+							"type"    => "checkbox",
+							"class"   => "checkbox",
+							"dependency" => array(&$this, 'is_valid_api'),
+							"choices" => array(
+								array(
+									'label' => __('When checked, data will be sent to salesforce sandbox instance.', 'gravity-forms-salesforce'),
+									'value' => 'sandbox',
+									'name'  => 'sandbox'
+								)
+							)	
+						),
+						array(
 							"name"    => "date_format",
 							"label"   => __("Date Format", "gravity-forms-salesforce"),
 							"type"    => "radio",
@@ -664,6 +678,9 @@ if (class_exists("GFForms")) {
 
 			// Debug is 0 by default.
 			$post['debug'] = 0;
+			
+			// Get the sandbox setting.
+			$sandbox = filter_var($this->get_plugin_setting('sandbox'), FILTER_VALIDATE_BOOLEAN);
 
 			// Is this a live request?
 			if(!$test) {
@@ -709,6 +726,9 @@ if (class_exists("GFForms")) {
 
 			// Use test/www subdomain based on whether this is a test or live
 			$sub = apply_filters( 'gf_salesforce_request_subdomain', ($test ? 'test' : 'www'), $test );
+			
+			// Use test/www subdomain based on whether the $sandbox setting is set to true
+			$sub = apply_filters( 'gf_salesforce_request_subdomain', ($sandbox ? 'test' : 'www'), $sandbox);
 
 			// Use (test|www) subdomain and WebTo(Lead|Case) based on setting
 			$url = apply_filters( 'gf_salesforce_request_url', sprintf('https://%s.salesforce.com/servlet/servlet.WebTo%s?encoding=UTF-8', $sub, $type), $args);
