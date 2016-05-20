@@ -99,7 +99,7 @@ if (class_exists("GFForms")) {
 							"dependency" => array(&$this, 'is_valid_api'),
 							"choices" => array(
 								array(
-									'label' => __('When checked, data will be sent to salesforce sandbox instance.', 'gravity-forms-salesforce'),
+									'label' => __('When checked, data will be sent to the Salesforce sandbox instance.', 'gravity-forms-salesforce'),
 									'value' => 'sandbox',
 									'name'  => 'sandbox'
 								)
