@@ -153,8 +153,8 @@ class GFSalesforce {
 			add_action('wp_ajax_nopriv_rg_update_feed_sort', array('GFSalesforce', 'update_feed_sort'));
 
 		} else{
-			 //handling post submission.
-			add_action("gform_after_submission", array('GFSalesforce', 'export'), 10, 2);
+			//handling post submission.
+			add_action("gform_confirmation", array('GFSalesforce', 'export_on_confirmation'), 1, 4);
 		}
 
 		add_filter("gform_logging_supported", array('GFSalesforce', "set_logging_supported"));
@@ -2119,6 +2119,14 @@ class GFSalesforce {
 		// Don't send twice.
 		unset($_POST['update_to_salesforce']);
 		unset($_POST['send_to_salesforce']);
+	}
+
+	/**
+	 * Handle the confirmation hook export
+	 */
+	public static function export_on_confirmation($confirmation = false, $form, $entry, $is_ajax = false) {
+		self::export($entry, $form, false);
+		return $confirmation;
 	}
 
 	public static function export($entry, $form, $manual_export = false){
