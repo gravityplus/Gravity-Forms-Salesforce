@@ -2272,6 +2272,8 @@ class GFSalesforce {
 
 		$api = self::get_api();
 
+		$enterprise = apply_filters('gf_salesforce_enterprise', false);
+
 		$token = self::getToken();
 
 		// There was no token. This is all wrong.
@@ -2298,14 +2300,30 @@ class GFSalesforce {
 		// data type, not an empty string
 		$merge_vars = array_filter($merge_vars, array('GFSalesforce', '_remove_empty_fields'));
 
-		// We create the object to insert/upsert into Salesforce
-		$Account = new SObject();
+		$object_name = $feed['meta']['contact_object_name'];
 
-		// The fields to use are the merge vars
-		$Account->fields = $merge_vars;
+		if($enterprise) {
 
-		// Set the type of object
-		$Account->type = $feed['meta']['contact_object_name'];
+			// We create the object to insert/upsert into Salesforce
+			$Account = new stdclass();
+
+			// The fields to use are the merge vars
+			foreach($merge_vars as $var => $val) {
+				$Account->$var = $val;
+			}
+
+		} else {
+
+			// We create the object to insert/upsert into Salesforce
+			$Account = new SObject();
+
+			// The fields to use are the merge vars
+			$Account->fields = $merge_vars;
+
+			// Set the type of object
+			$Account->type = $object_name;
+
+		}
 
 		$foreign_key_label = self::primary_key_id($feed);
 
@@ -2334,14 +2352,24 @@ class GFSalesforce {
 
 					self::log_debug(sprintf('%s: Creating with previous id %s', __METHOD__, self::$instance->result->id));
 					$Account->fields[$feed['meta']['primary_field']] = self::$instance->result->id;
-					$result = $api->create( array($Account) );
+
+					if($enterprise) {
+						$result = $api->create( array($Account), $object_name );
+					} else {
+						$result = $api->create( $Account );
+					}
 
 				}
 
 			} else {
 
 				self::log_debug(__METHOD__ . ': Creating, not upserting');
-				$result = $api->create( array($Account) );
+
+				if($enterprise) {
+					$result = $api->create( array($Account), $object_name );
+				} else {
+					$result = $api->create( $Account );
+				}
 
 			}
 
@@ -2378,7 +2406,7 @@ class GFSalesforce {
 			gform_update_meta( $entry['id'], 'salesforce_api_result', 'success' );
 
 			$success_note = sprintf(__('Successfully added/updated to Salesforce (%s) with ID #%s. View entry at %s', 'gravity-forms-salesforce'),
-										$Account->type, $result_id, self::getTokenParam('instance_url').'/'.$result_id);
+										$object_name, $result_id, self::getTokenParam('instance_url').'/'.$result_id);
 
 			self::log_debug(__METHOD__ . ': '.$success_note);
 			self::add_note($entry["id"], $success_note);
@@ -2421,7 +2449,7 @@ class GFSalesforce {
 
 				self::add_note($entry["id"],
 						sprintf(__('Errors when adding to Salesforce (%s): %s', 'gravity-forms-salesforce'),
-									$Account->type, $errors->message.$api_exception));
+									$object_name, $errors->message.$api_exception));
 
 			}
 
