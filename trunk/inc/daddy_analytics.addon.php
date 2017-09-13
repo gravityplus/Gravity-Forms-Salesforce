@@ -378,7 +378,7 @@ if (class_exists("GFForms")) {
 				$link = $ad['url'];
 
 				// Margin-top is to make the transparency look better
-				$banner = '<div style="margin-top:-10px;">';
+				$banner = '<div><div class="hr-divider"></div>';
 				$banner .= '<a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], KWS_GF_Salesforce::$file ).'" width="586" height="147" style="';
 				$banner .= 'width:auto; height:auto; max-width:100%; max-height:180px;'; // Scale down when window is smaller; don't get too big when wide window.
 				$banner .= '" /></a></div>';
