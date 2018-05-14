@@ -725,10 +725,10 @@ if (class_exists("GFForms")) {
 			$args = apply_filters( 'gf_salesforce_request_args', $args, $test );
 
 			// Use test/www subdomain based on whether this is a test or live
-			$sub = apply_filters( 'gf_salesforce_request_subdomain', ($test ? 'test' : 'www'), $test );
+			$sub = apply_filters( 'gf_salesforce_request_subdomain', ($test ? 'test' : 'webto'), $test );
 			
 			// Use test/www subdomain based on whether the $sandbox setting is set to true
-			$sub = apply_filters( 'gf_salesforce_request_subdomain', ($sandbox ? 'test' : 'www'), $sandbox);
+			$sub = apply_filters( 'gf_salesforce_request_subdomain', ($sandbox ? 'test' : 'webto'), $sandbox);
 
 			// Use (test|www) subdomain and WebTo(Lead|Case) based on setting
 			$url = apply_filters( 'gf_salesforce_request_url', sprintf('https://%s.salesforce.com/servlet/servlet.WebTo%s?encoding=UTF-8', $sub, $type), $args);
